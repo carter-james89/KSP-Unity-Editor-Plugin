@@ -21,8 +21,12 @@ namespace MemoryBridgeServer
             //    memoryBridge.SetValue("KeyCount" + i, i);
             //}
             //Debug.Log("Values set");
-            IRWrapper.InitWrapper();
+            Debug.Log("Init wrapper");
+            var success = IRWrapper.InitWrapper();// IRWrapper.InitWrapper();
 
+            
+
+           
 
             serverStarted = true;
             Debug.Log("start server " + Time.frameCount);
@@ -33,8 +37,13 @@ namespace MemoryBridgeServer
             //     UnityEngine.Debug.Log("Hexapod IR ready to go");
         }
 
+        bool firstFrame = true;
         private void Update()
         {
+            if (firstFrame)
+            {
+                firstFrame = false;
+            }
             if (IRWrapper.APIReady & !serverStarted)
             {
                 //serverStarted = true;

@@ -276,7 +276,7 @@ public class RoboticServo : MonoBehaviour
         if (disable)
         {
             Debug.Log("disable " + name);
-            hostPart.lineRenderer.material.color = Color.red;
+         //   hostPart.lineRenderer.material.color = Color.red;
         }
     }
 

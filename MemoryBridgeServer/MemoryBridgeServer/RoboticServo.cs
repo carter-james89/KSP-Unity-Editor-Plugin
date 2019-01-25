@@ -43,7 +43,8 @@ namespace MemoryBridgeServer
                     bases.Add(child);
             }
 
-            if(bases.Count == 0)
+            Debug.Log("Bases count " + bases.Count);
+            if (bases.Count == 0)
             {
                 Debug.Log(servo.Name + " does not have a base");
             }
@@ -80,17 +81,20 @@ namespace MemoryBridgeServer
                 anchorChild.localPosition = Vector3.zero;
                 anchorChild.rotation = part.transform.rotation;
 
+                Debug.Log(this.servo.HostPart.name);
+
                 //Move the x axis of the rotatron part. This happens in Unity script as well in Parts
-                if (this.servo.HostPart.name == "IR.Rotatron.Basic")
+                if (this.servo.HostPart.name == "IR.Rotatron.Basic.v3")
                 {
                     servoAnchor.localEulerAngles += new Vector3(0, 0, 90);
                     anchorChild.localEulerAngles += new Vector3(0, 0, 90);
                     // DebugVector.DrawVector(servoAnchor);
-                    DebugVector.DrawVector(anchorChild);
+                  //  DebugVector.DrawVector(anchorChild);
+                    Debug.Log("Draw Vector");
                 }
 
-                    // DebugVector.DrawVector(servoAnchor);
-                }         
+                DebugVector.DrawVector(servoAnchor);
+            }
         }
 
         public void ParentSet(Transform newParent)
@@ -110,7 +114,7 @@ namespace MemoryBridgeServer
             servo.MoveTo(memoryBridge.GetFloat(servoName + "unityServoPos"), 10);
 
             anchorChild.rotation = part.transform.rotation;
-            if (this.servo.HostPart.name == "IR.Rotatron.Basic")
+            if (this.servo.HostPart.name == "IR.Rotatron.Basic.v3")
             {
                 anchorChild.localEulerAngles += new Vector3(0, 0, 90);
             }

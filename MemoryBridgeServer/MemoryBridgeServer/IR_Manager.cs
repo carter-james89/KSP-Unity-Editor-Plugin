@@ -18,10 +18,17 @@ namespace MemoryBridgeServer
         List<string> groups;
         public void CustomStart(List<Part> parts, MemoryBridge memoryBridge)
         {
+            Debug.Log("IR Manager custom start");
             limbs = new List<RoboticArm>();
 
+            if (IRWrapper.IRController == null)
+            {
+                Debug.Log("IR3Controller is not null");
+            }
+            Debug.Log(IRWrapper.IRController.ServoGroups.Count);
             foreach (IRWrapper.IControlGroup group in IRWrapper.IRController.ServoGroups)
             {
+                Debug.Log("Servo Group : " + group.Name);
                 if (group.Name.ToLower().Contains("ik"))
                 {
                     IRWrapper.IServo basePart = null;

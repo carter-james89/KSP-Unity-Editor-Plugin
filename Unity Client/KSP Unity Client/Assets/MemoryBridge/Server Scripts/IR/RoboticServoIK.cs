@@ -97,6 +97,7 @@ public class RoboticServoIK : RoboticServo
                     setAngle = -setAngle;
                 }
             }
+           // Debug.Log("set servo pos");
             memoryBridge.SetFloat(servoName + "unityServoPos", setAngle);
         }
     }

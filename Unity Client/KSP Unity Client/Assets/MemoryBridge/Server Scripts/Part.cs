@@ -23,7 +23,7 @@ public class Part : MonoBehaviour
         this.vesselName = vesselName;
         this.meshRenderers = meshRenderers;
 
-        if (kspPartName == "IR.Rotatron.Basic")
+        if (kspPartName == "IR.Rotatron.Basic.v3")
         {
             transform.localEulerAngles += new Vector3(0, 0, 90);
             foreach (var mesh in meshRenderers)
@@ -50,7 +50,10 @@ public class Part : MonoBehaviour
     {
         ToggleRenderers(false);
         GameObject fakeJoint = null;
-        if (kspPartName == "IR.Rotatron.Basic")
+
+        Debug.Log(kspPartName + " added");
+
+        if (kspPartName == "IR.Rotatron.Basic.v3")
         {
             fakeJoint = Instantiate(Resources.Load("Rotatron", typeof(GameObject))) as GameObject;
             fakeJoint.transform.SetParent(transform);
@@ -58,7 +61,7 @@ public class Part : MonoBehaviour
             fakeJoint.transform.localEulerAngles = new Vector3(0, 0, 90);
             lineRenderer = fakeJoint.GetComponent<LineRenderer>();
         }
-        if (kspPartName == "IR.Pivotron.RangeNinety" || kspPartName == "IR.Pivotron.Sixty" || kspPartName == "IR.Pivotron.Hinge.Basic" || kspPartName == "IR.Pivotron.Basic" || kspPartName == "IR.Pivotron.OneTwenty")
+        if (kspPartName == "IR.Pivotron.RangeNinety" || kspPartName == "IR.Pivotron.Sixty" || kspPartName == "IR.Pivotron.Hinge.Basic.v3" || kspPartName == "IR.Pivotron.Basic" || kspPartName == "IR.Pivotron.OneTwenty.v3")
         {
             fakeJoint = Instantiate(Resources.Load("Pivotron", typeof(GameObject))) as GameObject;
             fakeJoint.transform.SetParent(transform);

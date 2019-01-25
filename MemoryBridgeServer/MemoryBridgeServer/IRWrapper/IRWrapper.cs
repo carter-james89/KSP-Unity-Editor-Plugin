@@ -1,76 +1,61 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-
 namespace MemoryBridgeServer
 {
-
     public class IRWrapper
     {
         private static bool isWrapped;
 
-        protected internal static Type IRServoControllerType { get; set; }
+        protected internal static Type IRControllerType { get; set; }
         protected internal static Type IRControlGroupType { get; set; }
+
         protected internal static Type IRServoType { get; set; }
-        protected internal static Type IRServoPartType { get; set; }
-        protected internal static Type IRServoMechanismType { get; set; }
-        protected internal static Type IRServoMotorType { get; set; }
-        protected internal static object ActualServoController { get; set; }
+        protected internal static Type IRMotorType { get; set; }
+
+        protected internal static object ActualController { get; set; }
 
         internal static IRAPI IRController { get; set; }
-        internal static bool AssemblyExists { get { return (IRServoControllerType != null); } }
+        internal static bool AssemblyExists { get { return (IRControllerType != null); } }
         internal static bool InstanceExists { get { return (IRController != null); } }
         internal static bool APIReady { get { return isWrapped && IRController.Ready; } }
 
         internal static bool InitWrapper()
         {
             isWrapped = false;
-            ActualServoController = null;
+            ActualController = null;
             IRController = null;
             LogFormatted("Attempting to Grab IR Types...");
 
-            IRServoControllerType = AssemblyLoader.loadedAssemblies
-                .Select(a => a.assembly.GetExportedTypes())
-                .SelectMany(t => t)
-                .FirstOrDefault(t => t.FullName == "InfernalRobotics.Command.ServoController");
+            IRControllerType = null;
 
-            if (IRServoControllerType == null)
+            AssemblyLoader.loadedAssemblies.TypeOperation(t => {
+                if (t.FullName == "InfernalRobotics_v3.Command.Controller") { IRControllerType = t; }
+            });
+
+            if (IRControllerType == null)
+                return false;
+
+            LogFormatted("IR Version:{0}", IRControllerType.Assembly.GetName().Version.ToString());
+
+            IRMotorType = null;
+            AssemblyLoader.loadedAssemblies.TypeOperation(t => {
+                if (t.FullName == "InfernalRobotics_v3.Interfaces.IMotor") { IRMotorType = t; }
+            });
+
+            if (IRMotorType == null)
             {
+                LogFormatted("[IR Wrapper] Failed to grab Motor Type");
                 return false;
             }
 
-            LogFormatted("IR Version:{0}", IRServoControllerType.Assembly.GetName().Version.ToString());
-
-            IRServoMechanismType = AssemblyLoader.loadedAssemblies
-               .Select(a => a.assembly.GetExportedTypes())
-               .SelectMany(t => t)
-               .FirstOrDefault(t => t.FullName == "InfernalRobotics.Control.IMechanism");
-
-            if (IRServoMechanismType == null)
-            {
-                LogFormatted("[IR Wrapper] Failed to grab Mechanism Type");
-                return false;
-            }
-
-            IRServoMotorType = AssemblyLoader.loadedAssemblies
-                .Select(a => a.assembly.GetExportedTypes())
-                .SelectMany(t => t)
-                .FirstOrDefault(t => t.FullName == "InfernalRobotics.Control.IServoMotor");
-
-            if (IRServoMotorType == null)
-            {
-                LogFormatted("[IR Wrapper] Failed to grab ServoMotor Type");
-                return false;
-            }
-
-            IRServoType = AssemblyLoader.loadedAssemblies
-                .Select(a => a.assembly.GetExportedTypes())
-                .SelectMany(t => t)
-                .FirstOrDefault(t => t.FullName == "InfernalRobotics.Control.IServo");
+            IRServoType = null;
+            AssemblyLoader.loadedAssemblies.TypeOperation(t => {
+                if (t.FullName == "InfernalRobotics_v3.Interfaces.IServo") { IRServoType = t; }
+            });
 
             if (IRServoType == null)
             {
@@ -78,35 +63,13 @@ namespace MemoryBridgeServer
                 return false;
             }
 
-            IRServoPartType = AssemblyLoader.loadedAssemblies
-                .Select(a => a.assembly.GetExportedTypes())
-                .SelectMany(t => t)
-                .FirstOrDefault(t => t.FullName == "InfernalRobotics.Control.IPart");
-
-            if (IRServoType == null)
-            {
-                LogFormatted("[IR Wrapper] Failed to grab ServoPart Type");
-                return false;
-            }
-
-            IRControlGroupType = AssemblyLoader.loadedAssemblies
-                .Select(a => a.assembly.GetExportedTypes())
-                .SelectMany(t => t)
-                .FirstOrDefault(t => t.FullName == "InfernalRobotics.Command.ServoController+ControlGroup");
+            IRControlGroupType = null;
+            AssemblyLoader.loadedAssemblies.TypeOperation(t => {
+                if (t.FullName == "InfernalRobotics_v3.Command.ControlGroup") { IRControlGroupType = t; }
+            });
 
             if (IRControlGroupType == null)
             {
-                var irassembly = AssemblyLoader.loadedAssemblies.FirstOrDefault(a => a.assembly.FullName.Contains("InfernalRobotics"));
-                if (irassembly == null)
-                {
-                    LogFormatted("[IR Wrapper] cannot find InvernalRobotics.dll");
-                    return false;
-                }
-                foreach (Type t in irassembly.assembly.GetExportedTypes())
-                {
-                    LogFormatted("[IR Wrapper] Exported type: " + t.FullName);
-                }
-
                 LogFormatted("[IR Wrapper] Failed to grab ControlGroup Type");
                 return false;
             }
@@ -115,19 +78,19 @@ namespace MemoryBridgeServer
 
             try
             {
-                var propertyInfo = IRServoControllerType.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
+                var propertyInfo = IRControllerType.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
 
                 if (propertyInfo == null)
                     LogFormatted("[IR Wrapper] Cannot find Instance Property");
                 else
-                    ActualServoController = propertyInfo.GetValue(null, null);
+                    ActualController = propertyInfo.GetValue(null, null);
             }
             catch (Exception e)
             {
                 LogFormatted("No Instance found, " + e.Message);
             }
 
-            if (ActualServoController == null)
+            if (ActualController == null)
             {
                 LogFormatted("Failed grabbing Instance");
                 return false;
@@ -154,23 +117,19 @@ namespace MemoryBridgeServer
 
             private void BuildServoGroups()
             {
-                var servoGroupsField = IRServoControllerType.GetField("ServoGroups");
+                var servoGroupsField = IRControllerType.GetField("ServoGroups");
                 if (servoGroupsField == null)
                     LogFormatted("Failed Getting ServoGroups fieldinfo");
-                else if (IRWrapper.ActualServoController == null)
-                {
+                else if (IRWrapper.ActualController == null)
                     LogFormatted("ServoController Instance not found");
-                }
                 else
-                {
-                    actualServoGroups = servoGroupsField.GetValue(IRWrapper.ActualServoController);
-                }
+                    actualServoGroups = servoGroupsField.GetValue(IRWrapper.ActualController);
             }
 
             private void DetermineReady()
             {
                 LogFormatted("Getting APIReady Object");
-                apiReady = IRServoControllerType.GetProperty("APIReady", BindingFlags.Public | BindingFlags.Static);
+                apiReady = IRControllerType.GetProperty("APIReady", BindingFlags.Public | BindingFlags.Static);
                 LogFormatted("Success: " + (apiReady != null));
             }
 
@@ -205,14 +164,13 @@ namespace MemoryBridgeServer
                 {
                     //iterate each "value" in the dictionary
                     foreach (var item in (IList)servoGroups)
-                    {
                         listToReturn.Add(new IRControlGroup(item));
-                    }
                 }
                 catch (Exception ex)
                 {
                     LogFormatted("Cannot list ServoGroups: {0}", ex.Message);
                 }
+
                 return listToReturn;
             }
         }
@@ -304,10 +262,7 @@ namespace MemoryBridgeServer
 
             public IList<IServo> Servos
             {
-                get
-                {
-                    return ExtractServos(ActualServos);
-                }
+                get { return ExtractServos(ActualServos); }
             }
 
             public void MoveRight()
@@ -371,7 +326,6 @@ namespace MemoryBridgeServer
 
         public class IRServo : IServo
         {
-            private object actualServoMechanism;
             private object actualServoMotor;
 
             private PropertyInfo maxConfigPositionProperty;
@@ -411,46 +365,41 @@ namespace MemoryBridgeServer
 
             private void FindProperties()
             {
-                nameProperty = IRServoPartType.GetProperty("Name");
-                highlightProperty = IRServoPartType.GetProperty("Highlight");
-                UIDProperty = IRServoPartType.GetProperty("UID");
-                HostPartProperty = IRServoPartType.GetProperty("HostPart");
+                nameProperty = IRServoType.GetProperty("Name");
+                highlightProperty = IRServoType.GetProperty("Highlight");
+                UIDProperty = IRServoType.GetProperty("UID");
+                HostPartProperty = IRServoType.GetProperty("HostPart");
 
-                var mechanismProperty = IRServoType.GetProperty("Mechanism");
-                actualServoMechanism = mechanismProperty.GetValue(actualServo, null);
+                positionProperty = IRServoType.GetProperty("Position");
+                minPositionProperty = IRServoType.GetProperty("MinPositionLimit");
+                maxPositionProperty = IRServoType.GetProperty("MaxPositionLimit");
+
+                minConfigPositionProperty = IRServoType.GetProperty("MinPosition");
+                maxConfigPositionProperty = IRServoType.GetProperty("MaxPosition");
+
+                isMovingProperty = IRServoType.GetProperty("IsMoving");
+                isFreeMovingProperty = IRServoType.GetProperty("IsFreeMoving");
+                isLockedProperty = IRServoType.GetProperty("IsLocked");
 
                 var motorProperty = IRServoType.GetProperty("Motor");
                 actualServoMotor = motorProperty.GetValue(actualServo, null);
 
-               
-
-                positionProperty = IRServoMechanismType.GetProperty("Position");
-                minPositionProperty = IRServoMechanismType.GetProperty("MinPositionLimit");
-                maxPositionProperty = IRServoMechanismType.GetProperty("MaxPositionLimit");
-
-                minConfigPositionProperty = IRServoMechanismType.GetProperty("MinPosition");
-                maxConfigPositionProperty = IRServoMechanismType.GetProperty("MaxPosition");
-
-                isMovingProperty = IRServoMechanismType.GetProperty("IsMoving");
-                isFreeMovingProperty = IRServoMechanismType.GetProperty("IsFreeMoving");
-                isLockedProperty = IRServoMechanismType.GetProperty("IsLocked");
-
-                speedProperty = IRServoMotorType.GetProperty("SpeedLimit");
-                configSpeedProperty = IRServoMotorType.GetProperty("DefaultSpeed");
-                currentSpeedProperty = IRServoMotorType.GetProperty("CurrentSpeed");
-                accelerationProperty = IRServoMotorType.GetProperty("AccelerationLimit");
-                isAxisInvertedProperty = IRServoMotorType.GetProperty("IsAxisInverted");
+                speedProperty = IRMotorType.GetProperty("SpeedLimit");
+                configSpeedProperty = IRMotorType.GetProperty("DefaultSpeed");
+                currentSpeedProperty = IRMotorType.GetProperty("CurrentSpeed");
+                accelerationProperty = IRMotorType.GetProperty("AccelerationLimit");
+                isAxisInvertedProperty = IRMotorType.GetProperty("IsAxisInverted");
             }
 
             private void FindMethods()
             {
-                moveRightMethod = IRServoMotorType.GetMethod("MoveRight", BindingFlags.Public | BindingFlags.Instance);
-                moveLeftMethod = IRServoMotorType.GetMethod("MoveLeft", BindingFlags.Public | BindingFlags.Instance);
-                moveCenterMethod = IRServoMotorType.GetMethod("MoveCenter", BindingFlags.Public | BindingFlags.Instance);
-                moveNextPresetMethod = IRServoMotorType.GetMethod("MoveNextPreset", BindingFlags.Public | BindingFlags.Instance);
-                movePrevPresetMethod = IRServoMotorType.GetMethod("MovePrevPreset", BindingFlags.Public | BindingFlags.Instance);
-                stopMethod = IRServoMotorType.GetMethod("Stop", BindingFlags.Public | BindingFlags.Instance);
-                moveToMethod = IRServoMotorType.GetMethod("MoveTo", new[] { typeof(float), typeof(float) });
+                moveRightMethod = IRMotorType.GetMethod("MoveRight", BindingFlags.Public | BindingFlags.Instance);
+                moveLeftMethod = IRMotorType.GetMethod("MoveLeft", BindingFlags.Public | BindingFlags.Instance);
+                moveCenterMethod = IRMotorType.GetMethod("MoveCenter", BindingFlags.Public | BindingFlags.Instance);
+                moveNextPresetMethod = IRMotorType.GetMethod("MoveNextPreset", BindingFlags.Public | BindingFlags.Instance);
+                movePrevPresetMethod = IRMotorType.GetMethod("MovePrevPreset", BindingFlags.Public | BindingFlags.Instance);
+                stopMethod = IRMotorType.GetMethod("Stop", BindingFlags.Public | BindingFlags.Instance);
+                moveToMethod = IRMotorType.GetMethod("MoveTo", new[] { typeof(float), typeof(float) });
             }
 
             private readonly object actualServo;
@@ -480,29 +429,29 @@ namespace MemoryBridgeServer
 
             public float Position
             {
-                get { return (float)positionProperty.GetValue(actualServoMechanism, null); }
+                get { return (float)positionProperty.GetValue(actualServo, null); }
             }
 
             public float MinConfigPosition
             {
-                get { return (float)minConfigPositionProperty.GetValue(actualServoMechanism, null); }
+                get { return (float)minConfigPositionProperty.GetValue(actualServo, null); }
             }
 
             public float MaxConfigPosition
             {
-                get { return (float)maxConfigPositionProperty.GetValue(actualServoMechanism, null); }
+                get { return (float)maxConfigPositionProperty.GetValue(actualServo, null); }
             }
 
             public float MinPosition
             {
-                get { return (float)minPositionProperty.GetValue(actualServoMechanism, null); }
-                set { minPositionProperty.SetValue(actualServoMechanism, value, null); }
+                get { return (float)minPositionProperty.GetValue(actualServo, null); }
+                set { minPositionProperty.SetValue(actualServo, value, null); }
             }
 
             public float MaxPosition
             {
-                get { return (float)maxPositionProperty.GetValue(actualServoMechanism, null); }
-                set { maxPositionProperty.SetValue(actualServoMechanism, value, null); }
+                get { return (float)maxPositionProperty.GetValue(actualServo, null); }
+                set { maxPositionProperty.SetValue(actualServo, value, null); }
             }
 
             public float ConfigSpeed
@@ -530,18 +479,18 @@ namespace MemoryBridgeServer
 
             public bool IsMoving
             {
-                get { return (bool)isMovingProperty.GetValue(actualServoMechanism, null); }
+                get { return (bool)isMovingProperty.GetValue(actualServo, null); }
             }
 
             public bool IsFreeMoving
             {
-                get { return (bool)isFreeMovingProperty.GetValue(actualServoMechanism, null); }
+                get { return (bool)isFreeMovingProperty.GetValue(actualServo, null); }
             }
 
             public bool IsLocked
             {
-                get { return (bool)isLockedProperty.GetValue(actualServoMechanism, null); }
-                set { isLockedProperty.SetValue(actualServoMechanism, value, null); }
+                get { return (bool)isLockedProperty.GetValue(actualServo, null); }
+                set { isLockedProperty.SetValue(actualServo, value, null); }
             }
 
             public bool IsAxisInverted

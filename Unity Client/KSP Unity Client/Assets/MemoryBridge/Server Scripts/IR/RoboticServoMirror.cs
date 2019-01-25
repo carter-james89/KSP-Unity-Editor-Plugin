@@ -42,6 +42,8 @@ public class RoboticServoMirror : RoboticServo {
     {
         base.CustomStart(servoName, memoryBridge, limbController, parentID);
         currentServoPos = memoryBridge.GetFloat(servoName + "servoPos");
+
+        kspStartAngle = currentServoPos;
     }
 
     public override void SetStartAngle()

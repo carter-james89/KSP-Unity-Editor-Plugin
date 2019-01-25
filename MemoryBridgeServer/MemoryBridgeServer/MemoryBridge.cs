@@ -27,7 +27,7 @@ namespace MemoryBridgeServer
         public void StartServer(string fileName)
         {
             vessel = FlightGlobals.ActiveVessel;
-            //Debug.Log("Server start");
+            Debug.Log("Server start");
             bridgeConnected = false;
             clientTransmittingFloat = 0;
             this.fileName = fileName;

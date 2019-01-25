@@ -67,10 +67,10 @@ namespace MemoryBridgeServer
 
             int byteCount = 0;
 
-            Debug.Log(limbGroup.Name + " servo hierarchy");
+            Debug.Log(limbGroup.Name + " servo hierarchy " + limbServos.Count);
             for (int i = 0; i < limbServos.Count; i++)
             {
-              //  Debug.Log(servo.servo.Name);
+                Debug.Log(limbServos[i].servo.Name);
                 string parentName = "null";
                 if (i != 0)
                 {
