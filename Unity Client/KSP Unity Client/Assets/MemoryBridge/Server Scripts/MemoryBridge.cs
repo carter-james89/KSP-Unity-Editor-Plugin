@@ -26,7 +26,7 @@ public class MemoryBridge : MonoBehaviour
     public float testFloat = 5, transmittingFloat;
 
  
-    RoboticController roboticController;
+    public RoboticController roboticController;
 
     public void StartClient(string fileName)
     {
@@ -35,6 +35,7 @@ public class MemoryBridge : MonoBehaviour
         transmittingFloat = 1;
         APImanager = gameObject.AddComponent(typeof(APIManager)) as APIManager;
         APImanager.CustomAwake(this);
+        Debug.Log("API Built");
 
         floatFile = gameObject.AddComponent(typeof(FloatFile)) as FloatFile;
         floatFile.ConnectToServer(this);
@@ -42,13 +43,15 @@ public class MemoryBridge : MonoBehaviour
 
         vesselControl = gameObject.GetComponent<VesselControl>();
         vesselControl.ControlAwake(this);
+      //  Debug.Log("Vessel Control Initialized");
 
         roboticController = gameObject.GetComponent<RoboticController>();
         roboticController.CustomAwake(this);
+        Debug.Log("Robotics Configured");
         
         // debugWriteToSelf = GetComponent<KSPMechs.MechManager>().debugWriteToSelf;
 
-        SetFloat("TestFromClient" + fileName, 4);
+       // SetFloat("TestFromClient" + fileName, 4);
         SetBool("ClientTransmitting" + fileName, true);
 
         //for (int i = 0; i < 1000; i++)

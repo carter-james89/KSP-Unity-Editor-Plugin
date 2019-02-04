@@ -13,7 +13,7 @@ namespace MemoryBridgeServer
     {
         public List<CameraFeed> cameraFeeds;
 
-        VesselControl vesselControl;
+        public VesselControl vesselControl;
         FloatFile floatFile;
         MemoryFileConstants fileConstants;
 

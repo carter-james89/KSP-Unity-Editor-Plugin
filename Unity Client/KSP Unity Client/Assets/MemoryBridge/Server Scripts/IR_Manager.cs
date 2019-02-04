@@ -14,7 +14,6 @@ public class IR_Manager : MonoBehaviour {
 
     public void CustomAwake(MemoryBridge memoryBridge,VesselControl vesselControl, ref List<LimbController> limbs)
     {
-        Debug.Log("Start IR manager");
         IRFile = MemoryMappedFile.Open(MapAccess.FileMapAllAccess, "IRFile" + memoryBridge.fileName);
         limbs = new List<LimbController>();
         float byteCount;

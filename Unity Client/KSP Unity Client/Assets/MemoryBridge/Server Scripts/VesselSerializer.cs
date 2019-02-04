@@ -8,7 +8,8 @@ using System.Text;
 using UnityEngine;
 using Winterdom.IO.FileMap;
 
-public class VesselSerializer : MonoBehaviour {
+public class VesselSerializer : MonoBehaviour
+{
 
     public List<Mesh> meshList;
     public List<Part> parts;
@@ -51,7 +52,14 @@ public class VesselSerializer : MonoBehaviour {
             vesselFile = MemoryMappedFile.Open(MapAccess.FileMapAllAccess, "VesselFile" + memoryBridge.fileName);
 
         if (vesselFile == null)
+        {
             Debug.Log("file is null");
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+          
+#endif
+        }
+            
 
         int byteCount = 0;
         int partCount = 0;

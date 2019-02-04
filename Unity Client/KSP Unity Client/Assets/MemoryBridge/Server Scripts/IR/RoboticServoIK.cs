@@ -8,7 +8,42 @@ public class RoboticServoIK : RoboticServo
     public RoboticServoMirror mirrorServo;
     public float rawSetAngle, setAngle;
 
+    PidController speedPID;
+
+    
     public Vector3 targetAngle = Vector3.zero;
+
+    public float valueP = .1f;
+    float valueI = 0;
+    float valueD = 0;
+    float valueMin;
+    float valueMax;
+
+    public override void CustomStart(string servoName, MemoryBridge memoryBridge, LimbController limbController, int parentID)
+    {
+        base.CustomStart(servoName, memoryBridge, limbController, parentID);
+
+        //  speedPID = new PidController.PidController(mech.hipRotPIDP, mech.hipRotPIDI, mech.hipRotPIDD, mech.hipRotPIDMax, 0);
+        Debug.Log("Create pid");
+
+    }
+
+    private void Awake()
+    {
+        speedPID = new PidController(valueP, valueI, valueD, valueMax, valueMin);
+    }
+
+    public void UpdatePIDValue(float valueP, float valueI, float valueD, float valueMin, float valueMax)
+    {
+        Debug.Log("Update servo PID");
+        this.valueP = valueP;
+        this.valueI = valueI;
+        this.valueD = valueD;
+        this.valueMin = valueMin;
+        this.valueMax = valueMax;
+        speedPID = new PidController(this.valueP, this.valueI, this.valueD, this.valueMax, this.valueMin);
+        speedPID.SetPoint = 0;
+    }
 
     public override void CustomUpdate()
     {
@@ -33,7 +68,7 @@ public class RoboticServoIK : RoboticServo
             targetOffset = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
             targetOffset *= (float)(180 / Math.PI);
 
-            Debug.Log("limb offset " + targetOffset);
+            //  Debug.Log("limb offset " + targetOffset);
         }
 
         if (hostPart.name.ToLower().Contains("down"))
@@ -92,14 +127,73 @@ public class RoboticServoIK : RoboticServo
 
             if (hostPart.kspPartName == "IR.Pivotron.RangeNinety")
             {
-                if (setAngle <0)
+                if (setAngle < 0)
                 {
                     setAngle = -setAngle;
                 }
             }
-           // Debug.Log("set servo pos");
+            // Debug.Log("set servo pos");
+            RunServoPID();
             memoryBridge.SetFloat(servoName + "unityServoPos", setAngle);
         }
+    }
+    public bool debugServoPID;
+    void RunServoPID()
+    {
+       //  var timeSinceLastUpdate = Time.deltaTime;// Time.time - prevDeltaTime;
+      // var deltaTime = new System.TimeSpan(0,0,0,(int)Time.deltaTime * 1000);
+
+        System.TimeSpan deltaTime = TimeSpan.FromSeconds(Time.fixedDeltaTime);
+
+     //   Debug.Log(deltaTime);
+
+        // float error = 0;
+        // if (!Double.IsNaN(ikLeg.hipRotAngle))
+        // {
+        float servoError = 0;
+       // switch (limbAxis)
+        //{
+            //case LimbController.LimbAxis.X:
+                servoError = transform.localEulerAngles.x - mirrorServo.transform.localEulerAngles.x;
+        //    break;
+        //case LimbController.LimbAxis.Y:
+        //    servoError = transform.localEulerAngles.y - mirrorServo.transform.localEulerAngles.y;
+        //    break;
+        //case LimbController.LimbAxis.Z:
+        //    servoError = transform.localEulerAngles.z - mirrorServo.transform.localEulerAngles.z;
+        //    break;
+        //default:  
+        //    break;
+        // }
+
+
+        // hipRotError = -Math.Abs(hipRotError);
+        //  Debug.Log("hipRotError " + hipRotError);
+        //  if (hipRotError < mech.hipRotErrorThreshHold)
+        //  {
+        speedPID.SetPoint = 0;
+        speedPID.ProcessVariable = -Math.Abs(servoError);
+        var servoSpeed = speedPID.ControlVariable(deltaTime);
+
+        if (debugServoPID)
+        {
+            Debug.Log("Servo Pid");
+            Debug.Log(speedPID.GainProportional);
+            Debug.Log("Servo Error " + servoError);
+            Debug.Log("Servo S[eed " + servoSpeed);
+
+        }
+
+        //  Debug.Log(servoSpeed);
+        // }
+        //  }
+
+        if (float.IsNaN((float)servoSpeed))
+            servoSpeed = 0;
+
+       // servoSpeed = 6;
+
+        memoryBridge.SetFloat(servoName + "unityServoSpeed", (float)servoSpeed);
     }
 
     public override void CreateBaseAnchor()

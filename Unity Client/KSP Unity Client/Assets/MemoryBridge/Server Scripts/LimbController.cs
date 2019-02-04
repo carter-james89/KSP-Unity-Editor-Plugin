@@ -18,7 +18,13 @@ public class LimbController : MonoBehaviour
     public RoboticLimbIK limbIK;
 
     public RoboticServo servoBase;
-    VesselControl vesselControl;
+    public VesselControl vesselControl;
+
+    bool gaitSequenceActive = false;
+
+    public Transform ground, baseTarget;
+
+    public RoboticController roboticController;
 
     public virtual void CustomAwake(MemoryBridge memoryBridge, string limbName, VesselControl vesselControl)
     {
@@ -36,6 +42,8 @@ public class LimbController : MonoBehaviour
             servoCount = BitConverter.ToSingle(floatBuffer, 0);
         }
         var servosMirror = new List<RoboticServoMirror>();
+
+        ground = Instantiate(GameObject.Find("Ground")).transform;
 
         using (Stream mapStream = limbFile.MapView(MapAccess.FileMapAllAccess, 0, (int)byteCount))
         {
@@ -79,6 +87,12 @@ public class LimbController : MonoBehaviour
         //limbMirror.SetStartAngles();
         //limbIK.SetStartAngles();
     }
+
+    public void SetBaseTarget(Transform baseTarget)
+    {
+        this.baseTarget = baseTarget;
+        this.baseTarget.position = limbIK.IKAxisX.servo1.transform.position;//limbMirror.servoBase.transform.position;
+    }
     //Creates RoboticLimb components for the mirror and IK leg, adds them to limb base servo base, then aranges the hiarchy
     void CreateRoboticLegs(List<RoboticServoMirror> servosMirror)
     {
@@ -91,11 +105,11 @@ public class LimbController : MonoBehaviour
         limbMirror.FindEndPoint();
         //Move the Limb controller component Object into place
         transform.SetParent(baseMirror);
-       // transform.localEulerAngles = Vector3.zero;
+        // transform.localEulerAngles = Vector3.zero;
         transform.localPosition = Vector3.zero;
         transform.LookAt(baseMirror.up);//,vesselControl.mirrorVessel.transform.up);
-        transform.rotation = Quaternion.LookRotation(baseMirror.up,vesselControl.adjustedGimbal.up);
-       // transform.rotation = vesselControl.mirrorVessel.transform.rotation;
+        transform.rotation = Quaternion.LookRotation(baseMirror.up, vesselControl.adjustedGimbal.up);
+        // transform.rotation = vesselControl.mirrorVessel.transform.rotation;
         transform.SetParent(baseMirror.parent);
         baseMirror.SetParent(transform);
         //get mirror limb groups before generating IK limb
@@ -125,22 +139,101 @@ public class LimbController : MonoBehaviour
     public void ActivateIK()
     {
         limbIK.ActivateIK();
+       // limbIK.gait.SetParent(ground);
         IKactive = true;
     }
 
+    //public void SetGaitTarget(RoboticLimbIK.GaitTarget newTarget)
+    //{
+    //    limbIK.SetTarget(newTarget);
+    //}
+
+
+    public void AddGaitTarget(Transform newTarget)
+    {
+        limbIK.AddGaitTarget(newTarget);
+    }
+    public void NextGaitSeguence()
+    {
+        limbIK.MoveToNextTarget();
+    }
+
+    public void RunGait()
+    {
+        gaitSequenceActive = true;
+        limbIK.StartGaitSequence();
+    }
+
+    public bool MirrorLegAtTarget()
+    {
+        bool atTarget = true;
+        if (limbIK.currentTarget)
+        {
+            var limbError = Vector3.Distance(limbMirror.limbEnd.position, limbIK.currentTarget.position);
+            if (limbError > .1f)
+            {
+                atTarget = false;
+            }
+        }
+        return atTarget;
+    }
+    public bool debugClearance;
     public void CustomUpdate()
     {
-       limbMirror.MirrorServos();
-       // if (!IKactive)
-        limbIK.SetServos();
+        limbMirror.MirrorServos();
+        //hot fix
+        //if (clearance > 3) 
+        //    clearance = 0;
 
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-            ActivateIK();
+        var clearance = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "KSPFootClearance");
+        if (limbIK.gait)
+        {
+            ground.position = limbMirror.servoWrist.transform.position - new Vector3(0, clearance, 0);
 
+            Debug.Log(name + " ground contact : " + memoryBridge.GetBool(limbMirror.servoWrist.servoName + "GroundContact"));
+
+            var baseOffset = baseTarget.position.y - limbMirror.servoBase.transform.position.y;
+
+            var globalPoint = limbIK.transform.TransformPoint(limbIK.gaitStartPos);
+            globalPoint.y = ground.position.y;
+         
+
+            if(limbIK.legMode == RoboticLimbIK.LegMode.Translate)
+            {
+                globalPoint.y -= baseOffset;
+            }
+
+            limbIK.gait.localPosition = limbIK.transform.InverseTransformPoint(globalPoint);
+
+
+            //  var tempPos = limbIK.gaitStartPos;      
+            //  tempPos.y = ground.position.y - baseOffset;//ground.position.y - baseOffset;
+            ////  limbIK.gait.position = tempPos;//limbMirror.limbEnd.position;// - new Vector3(0, clearance, 0);
+            //limbIK.gait.localPosition = tempPos;
+
+            var tempEuler = limbIK.gait.eulerAngles;// = Vector3.zero;
+            tempEuler.x = 0;
+           // tempEuler.y = vesselControl.mirrorVessel.vesselOffset.eulerAngles.y;
+            limbIK.gait.eulerAngles = tempEuler;
+
+            limbIK.RunGait();
+
+            if (debugClearance)
+            {
+                Debug.Log(Time.frameCount);
+                Debug.Log("clearance " + clearance);
+               // Debug.Log("mirror " + (float)Math.Round(limbMirror.limbEnd.transform.position.y, 2));
+               // Debug.Log("gait " + limbIK.gait.position.y);
+            }
+        }
+           
+        // if (!IKactive)   
         if (IKactive)
         {
             limbIK.RunIK();
         }
+
+        limbIK.SetServos();
     }
 
     void OnDestroy()

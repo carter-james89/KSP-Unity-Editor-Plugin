@@ -21,7 +21,7 @@ namespace MemoryBridgeServer
 
         MemoryMappedFile vesselFile;
 
-        Transform gimbal;
+        public Transform gimbal;
         public Transform vesselCOM, adjustedVessel;
 
         IR_Manager IRmanager;

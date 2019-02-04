@@ -50,8 +50,10 @@ public class VesselControl : MonoBehaviour
         // gimbalOffset = Vector3.zero;
         mirrorVessel = gameObject.AddComponent(typeof(VesselSerializer)) as VesselSerializer;
         vessel = mirrorVessel.DrawVessel(this.memoryBridge, mirrorMat, "Mirror Vessel COM");
+        Debug.Log("Mirror Vessel Built with Part Count : " + vessel.parts.Count);
         targetVessel = gameObject.AddComponent(typeof(VesselSerializer)) as VesselSerializer;
         targetVessel.DrawVessel(this.memoryBridge, targetMat, "Target Vessel COM");
+       // Debug.Log("Target Vessel Copied from Mirror");
 
         vessel.transform.SetParent(transform.Find("Gimbal").transform);
 

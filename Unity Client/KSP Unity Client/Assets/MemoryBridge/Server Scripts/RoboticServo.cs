@@ -48,7 +48,7 @@ public class RoboticServo : MonoBehaviour
 
         limitMin = memoryBridge.GetFloat(servoName + "minPos");
         limitMax = memoryBridge.GetFloat(servoName + "maxPos");
-        Debug.Log(limitMax);
+       // Debug.Log(limitMax);
 
         if (servoName.ToLower().Contains("base"))
         {
@@ -161,11 +161,13 @@ public class RoboticServo : MonoBehaviour
         // footOffset.y = -footOffset.y;
         foot.transform.localPosition = footOffset;
 
+        memoryBridge.SetVector3(servoName + "contactPoint",footOffset);
+
         targetOffset = (float)(Math.Atan2(footOffset.z, footOffset.y));
 
         targetOffset *= (float)(180 / Math.PI);
         //targetOffset = Vector3.Angle(transform.position, foot.transform.position);
-        Debug.Log("target offset " + targetOffset);
+       // Debug.Log("target offset " + targetOffset);
 
         var footRenderer = foot.GetComponent<LineRenderer>();
         footRenderer.SetPosition(0, Vector3.zero);

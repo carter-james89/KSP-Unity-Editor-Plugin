@@ -15,9 +15,13 @@ namespace MemoryBridgeServer
         public int parentID = 0;
         MemoryBridge memoryBridge;
         Transform servoAnchor, anchorChild, servoBase;
+
+
         public void CustomStart(IRWrapper.IServo servo, MemoryBridge memoryBridge)
         {
             this.servo = servo;
+            this.servo.Speed = 20;
+            this.servo.Acceleration = 20;
             servoName = servo.Name + servo.HostPart.gameObject.GetInstanceID();
             part = servo.HostPart;
 
@@ -97,11 +101,71 @@ namespace MemoryBridgeServer
             }
         }
 
+        Transform contactPoint;
+        LineRenderer footRenderer;
+        public void CreateContactPoint()
+        {
+
+           // var joint = servo.HostPart.gameObject.AddComponent<SpringJoint>();
+
+            contactPoint = new GameObject().transform;
+            contactPoint.SetParent(transform);
+            // contactPoint.localPosition = localPos;
+            contactPoint.localPosition = Vector3.zero;
+            contactPoint.rotation = memoryBridge.vesselControl.gimbal.rotation;
+            DebugVector.DrawVector(contactPoint);
+
+            footRenderer = contactPoint.gameObject.AddComponent<LineRenderer>();
+            Material redMat = new Material(Shader.Find("Transparent/Diffuse"));
+            redMat.color = Color.red;
+            footRenderer.material = redMat;
+            footRenderer.SetWidth(.1f, .1f);
+        }
+
         public void ParentSet(Transform newParent)
         {
             //  servoAnchor.LookAt(newParent);         
         }
 
+        public void CheckFootClearance()
+        {
+            LayerMask mask = (1 << 0) | (1 << 10);
+            mask = ~mask;
+            RaycastHit hit;
+            //Vector3 rayRot = -hipRotServo.transform.right;
+            contactPoint.rotation = memoryBridge.vesselControl.gimbal.rotation;
+
+            Vector3 rayRot = -contactPoint.up;// -controller.launchVector.trans.up;
+            float clearance = 0;
+            if (Physics.Raycast(contactPoint.position, rayRot, out hit, 100, mask))
+            {
+               // if (hit.collider.gameObject.tag != "Runway")
+                //    Debug.Log("hitting " + hit.collider.gameObject.name + " at layer " + hit.collider.gameObject.layer.ToString() + " with tag " + hit.collider.gameObject.tag.ToString() + " at distance " + hit.distance);
+                // if (hit.collider.gameObject.name == "Kerbin Zn123222323")
+                //     controller.walking = false;
+                footRenderer.SetPosition(0, contactPoint.position);
+                footRenderer.SetPosition(1, hit.point);
+                clearance = hit.distance;
+                
+            }
+
+            bool groundContact = false;
+            var parts = servo.HostPart.children;
+
+            foreach  (var part in parts)
+            {
+               // part.gr
+                if (part.GroundContact)
+                    groundContact = true;
+            }
+           // if(servo.HostPart.GroundContact != groundContact)
+          //  {
+           //     groundContact = servo.HostPart.GroundContact;
+                memoryBridge.SetBool(servoName + "GroundContact", groundContact);
+           // }
+            memoryBridge.SetFloat(servoName + "KSPFootClearance", clearance);
+        }
+        //bool groundContact = false;
         public void CustomUpdate()
         {
             //var angleOffset = memoryBridge.GetVector3(servoName + "adjustedOffset");
@@ -111,7 +175,8 @@ namespace MemoryBridgeServer
             //    servoAnchor.localEulerAngles = angleOffset;
             memoryBridge.SetFloat(servoName + "servoPos", servo.Position);
 
-            servo.MoveTo(memoryBridge.GetFloat(servoName + "unityServoPos"), 10);
+            
+            servo.MoveTo(memoryBridge.GetFloat(servoName + "unityServoPos"), memoryBridge.GetFloat(servoName + "unityServoSpeed"));
 
             anchorChild.rotation = part.transform.rotation;
             if (this.servo.HostPart.name == "IR.Rotatron.Basic.v3")
@@ -120,6 +185,9 @@ namespace MemoryBridgeServer
             }
             memoryBridge.SetVector3(servoName + "servoLocalEuler", anchorChild.localEulerAngles);
             memoryBridge.SetQuaternion(servoName + "servoLocalRot", anchorChild.localRotation);
+
+
+          
 
             //var servoAngle = memoryBridge.GetFloat(servoName + "ServoSetPos");
             //var servoSpeed = memoryBridge.GetFloat(servoName + "ServoSetSpeed");

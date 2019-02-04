@@ -12,15 +12,21 @@ namespace MemoryBridgeServer
     {
         MemoryMappedFile LimbFile;
         List<RoboticServo> limbServos;
+        RoboticServo wristServo;
         public string limbName;
+        MemoryBridge memoryBridge;
+       // List<Part> parts;
         public void CustomAwake(IRWrapper.IControlGroup limbGroup, IRWrapper.IServo servoBase, IRWrapper.IServo servoWrist, MemoryBridge memoryBridge)
         {
+            this.memoryBridge = memoryBridge;
             limbName = limbGroup.Name + memoryBridge.fileName;
             limbServos = new List<RoboticServo>();
             //Add wrist servo
             var newServo = servoBase.HostPart.gameObject.AddComponent(typeof(RoboticServo)) as RoboticServo;
             newServo.CustomStart(servoBase, memoryBridge);
             limbServos.Add(newServo);
+
+            //parts = new List<Part>();
 
             Part tempPart = servoBase.HostPart;
 
@@ -47,16 +53,25 @@ namespace MemoryBridgeServer
                     if (testServo != null)
                     {
                         tempPart = part;
-                       // if (!testServo.Name.ToLower().Contains("skip"))
-                       // {                    
-                            Debug.Log("found servo on part");
-                            
-                            newServo = part.gameObject.AddComponent(typeof(RoboticServo)) as RoboticServo;
-                            newServo.CustomStart(testServo, memoryBridge);
-                            limbServos.Add(newServo);                          
-                      //  }
-                        if (testServo == servoWrist)
+                        // if (!testServo.Name.ToLower().Contains("skip"))
+                        // {                    
+                        Debug.Log("found servo on part");
+
+                        newServo = part.gameObject.AddComponent(typeof(RoboticServo)) as RoboticServo;
+                        newServo.CustomStart(testServo, memoryBridge);
+                        limbServos.Add(newServo);
+                        //  }
+                        if (testServo.Name.ToLower().Contains("wrist"))
+                        {
+                            Debug.Log("wrist servo found");
+                            wristServo = newServo;
                             done = true;
+                        }
+                        //if (servo.Name.ToLower().Contains("wrist"))
+                        //{
+                        //    wristPart = servo;
+                        //}
+
                     }
                 }
             } while (count < 30);
@@ -77,16 +92,15 @@ namespace MemoryBridgeServer
                     parentName = limbServos[i - 1].servoName;
                     limbServos[i].parentID = limbServos[i - 1].servo.HostPart.gameObject.GetInstanceID();
                     limbServos[i].ParentSet(limbServos[i - 1].servo.HostPart.transform);
-                    
                 }
-                
+
                 limbServos[i].parentServoName = parentName;
 
                 byteCount += 8;
                 //parent id
                 byteCount += 4;
                 byteCount += limbServos[i].servoName.Length;
-               // byteCount += limbServos[i].parentServoName.Length;
+                // byteCount += limbServos[i].parentServoName.Length;
             }
             byteCount += 16;
             LimbFile = MemoryMappedFile.Create(MapProtection.PageReadWrite, byteCount, limbName);
@@ -107,7 +121,7 @@ namespace MemoryBridgeServer
                     mapStream.Write(bytePackage, 0, 4);
                     mapStream.Write(nameBytePackage, 0, nameBytePackage.Length);
 
-                   // nameBytePackage = Encoding.ASCII.GetBytes(limbServos[i].parentServoName);
+                    // nameBytePackage = Encoding.ASCII.GetBytes(limbServos[i].parentServoName);
                     bytePackage = BitConverter.GetBytes((float)limbServos[i].servo.HostPart.gameObject.GetInstanceID());
                     mapStream.Write(bytePackage, 0, 4);
                     //  mapStream.Write(nameBytePackage, 0, nameBytePackage.Length);     
@@ -115,14 +129,41 @@ namespace MemoryBridgeServer
                     mapStream.Write(bytePackage, 0, 4);
                 }
             }
+
+
+            //var contactPoint = memoryBridge.GetVector3(wristServo.servoName + "contactPoint");
+
+            //if (contactPoint != Vector3.zero)
+           // {
+               // Debug.Log("Set ground point to " + contactPoint);
+                //wristServo.contactPoint = contactPoint;
+                wristServo.CreateContactPoint();
+              //  contactPointSet = true;
+            //}
         }
 
+        bool contactPointSet = false;
         public void CustomUpdate()
         {
-            foreach (var servo in limbServos )
+            //if (!contactPointSet)
+            //{
+            //    //var contactPoint = memoryBridge.GetVector3(wristServo.servoName + "contactPoint");
+
+            //    //if (contactPoint != Vector3.zero)
+            //    //{
+            //    //    Debug.Log("Set ground point to " + contactPoint);
+            //    //    //wristServo.contactPoint = contactPoint;
+            //    //    wristServo.CreateContactPoint(contactPoint);
+            //    //    contactPointSet = true;
+            //    //}
+            //}
+
+            foreach (var servo in limbServos)
             {
                 servo.CustomUpdate();
             }
+           // if (contactPointSet)
+                wristServo.CheckFootClearance();
         }
         void OnDestroy()
         {
@@ -131,5 +172,5 @@ namespace MemoryBridgeServer
         }
     }
 
-   
+
 }

@@ -107,7 +107,7 @@ namespace Winterdom.IO.FileMap
         public static MemoryMappedFile
            Create(MapProtection protection, long maxSize, string name)
         {
-            Debug.Log("Create mem file " + name + " " + maxSize);
+           // Debug.Log("Create mem file " + name + " " + maxSize);
             return Create(null, protection, maxSize, name);
         }
 
