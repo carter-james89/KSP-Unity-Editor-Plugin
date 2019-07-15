@@ -93,7 +93,7 @@ public class RoboticLimbIK : RoboticLimb
 
         pointFront.localPosition = new Vector3(0, 0, strideLength / 2);
         pointBack.localPosition = new Vector3(0, 0, (strideLength / -2));
-        defaultBackPos = (strideLength / -2) - .3f;
+        defaultBackPos = (strideLength / -2);// - .3f;
         IKactive = true;
 
         currentTarget = pointMid;
@@ -162,6 +162,7 @@ public class RoboticLimbIK : RoboticLimb
     }
     #endregion
 
+    public float rotPercent;
     public void RunGait(float avgStridePercent)
     {
         if (!atTarget)
@@ -181,7 +182,13 @@ public class RoboticLimbIK : RoboticLimb
                         {
                             // IKtargetTransform.localPosition = Vector3.MoveTowards(IKtargetTransform.localPosition, currentTarget.transform.position, Time.deltaTime /.3f);
                             var dir = IKtargetTransform.position - currentTarget.position;
-                            IKtargetTransform.Translate(-dir.normalized * .03f);
+
+                            if (CalculateTranslateStridePercent() > .1)
+                                IKtargetTransform.Translate(-dir.normalized * .02f);
+                            else
+                            {
+                                IKtargetTransform.Translate(-dir.normalized * .02f);
+                            }
                             //IKtargetTransform.Translate(currentTarget.transform.position);
                             //if (avgStridePercent > .8)
                             //{
@@ -216,10 +223,14 @@ public class RoboticLimbIK : RoboticLimb
                         break;
                     case LimbController.LegMode.Rotate:
                         // Debug.Log("roate to " + avgStridePercent);
-                        if (limbController.roboticController.walkCycle == 0)
-                            rotAxis.localRotation = Quaternion.Lerp(Quaternion.identity, targetRot, avgStridePercent);
-                        else
-                            rotAxis.localRotation = Quaternion.Lerp(Quaternion.identity, targetRot, avgStridePercent/2);
+
+                        // rotAxis.localEulerAngles = Vector3.Lerp(Vector3.zero, new Vector3(-180, 0, 0), avgStridePercent);
+
+                        rotAxis.localRotation = Quaternion.Lerp(Quaternion.identity, targetRot, avgStridePercent);
+                        rotPercent = avgStridePercent;
+
+
+
                         //var yDif = limbController.limbMirror.limbEnd.position.y - limbController.ground.position.y;
                         //if (localStridePercent > .87)
                         //{
@@ -270,25 +281,24 @@ public class RoboticLimbIK : RoboticLimb
         // var dist = Vector3.Distance(currentTarget.transform.position, IKtargetTransform.transform.position);
         translateDistToTarget = Vector3.Distance(IKtargetTransform.position, currentTarget.transform.position);
 
-
-
-        currentStrideLength = strideLength;
+        currentStrideLength = Vector3.Distance(pointFront.position, pointBack.position);//strideLength;
+        strideLength = Vector3.Distance(pointFront.position, pointBack.position);
+        if (limbController.roboticController.walkCycle == 0)
+        {
+            strideLength = Vector3.Distance(pointMid.position, pointBack.position);
+        }
 
         translateDist = strideLength - translateDistToTarget;
 
-        if (limbController.roboticController.walkCycle == 0)
-        {
-            currentStrideLength = strideLength / 2;
-            translateDist = (strideLength / 2) - translateDistToTarget;
-        }
+
         if (translateDist < .01f)
         {
-            translateDist = 0.1f;
+            translateDist = 0.01f;
         }
         // Debug.Log(name + " " + Time.frameCount);
         //  Debug.Log("dist: " + translateDistToTarget + " dist traveled " + translateDist);// + " dist traveled");
         translatePercent = translateDist / strideLength;
-        return translateDist;
+        return translatePercent;
     }
 
     public void RunIK()
@@ -424,16 +434,17 @@ public class RoboticLimbIK : RoboticLimb
 
     public void DefaultStrideLength()
     {
-        pointFront.localPosition = new Vector3(0, 0, strideLength / 2);
+        // pointFront.localPosition = new Vector3(0, 0, strideLength / 2);
+
         pointBack.localPosition = new Vector3(0, 0, -strideLength / 2);
-        adjustedStride = false;
+        // adjustedStride = false;
     }
 
     public void UpdateStrideLength(float newStrideLength)
     {
-        pointFront.localPosition = new Vector3(0, 0, newStrideLength / 2);
+        // pointFront.localPosition = new Vector3(0, 0, newStrideLength / 2);
         pointBack.localPosition = new Vector3(0, 0, -newStrideLength / 2);// - .1f);
-        adjustedStride = true;
+                                                                          // adjustedStride = true;
     }
 
     public void StoreGroupedServos()

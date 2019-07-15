@@ -181,9 +181,11 @@ public class LimbController : MonoBehaviour
 
             var yDif = limbMirror.limbEnd.position.y - ground.position.y;
 
+            
+
             if (legMode == LegMode.Rotate)
             {
-                if (yDif < .1f & limbError < .6f)// & groundContact)
+                if (yDif < .05f & limbError < .6f)// & groundContact)
                 {
                     mirrorAtTarget = true;
                 }

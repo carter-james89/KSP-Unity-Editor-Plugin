@@ -1098,7 +1098,7 @@ MonoBehaviour:
   kneePID_D: 0.05
   kneePID_Max: 20
   kneePID_Min: 0
-  strideLength: 1.9
+  strideLength: 2.2
   baseLerpSpeed: 100
   walkSpeed: 100
   hipAngle: 0

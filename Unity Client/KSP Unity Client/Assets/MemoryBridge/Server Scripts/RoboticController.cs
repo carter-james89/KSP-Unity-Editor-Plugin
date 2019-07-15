@@ -28,7 +28,7 @@ public class RoboticController : MonoBehaviour
         IRmanager = gameObject.GetComponent<IR_Manager>();
         IRmanager.CustomAwake(memoryBridge, memoryBridge.vesselControl, ref limbs);
 
-        steeringPID = new PidController(.1f, 0, 0, 0, -.8f);
+        steeringPID = new PidController(.5f, 0, 0, 0, -.3f);
         steeringPID.SetPoint = 0;
 
         Debug.Log("IR Manager Enabled, Limb Count : " + limbs.Count);
@@ -187,6 +187,7 @@ public class RoboticController : MonoBehaviour
     public float walkSpeed = 1;
     public float walkCycle { get; private set; } = 0;
     float atTargetTime = 0;
+
     public void CustomUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Alpha7))
@@ -230,6 +231,7 @@ public class RoboticController : MonoBehaviour
 
             //find the stride percent average for the rotating limbs on each side of mech
             var stridePercents = new List<float>();
+            
             foreach (var limb in groupLeft.limbs)
             {
                 var stridePercent = limb.CalculateStridePercent();
@@ -274,7 +276,7 @@ public class RoboticController : MonoBehaviour
                 limb.RunGait(groupRight.rotStridePercent);
             }
 
-          
+
         }
 
         if (robotActive)
@@ -305,8 +307,8 @@ public class RoboticController : MonoBehaviour
             }
         }
 
-      //  if (limbGroup.Count > 2)
-       //     atTargetTime += Time.deltaTime;
+        //  if (limbGroup.Count > 2)
+        //     atTargetTime += Time.deltaTime;
 
         bool cycleComplete = false;
         if (legsAtTarget.Count >= 3)
@@ -324,44 +326,56 @@ public class RoboticController : MonoBehaviour
         {
             atTargetTime = 0;
             Debug.Log("NEXT WALK CYCLE");
-            var dirError = directionTarget.eulerAngles.y - memoryBridge.vesselControl.mirrorVessel.vesselOffset.eulerAngles.y;
-            var angleError = Vector3.Angle(directionTarget.forward, memoryBridge.vesselControl.mirrorVessel.vesselOffset.forward);
-            System.TimeSpan deltaTime = TimeSpan.FromSeconds(Time.fixedDeltaTime);
-            steeringPID.ProcessVariable = angleError;
-            var strideAdjust = steeringPID.ControlVariable(deltaTime);
-           // Debug.Log(dirError);
+            //  var dirError = directionTarget.eulerAngles.y - memoryBridge.vesselControl.mirrorVessel.vesselOffset.eulerAngles.y;
+            // var angleError = Vector3.Angle(directionTarget.forward, memoryBridge.vesselControl.mirrorVessel.vesselOffset.forward);
 
-            if (Math.Abs(dirError) > 3)
+            var forwardPoint = memoryBridge.vesselControl.mirrorVessel.vesselOffset.forward + new Vector3(0, 0, 10);
+            var offset = directionTarget.InverseTransformPoint(forwardPoint);
+
+            System.TimeSpan deltaTime = TimeSpan.FromSeconds(Time.fixedDeltaTime);
+            steeringPID.ProcessVariable = offset.x;
+            var strideAdjust = steeringPID.ControlVariable(TimeSpan.FromSeconds(10));
+             Debug.Log("dir error " + offset.x);
+
+            walkCycle++;
+            foreach (var limb in limbs)
             {
-                if (dirError < 0)
+                limb.NextGaitSeguence();
+            }
+            strideAdjust = -1f;
+            if (Math.Abs(offset.x) > .3f)
+            {
+                if (offset.x < 0)
                 {
-                    groupLeft.steeringAdjust = true;
-                    groupRight.steeringAdjust = false;
-                    Debug.Log("Dir ErrorRight " + angleError);
-                    Debug.Log("Shorten left stride : " + strideAdjust);
-                    foreach (var limb in groupLeft.limbs)
-                    {
-                       // limb.limbIK.UpdateStrideLength((float)(limb.limbIK.strideLength + strideAdjust));
-                    }
+                    // groupLeft.steeringAdjust = true;
+                    // groupRight.steeringAdjust = false;
+                     Debug.Log("Dir ErrorRight " + strideAdjust);
+                    // Debug.Log("Shorten left stride : " + strideAdjust);
                     foreach (var limb in groupRight.limbs)
                     {
-                      //  limb.limbIK.DefaultStrideLength();
+                       // if (limb.legMode == LimbController.LegMode.Translate)
+                       //     limb.limbIK.UpdateStrideLength((float)(limb.limbIK.strideLength + strideAdjust));
+                    }
+                    foreach (var limb in groupLeft.limbs)
+                    {
+                         // limb.limbIK.DefaultStrideLength();
                     }
                 }
                 else
                 {
                     // dirError -= 360;
-                    groupLeft.steeringAdjust = false;
-                    groupRight.steeringAdjust = true;
-                    Debug.Log("Dir Error Left " + angleError);
-                    Debug.Log("Shorten right stride : " + strideAdjust);
-                    foreach (var limb in groupRight.limbs)
-                    {
-                      //  limb.limbIK.UpdateStrideLength((float)(limb.limbIK.strideLength + strideAdjust));
-                    }
+                    // groupLeft.steeringAdjust = false;
+                    // groupRight.steeringAdjust = true;
+                     Debug.Log("Dir Error Left " + strideAdjust);
+                    // Debug.Log("Shorten right stride : " + strideAdjust);
                     foreach (var limb in groupLeft.limbs)
                     {
-                      //  limb.limbIK.UpdateStrideLength((float)(limb.limbIK.strideLength));
+                       // if (limb.legMode == LimbController.LegMode.Translate)
+                       //     limb.limbIK.UpdateStrideLength((float)(limb.limbIK.strideLength + strideAdjust));
+                    }
+                    foreach (var limb in groupRight.limbs)
+                    {
+                       //  limb.limbIK.DefaultStrideLength();
                     }
                 }
             }
@@ -369,15 +383,11 @@ public class RoboticController : MonoBehaviour
             {
                 foreach (var limb in limbs)
                 {
-                   // limb.limbIK.DefaultStrideLength();
+                    // limb.limbIK.DefaultStrideLength();
                 }
             }
 
-            walkCycle++;
-            foreach (var limb in limbs)
-            {
-                limb.NextGaitSeguence();
-            }
+           
         }
 
     }
