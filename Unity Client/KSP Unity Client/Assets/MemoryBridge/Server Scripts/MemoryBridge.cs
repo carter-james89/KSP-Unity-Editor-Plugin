@@ -25,7 +25,7 @@ public class MemoryBridge : MonoBehaviour
 
     public float testFloat = 5, transmittingFloat;
 
- 
+
     public RoboticController roboticController;
 
     public void StartClient(string fileName)
@@ -43,15 +43,19 @@ public class MemoryBridge : MonoBehaviour
 
         vesselControl = gameObject.GetComponent<VesselControl>();
         vesselControl.ControlAwake(this);
-      //  Debug.Log("Vessel Control Initialized");
+        //  Debug.Log("Vessel Control Initialized");
 
         roboticController = gameObject.GetComponent<RoboticController>();
-        roboticController.CustomAwake(this);
-        Debug.Log("Robotics Configured");
-        
+        if (roboticController)
+        {
+            roboticController.CustomAwake(this);
+            Debug.Log("Robotics Configured");
+        }
+
+
         // debugWriteToSelf = GetComponent<KSPMechs.MechManager>().debugWriteToSelf;
 
-       // SetFloat("TestFromClient" + fileName, 4);
+        // SetFloat("TestFromClient" + fileName, 4);
         SetBool("ClientTransmitting" + fileName, true);
 
         //for (int i = 0; i < 1000; i++)
@@ -68,10 +72,12 @@ public class MemoryBridge : MonoBehaviour
         SetClientValues();
 
         vesselControl.VesselUpdate();
+
+        //  if (Input.GetKey(KeyCode.Keypad4))
         roboticController.CustomUpdate();
         SetFloat("ClientCameraFeedCount" + fileName, cameraFeeds.Count);
 
-       
+
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {

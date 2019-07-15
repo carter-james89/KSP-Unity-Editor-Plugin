@@ -17,6 +17,8 @@ namespace KSPMechs
             //memoryBridge = new MemoryBridge();
             memoryBridge.StartClient("Test");
             Debug.Log("Memory Bridge Opened");
+
+            //memoryBridge.roboticController.ActivateIK();
         }
 
         protected virtual void Start()

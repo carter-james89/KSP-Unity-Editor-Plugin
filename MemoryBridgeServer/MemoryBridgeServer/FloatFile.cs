@@ -137,8 +137,8 @@ namespace MemoryBridgeServer
          //   Debug.Log("start float late update");
             if(streamFloatValue != null)
             {
-                streamFloatValue.Dispose();
-                streamFloatValue.Close();
+               // streamFloatValue.Dispose();
+                //streamFloatValue.Close();
             }
             
 

@@ -52,6 +52,7 @@ public class RoboticServo : MonoBehaviour
 
         if (servoName.ToLower().Contains("base"))
         {
+            Debug.Log("Let limb base");
             limbControllerPart = RoboticLimb.LimbPart.Base;
             limbController.servoBase = this;
         }
@@ -177,6 +178,7 @@ public class RoboticServo : MonoBehaviour
 
         //  limbLength = Vector3.Distance(transform.position, foot.transform.position);
         groundPoint = foot.transform;
+        limbController.contactPoint = groundPoint;
         return foot;
     }
     public Transform groundPoint;

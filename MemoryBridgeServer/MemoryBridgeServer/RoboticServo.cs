@@ -16,23 +16,38 @@ namespace MemoryBridgeServer
         MemoryBridge memoryBridge;
         Transform servoAnchor, anchorChild, servoBase;
 
+        RoboticArm arm;
 
-        public void CustomStart(IRWrapper.IServo servo, MemoryBridge memoryBridge)
+        void Start()
+        {
+            // memoryBridge.SetFloat(servoName + "unityServoPos", servo.Position);
+        }
+
+        public void CustomStart(IRWrapper.IServo servo, MemoryBridge memoryBridge, RoboticArm arm)
         {
             this.servo = servo;
-            this.servo.Speed = 20;
-            this.servo.Acceleration = 20;
+            //this.servo.SpeedLimit = 20;
+
+            this.arm = arm;
             servoName = servo.Name + servo.HostPart.gameObject.GetInstanceID();
             part = servo.HostPart;
 
             this.memoryBridge = memoryBridge;
 
+            Debug.Log(servo.Name + " servo name");
+            if (servo == null)
+                Debug.Log("null position " + servo.Position);
+            Debug.Log("Get position");
             memoryBridge.SetFloat(servoName + "unityServoPos", servo.Position);
+            Debug.Log("got position");
 
             memoryBridge.SetFloat(servoName + "minPos", servo.MinPosition);
             Debug.Log("servo min pos " + servo.MinPosition);
             memoryBridge.SetFloat(servoName + "maxPos", servo.MaxPosition);
             Debug.Log("servo max pos " + servo.MaxPosition);
+
+            this.servo.Acceleration = 999;
+            this.servo.Speed = 999;
 
             // memoryBridge.SetFloat(servoName + "ServoSetPos", 210f);
             //  memoryBridge.SetFloat(servoName + "ServoSetSpeed", 210f);
@@ -93,7 +108,7 @@ namespace MemoryBridgeServer
                     servoAnchor.localEulerAngles += new Vector3(0, 0, 90);
                     anchorChild.localEulerAngles += new Vector3(0, 0, 90);
                     // DebugVector.DrawVector(servoAnchor);
-                  //  DebugVector.DrawVector(anchorChild);
+                    //  DebugVector.DrawVector(anchorChild);
                     Debug.Log("Draw Vector");
                 }
 
@@ -103,17 +118,25 @@ namespace MemoryBridgeServer
 
         Transform contactPoint;
         LineRenderer footRenderer;
-        public void CreateContactPoint()
-        {
+        List<Part> footParts;
 
-           // var joint = servo.HostPart.gameObject.AddComponent<SpringJoint>();
+        public void CreateContactPoint(Vector3 contactPos)
+        {
+            var parts = servo.HostPart.FindChildParts<Part>(true);
+            footParts = new List<Part>();
+            foreach (var part in parts)
+            {
+                footParts.Add(part);
+                Debug.Log(name + " attatched foot parts " + part.name);
+            }
 
             contactPoint = new GameObject().transform;
             contactPoint.SetParent(transform);
-            // contactPoint.localPosition = localPos;
-            contactPoint.localPosition = Vector3.zero;
+            contactPoint.localPosition = contactPos - new Vector3(0, .4f, 0);
+            //contactPoint.localPosition = Vector3.zero;
             contactPoint.rotation = memoryBridge.vesselControl.gimbal.rotation;
             DebugVector.DrawVector(contactPoint);
+
 
             footRenderer = contactPoint.gameObject.AddComponent<LineRenderer>();
             Material redMat = new Material(Shader.Find("Transparent/Diffuse"));
@@ -127,6 +150,13 @@ namespace MemoryBridgeServer
             //  servoAnchor.LookAt(newParent);         
         }
 
+        void OnDestroy()
+        {
+            if (footPart)
+                footPart.OnJustAboutToBeDestroyed -= PartAboutToBeDestroyed;
+        }
+        Part footPart;
+        Rigidbody footBody;
         public void CheckFootClearance()
         {
             LayerMask mask = (1 << 0) | (1 << 10);
@@ -139,33 +169,83 @@ namespace MemoryBridgeServer
             float clearance = 0;
             if (Physics.Raycast(contactPoint.position, rayRot, out hit, 100, mask))
             {
-               // if (hit.collider.gameObject.tag != "Runway")
+                // if (hit.collider.gameObject.tag != "Runway")
                 //    Debug.Log("hitting " + hit.collider.gameObject.name + " at layer " + hit.collider.gameObject.layer.ToString() + " with tag " + hit.collider.gameObject.tag.ToString() + " at distance " + hit.distance);
                 // if (hit.collider.gameObject.name == "Kerbin Zn123222323")
                 //     controller.walking = false;
                 footRenderer.SetPosition(0, contactPoint.position);
                 footRenderer.SetPosition(1, hit.point);
                 clearance = hit.distance;
-                
             }
 
             bool groundContact = false;
-            var parts = servo.HostPart.children;
 
-            foreach  (var part in parts)
+            foreach (var part in footParts)
             {
-               // part.gr
                 if (part.GroundContact)
+                {
+                    if (!footPart)
+                    {
+                        footPart = part;
+                        footBody = footPart.Rigidbody;
+                        footPart.OnJustAboutToBeDestroyed += PartAboutToBeDestroyed;
+                        memoryBridge.SetBool(servoName + "exploded", false);
+                    }
+
                     groundContact = true;
+
+                    var closestPoint = part.collider.ClosestPoint(memoryBridge.vesselControl.vessel.mainBody.transform.position);
+
+                    if (!collisionPoint)
+                    {
+                        collisionPoint = new GameObject().transform;
+
+                        DebugVector.DrawVector(collisionPoint);
+                    }
+                    collisionPoint.position = closestPoint;
+
+                    var collisionPointOffset = transform.InverseTransformPoint(collisionPoint.position);
+                    memoryBridge.SetVector3(servoName + "CollisionPoint", collisionPointOffset);
+                }
             }
-           // if(servo.HostPart.GroundContact != groundContact)
-          //  {
-           //     groundContact = servo.HostPart.GroundContact;
-                memoryBridge.SetBool(servoName + "GroundContact", groundContact);
-           // }
+            if (footPart)
+            {
+                memoryBridge.SetVector3(servoName + "torque", footBody.velocity);
+                memoryBridge.SetFloat(servoName + "explosionPotential", footPart.explosionPotential);
+                memoryBridge.SetFloat(servoName + "gExplodeChance", footPart.gExplodeChance);
+                memoryBridge.SetBool(servoName + "active", footPart.gameObject.activeInHierarchy);
+
+                // var events = footPart.Events;
+                // events.
+
+                // footPart.explosionPotential;
+                // footPart.gExplodeChance()
+            }
+            // if(servo.HostPart.GroundContact != groundContact)
+            //  {
+            //     groundContact = servo.HostPart.GroundContact;
+            memoryBridge.SetBool(servoName + "GroundContact", groundContact);
+            // }
             memoryBridge.SetFloat(servoName + "KSPFootClearance", clearance);
         }
+        //void OnCollisionStay(Collision collision)
+        //{
+
+        void PartAboutToBeDestroyed()
+        {
+            Debug.Log("part exploded");
+            memoryBridge.SetBool(servoName + "exploded", true);
+        }
+        void JointBroken()
+        {
+
+        }
+        Transform collisionPoint;
+
+        //    Debug.Log(part.name + " collision stay");
+        //}
         //bool groundContact = false;
+        bool running = false;
         public void CustomUpdate()
         {
             //var angleOffset = memoryBridge.GetVector3(servoName + "adjustedOffset");
@@ -175,8 +255,23 @@ namespace MemoryBridgeServer
             //    servoAnchor.localEulerAngles = angleOffset;
             memoryBridge.SetFloat(servoName + "servoPos", servo.Position);
 
+            //var acceleration = memoryBridge.GetFloat(servoName + "unityServoAcceleration");
+            //if (servo.Acceleration != acceleration && acceleration != 0)
+            //    servo.Acceleration = acceleration;
+
+
             
-            servo.MoveTo(memoryBridge.GetFloat(servoName + "unityServoPos"), memoryBridge.GetFloat(servoName + "unityServoSpeed"));
+            //
+            if (Input.GetKey(KeyCode.Keypad5))
+            {
+               // Debug.Log("start moving servo");
+                running = true;
+             //   servo.MoveTo(memoryBridge.GetFloat(servoName + "unityServoPos"), memoryBridge.GetFloat(servoName + "unityServoSpeed"));
+                servo.MoveTo(90, 5);
+            }
+           // if(running)
+               servo.MoveTo(memoryBridge.GetFloat(servoName + "unityServoPos"), memoryBridge.GetFloat(servoName + "unityServoSpeed"));
+            // servo.mo
 
             anchorChild.rotation = part.transform.rotation;
             if (this.servo.HostPart.name == "IR.Rotatron.Basic.v3")
@@ -187,7 +282,7 @@ namespace MemoryBridgeServer
             memoryBridge.SetQuaternion(servoName + "servoLocalRot", anchorChild.localRotation);
 
 
-          
+
 
             //var servoAngle = memoryBridge.GetFloat(servoName + "ServoSetPos");
             //var servoSpeed = memoryBridge.GetFloat(servoName + "ServoSetSpeed");

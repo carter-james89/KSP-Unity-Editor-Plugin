@@ -15,16 +15,31 @@ namespace MemoryBridgeServer
         RoboticServo wristServo;
         public string limbName;
         MemoryBridge memoryBridge;
-       // List<Part> parts;
+
+
+        // List<Part> parts;
         public void CustomAwake(IRWrapper.IControlGroup limbGroup, IRWrapper.IServo servoBase, IRWrapper.IServo servoWrist, MemoryBridge memoryBridge)
         {
+            Debug.Log("Robotic Arm custom awake");
             this.memoryBridge = memoryBridge;
+
             limbName = limbGroup.Name + memoryBridge.fileName;
+            Debug.Log("got limb group name");
             limbServos = new List<RoboticServo>();
             //Add wrist servo
+            if (servoBase == null)
+            {
+                Debug.Log(limbGroup.Name + "has no servo base");
+            }
+            if (servoBase.HostPart == null)
+            {
+                Debug.Log(servoBase.Name + " no servo base host");
+            }
             var newServo = servoBase.HostPart.gameObject.AddComponent(typeof(RoboticServo)) as RoboticServo;
-            newServo.CustomStart(servoBase, memoryBridge);
+            Debug.Log("new servo created");
+            newServo.CustomStart(servoBase, memoryBridge, this);
             limbServos.Add(newServo);
+            Debug.Log("new servo added");
 
             //parts = new List<Part>();
 
@@ -58,7 +73,7 @@ namespace MemoryBridgeServer
                         Debug.Log("found servo on part");
 
                         newServo = part.gameObject.AddComponent(typeof(RoboticServo)) as RoboticServo;
-                        newServo.CustomStart(testServo, memoryBridge);
+                        newServo.CustomStart(testServo, memoryBridge, this);
                         limbServos.Add(newServo);
                         //  }
                         if (testServo.Name.ToLower().Contains("wrist"))
@@ -134,36 +149,42 @@ namespace MemoryBridgeServer
             //var contactPoint = memoryBridge.GetVector3(wristServo.servoName + "contactPoint");
 
             //if (contactPoint != Vector3.zero)
-           // {
-               // Debug.Log("Set ground point to " + contactPoint);
-                //wristServo.contactPoint = contactPoint;
-                wristServo.CreateContactPoint();
-              //  contactPointSet = true;
+            // {
+            // Debug.Log("Set ground point to " + contactPoint);
+            //wristServo.contactPoint = contactPoint;
+            // wristServo.CreateContactPoint();
+            //  contactPointSet = true;
             //}
         }
 
         bool contactPointSet = false;
         public void CustomUpdate()
         {
-            //if (!contactPointSet)
-            //{
-            //    //var contactPoint = memoryBridge.GetVector3(wristServo.servoName + "contactPoint");
+            if (!contactPointSet)
+            {
+                var contactPoint = memoryBridge.GetVector3(wristServo.servoName + "contactPoint");
 
-            //    //if (contactPoint != Vector3.zero)
-            //    //{
-            //    //    Debug.Log("Set ground point to " + contactPoint);
-            //    //    //wristServo.contactPoint = contactPoint;
-            //    //    wristServo.CreateContactPoint(contactPoint);
-            //    //    contactPointSet = true;
-            //    //}
-            //}
+                if (contactPoint != Vector3.zero)
+                {
+                    Debug.Log("Set ground point to " + contactPoint);
+                    //wristServo.contactPoint = contactPoint;
+                    wristServo.CreateContactPoint(contactPoint);
+                    contactPointSet = true;
+                }
+            }
 
+            //if (!FlightGlobals.ActiveVessel.packed)
             foreach (var servo in limbServos)
             {
                 servo.CustomUpdate();
             }
-           // if (contactPointSet)
+            if (contactPointSet)
                 wristServo.CheckFootClearance();
+
+            //  if(footPart)
+            //      if(footPart.torque)
+
+
         }
         void OnDestroy()
         {

@@ -22,9 +22,13 @@ public class LimbController : MonoBehaviour
 
     bool gaitSequenceActive = false;
 
-    public Transform ground, baseTarget;
+    public Transform ground, baseTarget, contactPoint;
+    public MeshRenderer groundRenderer;
 
     public RoboticController roboticController;
+
+    public enum LegMode { Translate, Rotate }
+    public LegMode legMode;
 
     public virtual void CustomAwake(MemoryBridge memoryBridge, string limbName, VesselControl vesselControl)
     {
@@ -83,14 +87,127 @@ public class LimbController : MonoBehaviour
             servo.CreateBaseAnchor();
         }
         CreateRoboticLegs(servosMirror);
-
-        //limbMirror.SetStartAngles();
-        //limbIK.SetStartAngles();
     }
+
+
+    public float CalculateStridePercent()
+    {
+        float returnFloat = 300;
+        //   Debug.Log(name + " " + legMode + " - " + Time.frameCount);
+        if (legMode == LegMode.Rotate)
+        {
+            //returnFloat = limbIK.CalculateRotStridePercent();
+        }
+        else
+        {
+            returnFloat = limbIK.CalculateTranslateStridePercent();
+        }
+        return returnFloat;
+    }
+    public void StartGait()
+    {
+        gaitSequenceActive = true;
+        limbIK.StartGaitSequence();
+    }
+    public float servoAcceleration = 5;
+    public float baseLerpSpeed = 2;
+    public float baseError;
+
+    public float baseRotOffset;
+
+    public void SetGaitHeight()
+    {
+        var baseOffset = baseTarget.InverseTransformPoint(limbIK.IKAxisX.servo1.transform.position);
+        // var baseOffset = limbIK.IKAxisX.servo1.transform.position - baseTarget.transform.position;
+        var globalPoint = limbIK.transform.TransformPoint(limbIK.gaitStartPos);
+        globalPoint.y = ground.position.y;
+
+        var hipPointOffset = servoBase.transform.InverseTransformPoint(baseTarget.transform.position);
+
+        var angle = Math.Atan2(hipPointOffset.y, -hipPointOffset.z);
+        angle *= (180 / Math.PI);
+        baseRotOffset = (float)(90 - angle);
+
+        baseError = baseOffset.y;
+        // if (legMode == LegMode.Translate || mirrorAtTarget)
+        // {
+        globalPoint.y += baseOffset.y;
+        //limbIK.gait.localPosition = Vector3.Lerp(limbIK.gait.localPosition, limbIK.transform.InverseTransformPoint(globalPoint), Time.deltaTime * baseLerpSpeed);
+        // limbIK.gait.position = Vector3.Lerp(limbIK.gait.position, globalPoint, Time.deltaTime * baseLerpSpeed);
+        limbIK.gait.position = globalPoint;
+        // }
+        // else
+        // {
+        //     limbIK.gait.localPosition = limbIK.transform.InverseTransformPoint(globalPoint);
+        //}
+        //var tempPos = limbIK.transform.position - limbIK.gaitStartPos;
+        //tempPos.y += baseError;
+        //limbIK.gait.position = tempPos;
+
+
+
+        var tempEuler = limbIK.gait.eulerAngles;// = Vector3.zero;
+        tempEuler.x = 0;
+        limbIK.gait.eulerAngles = tempEuler;
+    }
+
+    public void RunGait(float stridePercentAvg)
+    {
+        //move the gait for active balance
+        if (limbIK.gait)
+        {
+            limbIK.RunGait(stridePercentAvg);
+        }
+    }
+
+    public void LimbUpdate()
+    {
+        limbIK.RunIK();
+        SetServos();
+    }
+    public void SetServos()
+    {
+        limbIK.SetServos();
+    }
+    public bool mirrorAtTarget;
+    public float limbError;
+    public bool MirrorLegAtTarget()
+    {
+        mirrorAtTarget = false;
+        if (limbIK.currentTarget)
+        {
+            var groundClearance = ground.InverseTransformPoint(limbMirror.limbEnd.position).normalized;
+            limbError = Vector3.Distance(limbMirror.limbEnd.position, limbIK.currentTarget.position);
+
+            var yDif = limbMirror.limbEnd.position.y - ground.position.y;
+
+            if (legMode == LegMode.Rotate)
+            {
+                if (yDif < .1f & limbError < .6f)// & groundContact)
+                {
+                    mirrorAtTarget = true;
+                }
+            }
+            else
+            {
+                if (limbError < .05f)
+                {
+                    mirrorAtTarget = true;
+                }
+            }
+
+        }
+        return mirrorAtTarget;
+    }
+    public bool debugClearance;
+    float footClearance = 0;
+    public bool groundContact;
+    Transform collisionPoint;
 
     public void SetBaseTarget(Transform baseTarget)
     {
         this.baseTarget = baseTarget;
+        Debug.Log("servo pos ", limbIK.IKAxisX.servo1.gameObject);
         this.baseTarget.position = limbIK.IKAxisX.servo1.transform.position;//limbMirror.servoBase.transform.position;
     }
     //Creates RoboticLimb components for the mirror and IK leg, adds them to limb base servo base, then aranges the hiarchy
@@ -138,16 +255,11 @@ public class LimbController : MonoBehaviour
     bool IKactive = false;
     public void ActivateIK()
     {
+
         limbIK.ActivateIK();
-       // limbIK.gait.SetParent(ground);
+        SetServos();
         IKactive = true;
     }
-
-    //public void SetGaitTarget(RoboticLimbIK.GaitTarget newTarget)
-    //{
-    //    limbIK.SetTarget(newTarget);
-    //}
-
 
     public void AddGaitTarget(Transform newTarget)
     {
@@ -158,88 +270,76 @@ public class LimbController : MonoBehaviour
         limbIK.MoveToNextTarget();
     }
 
-    public void RunGait()
-    {
-        gaitSequenceActive = true;
-        limbIK.StartGaitSequence();
-    }
-
-    public bool MirrorLegAtTarget()
-    {
-        bool atTarget = true;
-        if (limbIK.currentTarget)
-        {
-            var limbError = Vector3.Distance(limbMirror.limbEnd.position, limbIK.currentTarget.position);
-            if (limbError > .1f)
-            {
-                atTarget = false;
-            }
-        }
-        return atTarget;
-    }
-    public bool debugClearance;
-    public void CustomUpdate()
+    public void MirrorServos()
     {
         limbMirror.MirrorServos();
-        //hot fix
-        //if (clearance > 3) 
-        //    clearance = 0;
-
-        var clearance = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "KSPFootClearance");
-        if (limbIK.gait)
-        {
-            ground.position = limbMirror.servoWrist.transform.position - new Vector3(0, clearance, 0);
-
-            Debug.Log(name + " ground contact : " + memoryBridge.GetBool(limbMirror.servoWrist.servoName + "GroundContact"));
-
-            var baseOffset = baseTarget.position.y - limbMirror.servoBase.transform.position.y;
-
-            var globalPoint = limbIK.transform.TransformPoint(limbIK.gaitStartPos);
-            globalPoint.y = ground.position.y;
-         
-
-            if(limbIK.legMode == RoboticLimbIK.LegMode.Translate)
-            {
-                globalPoint.y -= baseOffset;
-            }
-
-            limbIK.gait.localPosition = limbIK.transform.InverseTransformPoint(globalPoint);
-
-
-            //  var tempPos = limbIK.gaitStartPos;      
-            //  tempPos.y = ground.position.y - baseOffset;//ground.position.y - baseOffset;
-            ////  limbIK.gait.position = tempPos;//limbMirror.limbEnd.position;// - new Vector3(0, clearance, 0);
-            //limbIK.gait.localPosition = tempPos;
-
-            var tempEuler = limbIK.gait.eulerAngles;// = Vector3.zero;
-            tempEuler.x = 0;
-           // tempEuler.y = vesselControl.mirrorVessel.vesselOffset.eulerAngles.y;
-            limbIK.gait.eulerAngles = tempEuler;
-
-            limbIK.RunGait();
-
-            if (debugClearance)
-            {
-                Debug.Log(Time.frameCount);
-                Debug.Log("clearance " + clearance);
-               // Debug.Log("mirror " + (float)Math.Round(limbMirror.limbEnd.transform.position.y, 2));
-               // Debug.Log("gait " + limbIK.gait.position.y);
-            }
-        }
-           
-        // if (!IKactive)   
-        if (IKactive)
-        {
-            limbIK.RunIK();
-        }
-
-        limbIK.SetServos();
     }
+    float rawClearance;
+
+    public Vector3 torque;
+    public float explosionPotential;
+    public float gExplodeChance;
+    public bool footActive;
+    public float velocity;
+    public bool hasExploded;
+
+    public void CheckClearance()
+    {
+        torque = memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "torque");
+        velocity = torque.magnitude;
+        explosionPotential = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "explosionPotential");
+        gExplodeChance = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "gExplodeChance");
+        footActive = memoryBridge.GetBool(limbMirror.servoWrist.servoName + "active");
+        hasExploded = memoryBridge.GetBool(limbMirror.servoWrist.servoName + "exploded");
+
+        if (hasExploded)
+        {
+            CamUI.SetCamText(name + " has exploded");
+            Debug.LogError("Leg " + name + " has exploded at velocity " + velocity);
+        }
+
+        rawClearance = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "KSPFootClearance");
+        var contactPointOffSet = limbMirror.servoWrist.transform.position.y - contactPoint.position.y;
+        footClearance = rawClearance - contactPointOffSet;
+        if (footClearance < .03f)
+        {
+            footClearance = 0;
+        }
+        groundContact = memoryBridge.GetBool(limbMirror.servoWrist.servoName + "GroundContact");
+
+        if (!collisionPoint)
+        {
+            collisionPoint = new GameObject("CollisionPoint").transform;
+            DebugVector.DrawVector(collisionPoint, DebugVector.Direction.all, .5f, .1f, Color.red, Color.white, Color.blue);
+        }
+        collisionPoint.position = limbMirror.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
+
+        // limbMirror.
+        //if(limbIK)
+        if (IKactive & legMode == LegMode.Translate)
+        {
+            limbMirror.limbEnd.position = limbMirror.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
+            limbIK.limbEndPoint.position = limbIK.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
+        }
+
+        //if (!groundContact)
+        // ground.position = limbMirror.servoWrist.transform.position - new Vector3(0, rawClearance, 0);
+        var localPoint = limbMirror.limbEnd.localPosition - new Vector3(0, .4f, 0);
+        ground.position = limbMirror.servoWrist.transform.TransformPoint(localPoint) - new Vector3(0, rawClearance, 0);
+    }
+    //public void SetBaseHeight(float globalY)
+    //{
+    //    if (limbIK.gait)
+    //    {
+    //        var tempPos = baseTarget.position;
+    //        tempPos.y = globalY;
+    //        baseTarget.position = tempPos;
+    //    }
+    //}
 
     void OnDestroy()
     {
         if (limbFile != null)
             limbFile.Close();
     }
-
 }

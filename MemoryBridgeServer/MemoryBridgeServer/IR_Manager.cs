@@ -23,7 +23,7 @@ namespace MemoryBridgeServer
 
             if (IRWrapper.IRController == null)
             {
-                Debug.Log("IR3Controller is not null");
+                Debug.Log("IR3Controller is null");
             }
             Debug.Log(IRWrapper.IRController.ServoGroups.Count);
             foreach (IRWrapper.IControlGroup group in IRWrapper.IRController.ServoGroups)
@@ -33,8 +33,10 @@ namespace MemoryBridgeServer
                 {
                     IRWrapper.IServo basePart = null;
                     IRWrapper.IServo wristPart = null;
+                    Debug.Log("list servos");
                     foreach (var servo in group.Servos)
                     {
+                        Debug.Log(servo.Name);
                         if (servo.Name.ToLower().Contains("base"))
                         {
                             basePart = servo;

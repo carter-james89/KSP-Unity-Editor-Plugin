@@ -41,7 +41,7 @@ public class VesselControl : MonoBehaviour
     {
         this.memoryBridge = memoryBridge;
 
-        ToggleAutoPilot(true);
+       // ToggleAutoPilot(true);
 
         mirrorMat = Resources.Load("MirrorMat", typeof(Material)) as Material;
         targetMat = Resources.Load("TargetMat", typeof(Material)) as Material;
@@ -113,6 +113,8 @@ public class VesselControl : MonoBehaviour
         tempRot.x = 0;
         tempRot.z = 0;
         adjustedGimbal.localRotation = tempRot;
+
+        float prevDeltaTime = 0;
 
         if(controlMode == FlightControlMode.RawStick)
         {
@@ -190,6 +192,39 @@ public class VesselControl : MonoBehaviour
            // memoryBridge.SetFloat("VesselPitch", PIDpitch.CalculateResult(targetVesselOffset.x * 10, deltaTime));
 
             
+        }
+        else if(controlMode == FlightControlMode.Automous)
+        {
+            var timeSinceLastUpdate = Time.time - prevDeltaTime;
+            prevDeltaTime = Time.time;
+            var deltaTime1 = (int)(timeSinceLastUpdate * 1000);
+            var telloDeltaTime = new System.TimeSpan(0, 0, 0, 0, (deltaTime1));
+
+
+            var pitchError = targetVessel.vessel.transform.eulerAngles.x - vessel.transform.eulerAngles.x;
+            var pitchInput = PIDpitch.CalculateResult(pitchError, telloDeltaTime);
+
+            var rollError = targetVessel.vessel.transform.eulerAngles.z - vessel.transform.eulerAngles.z;
+            var rollInput = PIDroll.CalculateResult(rollError, telloDeltaTime);
+
+
+            if (rollError > 180)
+            {
+                //rollError = 360 - rollError;
+            }
+            else
+            {
+               // rollError = -rollError;
+            }
+
+            Debug.Log(rollError);
+            // var yawInput = 1;
+            //// var pitchInput = 1f;
+            // var rollInput = 1f;
+
+            //  memoryBridge.SetFloat("VesselYaw", yawInput);
+               memoryBridge.SetFloat("VesselRoll", rollInput);
+            memoryBridge.SetFloat("VesselPitch", pitchInput);
         }
 
 
@@ -293,6 +328,13 @@ public class VesselControl : MonoBehaviour
         if (active)
         {
             memoryBridge.SetBool("ClientAutoPilotActive", true);
+            targetVessel.vessel.gameObject.SetActive(true);
+            targetVessel.vessel.transform.eulerAngles = new Vector3(90, 0, 0);
+            controlMode = FlightControlMode.Automous;
+
+            PIDpitch.StartPID();
+            PIDroll.StartPID();
+
         }
         else
         {
