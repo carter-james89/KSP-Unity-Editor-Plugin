@@ -115,31 +115,38 @@ public class LimbController : MonoBehaviour
 
     public float baseRotOffset;
 
+    public float hipHeightError;
+
     public void SetGaitHeight()
     {
+        limbIK.gait.transform.rotation = Quaternion.LookRotation(roboticController.vesselControl.mirrorVessel.transform.forward, Vector3.up);
+
         var baseOffset = baseTarget.InverseTransformPoint(limbIK.IKAxisX.servo1.transform.position);
         // var baseOffset = limbIK.IKAxisX.servo1.transform.position - baseTarget.transform.position;
         var globalPoint = limbIK.transform.TransformPoint(limbIK.gaitStartPos);
         globalPoint.y = ground.position.y;
 
-        var hipPointOffset = servoBase.transform.InverseTransformPoint(baseTarget.transform.position);
+        //var hipPointOffset = servoBase.transform.InverseTransformPoint(baseTarget.transform.position);
 
-        var angle = Math.Atan2(hipPointOffset.y, -hipPointOffset.z);
-        angle *= (180 / Math.PI);
-        baseRotOffset = (float)(90 - angle);
+        //var angle = Math.Atan2(hipPointOffset.y, -hipPointOffset.z);
+        //angle *= (180 / Math.PI);
+        //baseRotOffset = (float)(90 - angle);
 
-        baseError = baseOffset.y;
-        // if (legMode == LegMode.Translate || mirrorAtTarget)
-        // {
-        globalPoint.y += baseOffset.y;
-        //limbIK.gait.localPosition = Vector3.Lerp(limbIK.gait.localPosition, limbIK.transform.InverseTransformPoint(globalPoint), Time.deltaTime * baseLerpSpeed);
-        // limbIK.gait.position = Vector3.Lerp(limbIK.gait.position, globalPoint, Time.deltaTime * baseLerpSpeed);
-        limbIK.gait.position = globalPoint;
-        // }
-        // else
-        // {
-        //     limbIK.gait.localPosition = limbIK.transform.InverseTransformPoint(globalPoint);
-        //}
+        hipHeightError = baseOffset.y;
+        if (legMode == LegMode.Translate || mirrorAtTarget)
+        {
+            Debug.Log("gat adjust");
+            globalPoint.y += baseOffset.y;
+           // limbIK.gait.localPosition = Vector3.Lerp(limbIK.gait.localPosition, limbIK.transform.InverseTransformPoint(globalPoint), Time.deltaTime * baseLerpSpeed);
+           // limbIK.gait.position = Vector3.Lerp(limbIK.gait.position, globalPoint, Time.deltaTime * baseLerpSpeed);
+            limbIK.gait.position = globalPoint;
+          //  limbIK.gait.position = ground.position - new Vector3(0, baseOffset.y, 0);
+        }
+        else
+        {
+           // limbIK.gait.localPosition = limbIK.transform.InverseTransformPoint(globalPoint);
+            limbIK.gait.position = globalPoint;
+        }
         //var tempPos = limbIK.transform.position - limbIK.gaitStartPos;
         //tempPos.y += baseError;
         //limbIK.gait.position = tempPos;
@@ -257,15 +264,15 @@ public class LimbController : MonoBehaviour
     bool IKactive = false;
     public void ActivateIK()
     {
-
+        SetServos();
         limbIK.ActivateIK();
         SetServos();
         IKactive = true;
     }
 
-    public void AddGaitTarget(Transform newTarget)
+    public void AddGaitTarget(Transform newTarget,LimbController.LegMode newMode)
     {
-        limbIK.AddGaitTarget(newTarget);
+        limbIK.AddGaitTarget(newTarget,newMode);
     }
     public void NextGaitSeguence()
     {

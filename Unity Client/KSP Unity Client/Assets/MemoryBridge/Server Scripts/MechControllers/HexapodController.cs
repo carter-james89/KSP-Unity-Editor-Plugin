@@ -19,6 +19,8 @@ public class HexapodController : MechManager
 
     public float walkSpeed = 2;
 
+    public float gaitDistance = 1;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -38,6 +40,7 @@ public class HexapodController : MechManager
         roboController = FindObjectOfType<RoboticController>();
         roboController.IKactivaed.AddListener(ONIKActivated);
         roboController.walkSpeed = walkSpeed;
+        roboController.gaitDistance = gaitDistance;
 
         foreach (var servo in FindObjectsOfType<RoboticServoIK>())
         {

@@ -48,16 +48,23 @@ public class RoboticLimbIK : RoboticLimb
 
     float localStridePercent;
 
-    public List<Transform> gaitSequence;
+    public struct GaitPoint { Transform target; LimbController.LegMode legMode; }
+    public List<Transform> gaitSequenceTarget;
+    public List<LimbController.LegMode> gaitSequenceMode;
 
     #region Setup
-    public void AddGaitTarget(Transform newTarget)
+    public void AddGaitTarget(Transform newTarget, LimbController.LegMode legMode)
     {
-        if (gaitSequence == null)
+        if (gaitSequenceTarget == null)
         {
-            gaitSequence = new List<Transform>();
+            gaitSequenceTarget = new List<Transform>();
         }
-        gaitSequence.Add(newTarget);
+        gaitSequenceTarget.Add(newTarget );
+        if (gaitSequenceMode == null)
+        {
+            gaitSequenceMode = new List<LimbController.LegMode>();
+        }
+        gaitSequenceMode.Add(legMode);
     }
 
     public override void CustomStart(LimbController limbController)
@@ -67,7 +74,7 @@ public class RoboticLimbIK : RoboticLimb
 
     public void StartGaitSequence()
     {
-        UpdateTarget(gaitSequence[0]);
+        UpdateTarget(0);
     }
     public void ActivateIK()
     {
@@ -82,8 +89,17 @@ public class RoboticLimbIK : RoboticLimb
         pointMid = gait.Find("Point Mid");
         pointFront = gait.Find("Point Front");
         pointBack = gait.Find("Point Back");
-        gait.position = limbController.limbMirror.limbEnd.position;
+        //gait.position = limbController.limbMirror.limbEnd.position;
         gait.SetParent(transform);//limbController.roboticController.directionTarget);
+
+     
+        gait.position = transform.position + transform.up * limbController.roboticController.gaitDistance;
+        var tempPos = gait.position;
+        tempPos.y = limbController.limbMirror.limbEnd.position.y;
+        gait.position = tempPos;
+        IKtargetTransform.position = limbController.limbMirror.limbEnd.position;
+        
+     
 
         gaitStartPos = gait.localPosition;// transform.position - gait.position;//transform.InverseTransformPoint(gait.position);
 
@@ -107,34 +123,50 @@ public class RoboticLimbIK : RoboticLimb
                 //  DebugVector.DrawVector(limbEndPoint, DebugVector.Direction.all, 5f, .1f, Color.red, Color.white, Color.blue);
             }
         }
+        RunIK();
     }
     #endregion
 
     #region GaitTargets
+    public bool loopGait = false;
     public void MoveToNextTarget()
     {
-        int currentInt = 0;
-        for (int i = 0; i < gaitSequence.Count; i++)
+        //int currentInt = 0;
+        //for (int i = 0; i < gaitSequence.Count; i++)
+        //{
+        //    if (gaitSequence[i] == currentTarget)
+        //    {
+        //        currentInt = i;
+        //    }
+        //}
+        //if (currentInt == gaitSequence.Count - 1)
+        //{
+        //    UpdateTarget(gaitSequence[0]);
+        //}
+        //else
+        //{
+        //    UpdateTarget(gaitSequence[currentInt + 1]);
+        //}
+        if(sequencePos != gaitSequenceTarget.Count - 1)
         {
-            if (gaitSequence[i] == currentTarget)
-            {
-                currentInt = i;
-            }
+            UpdateTarget(sequencePos + 1);
         }
-        if (currentInt == gaitSequence.Count - 1)
+        else if (loopGait)
         {
-            UpdateTarget(gaitSequence[0]);
-        }
-        else
-        {
-            UpdateTarget(gaitSequence[currentInt + 1]);
+            StartGaitSequence();
         }
     }
 
-    void UpdateTarget(Transform newTransform)
+    int sequencePos = 0;
+    void UpdateTarget(int pos)
     {
+        sequencePos = pos;
+        var newTransform = gaitSequenceTarget[pos];
+        var legMode = gaitSequenceMode[pos];
+
         rotAxis.localEulerAngles = Vector3.zero;
         rotAxis.position = limbEndPoint.position + (newTransform.position - limbEndPoint.position) / 2;
+        rotAxis.LookAt(newTransform);
 
         IKtargetTransform.position = limbEndPoint.position;
         var tempPos = IKtargetTransform.localPosition;
@@ -142,7 +174,7 @@ public class RoboticLimbIK : RoboticLimb
         tempPos.y = 0;
         IKtargetTransform.localPosition = tempPos;
         //    Debug.Log("set " + name + " to current target pos " + currentTarget.name);
-        if (newTransform.localPosition.z > rotAxis.localPosition.z)//newTargetOffset.z > 0)// & legdDir == LegDirection.Forward)
+        if (legMode == LimbController.LegMode.Rotate)//newTargetOffset.z > 0)// & legdDir == LegDirection.Forward)
         {
             targetRot = Quaternion.Euler(new Vector3(-180, 0, 0));
             limbController.legMode = LimbController.LegMode.Rotate;
@@ -184,10 +216,10 @@ public class RoboticLimbIK : RoboticLimb
                             var dir = IKtargetTransform.position - currentTarget.position;
 
                             if (CalculateTranslateStridePercent() > .1)
-                                IKtargetTransform.Translate(-dir.normalized * .02f);
+                                IKtargetTransform.Translate(-dir.normalized * .015f);
                             else
                             {
-                                IKtargetTransform.Translate(-dir.normalized * .02f);
+                                IKtargetTransform.Translate(-dir.normalized * .015f);
                             }
                             //IKtargetTransform.Translate(currentTarget.transform.position);
                             //if (avgStridePercent > .8)

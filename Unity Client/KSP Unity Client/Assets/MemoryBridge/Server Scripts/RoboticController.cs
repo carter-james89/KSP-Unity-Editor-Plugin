@@ -21,9 +21,12 @@ public class RoboticController : MonoBehaviour
 
     PidController steeringPID;
 
+    public VesselControl vesselControl;
+
     public void CustomAwake(MemoryBridge memoryBridge)
     {
         this.memoryBridge = memoryBridge;
+        vesselControl = memoryBridge.vesselControl;
 
         IRmanager = gameObject.GetComponent<IR_Manager>();
         IRmanager.CustomAwake(memoryBridge, memoryBridge.vesselControl, ref limbs);
@@ -109,7 +112,7 @@ public class RoboticController : MonoBehaviour
 
         }
     }
-
+    public float gaitDistance;
     public UnityEngine.Events.UnityEvent IKactivaed;
     public bool robotActive = false;
     public void ActivateIK()
@@ -127,49 +130,51 @@ public class RoboticController : MonoBehaviour
         directionTarget.localEulerAngles = GameObject.Find("Mirror Vessel COM").transform.localEulerAngles;
         foreach (var limb in limbs)
         {
-            limb.ActivateIK();
-
             var baseTarget = Instantiate(GameObject.Find("Base Target")).transform;
             baseTarget.SetParent(baseTargets);
             limb.SetBaseTarget(baseTarget);
+
+            limb.ActivateIK();         
         }
         baseTargets.SetParent(directionTarget);
         IKactivaed.Invoke();
         DebugVector.DrawVector(directionTarget, DebugVector.Direction.z, 3, .1f, Color.red, Color.white, Color.green);
         DebugVector.DrawVector(memoryBridge.vesselControl.mirrorVessel.vesselOffset, DebugVector.Direction.z, 3, .1f, Color.red, Color.white, Color.blue);
+
+       // Debug.LogError("");
     }
 
     bool walking = false;
     void BeginWalkCycle()
     {
-        groupLeft.limb0.AddGaitTarget(groupLeft.limb0.limbIK.pointBack);
+        groupLeft.limb0.AddGaitTarget(groupLeft.limb0.limbIK.pointBack,LimbController.LegMode.Translate);
         // groupLeft.limb0.AddGaitTarget(groupLeft.limb0.limbIK.pointHeight);
-        groupLeft.limb0.AddGaitTarget(groupLeft.limb0.limbIK.pointFront);
+        groupLeft.limb0.AddGaitTarget(groupLeft.limb0.limbIK.pointFront, LimbController.LegMode.Rotate);
         groupLeft.limb0.StartGait();
 
-        groupLeft.limb1.AddGaitTarget(groupLeft.limb1.limbIK.pointFront);
-        groupLeft.limb1.AddGaitTarget(groupLeft.limb1.limbIK.pointBack);
+        groupLeft.limb1.AddGaitTarget(groupLeft.limb1.limbIK.pointFront, LimbController.LegMode.Rotate);
+        groupLeft.limb1.AddGaitTarget(groupLeft.limb1.limbIK.pointBack, LimbController.LegMode.Translate);
         //   groupLeft.limb1.AddGaitTarget(groupLeft.limb1.limbIK.pointHeight);
         groupLeft.limb1.StartGait();
 
-        groupLeft.limb2.AddGaitTarget(groupLeft.limb2.limbIK.pointBack);
+        groupLeft.limb2.AddGaitTarget(groupLeft.limb2.limbIK.pointBack, LimbController.LegMode.Translate);
         // groupLeft.limb2.AddGaitTarget(groupLeft.limb2.limbIK.pointHeight);
-        groupLeft.limb2.AddGaitTarget(groupLeft.limb2.limbIK.pointFront);
+        groupLeft.limb2.AddGaitTarget(groupLeft.limb2.limbIK.pointFront, LimbController.LegMode.Rotate);
         groupLeft.limb2.StartGait();
 
 
-        groupRight.limb0.AddGaitTarget(groupRight.limb0.limbIK.pointFront);
-        groupRight.limb0.AddGaitTarget(groupRight.limb0.limbIK.pointBack);
+        groupRight.limb0.AddGaitTarget(groupRight.limb0.limbIK.pointFront, LimbController.LegMode.Rotate);
+        groupRight.limb0.AddGaitTarget(groupRight.limb0.limbIK.pointBack, LimbController.LegMode.Translate);
         //  groupRight.limb0.AddGaitTarget(groupRight.limb0.limbIK.pointHeight);
         groupRight.limb0.StartGait();
 
-        groupRight.limb1.AddGaitTarget(groupRight.limb1.limbIK.pointBack);
+        groupRight.limb1.AddGaitTarget(groupRight.limb1.limbIK.pointBack, LimbController.LegMode.Translate);
         // groupRight.limb1.AddGaitTarget(groupRight.limb1.limbIK.pointHeight);
-        groupRight.limb1.AddGaitTarget(groupRight.limb1.limbIK.pointFront);
+        groupRight.limb1.AddGaitTarget(groupRight.limb1.limbIK.pointFront, LimbController.LegMode.Rotate);
         groupRight.limb1.StartGait();
 
-        groupRight.limb2.AddGaitTarget(groupRight.limb2.limbIK.pointFront);
-        groupRight.limb2.AddGaitTarget(groupRight.limb2.limbIK.pointBack);
+        groupRight.limb2.AddGaitTarget(groupRight.limb2.limbIK.pointFront, LimbController.LegMode.Rotate);
+        groupRight.limb2.AddGaitTarget(groupRight.limb2.limbIK.pointBack, LimbController.LegMode.Translate);
         // groupRight.limb2.AddGaitTarget(groupRight.limb2.limbIK.pointHeight);
         groupRight.limb2.StartGait();
 
@@ -190,6 +195,16 @@ public class RoboticController : MonoBehaviour
 
     public void CustomUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            limbs0[0].AddGaitTarget(groupLeft.limb0.limbIK.pointMid, LimbController.LegMode.Rotate);
+            limbs0[0].StartGait();
+
+            //groupLeft.limb0.AddGaitTarget(groupLeft.limb0.limbIK.pointBack);
+            //// groupLeft.limb0.AddGaitTarget(groupLeft.limb0.limbIK.pointHeight);
+            //groupLeft.limb0.AddGaitTarget(groupLeft.limb0.limbIK.pointFront);
+            //groupLeft.limb0.StartGait();
+        }
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             BeginWalkCycle();
@@ -204,10 +219,10 @@ public class RoboticController : MonoBehaviour
         {
             limb.MirrorServos();
             limb.CheckClearance();
-            globalYPos += limb.ground.position.y + 1.7f;
+           // globalYPos += limb.ground.position.y + 1.7f;
         }
 
-        var baseHeight = globalYPos / 6;
+        //var baseHeight = globalYPos / 6;
 
         foreach (var limb in limbs)
         {
@@ -285,7 +300,7 @@ public class RoboticController : MonoBehaviour
             foreach (var limb in limbs)
             {
                 limb.LimbUpdate();
-
+               // Debug.LogError("");
             }
         }
 

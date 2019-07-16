@@ -126,11 +126,11 @@ public class RoboticServoIK : RoboticServo
     {
         if (!disabled)
         {
-            if (limbControllerPart == RoboticLimb.LimbPart.Base && counteractRot)
-            {
-                Debug.Log("set for hip rot");
-                setAngle += limbController.baseRotOffset;
-            }
+            //if (limbControllerPart == RoboticLimb.LimbPart.Base && counteractRot)
+            //{
+            //    Debug.Log("set for hip rot");
+            //    setAngle += limbController.baseRotOffset;
+            //}
 
             //  var tempLocalRot = transform.localEulerAngles;
             //  tempLocalRot.x = setAngle;

@@ -6,6 +6,7 @@ using System.Text;
 using UnityEngine;
 using Winterdom.IO.FileMap;
 using System.Threading;
+using System.Collections;
 
 namespace MemoryBridgeServer
 {
@@ -20,6 +21,7 @@ namespace MemoryBridgeServer
         MemoryBridge memoryBridge;
 
         public List<string> keysFloat;
+        public Dictionary<string, float> valueList;
         public Dictionary<string, int> valueAddressFloat; //valueAddressClientFloat;
         Dictionary<string, float> keysToAdd;
         public List<float> serverValuesFloat, clientValuesFloat;
@@ -37,6 +39,8 @@ namespace MemoryBridgeServer
             valueAddressFloat = new Dictionary<string, int>();
             keysToAdd = new Dictionary<string, float>();
             UpdateHeaderFile();
+
+            valueList = new Dictionary<string, float>();
 
         }
         void UpdateHeaderFile()
@@ -92,14 +96,16 @@ namespace MemoryBridgeServer
                     Debug.Log("Add client key: " + key);
                     keysFloat.Add(key);
                     valueAddressFloat.Add(key, keysFloat.Count - 1);
+                    valueList.Add(key,0);
                 }
             }
+            
         }
 
         public void StartUpdate()
         {
             ReadHeaderFile();
-            streamFloatValue = fileValueFloat.MapView(MapAccess.FileMapAllAccess, 0, (int)keysFloat.Count * 4);
+           // streamFloatValue = fileValueFloat.MapView(MapAccess.FileMapAllAccess, 0, (int)keysFloat.Count * 4);
 
             if (Input.GetKeyDown(KeyCode.Keypad9))
                 foreach (KeyValuePair<string, int> entry in valueAddressFloat)
@@ -189,31 +195,58 @@ namespace MemoryBridgeServer
                 keysToAdd = new Dictionary<string, float>();
             }
         }
+
+        bool gettingFloats = false;
+        //private IEnumerator GetFloatsFromServer(float waitTime)
+        //{
+        //    bool gettingFloats = true;
+        //    streamFloatValue = fileValueFloat.MapView(MapAccess.FileMapAllAccess, 0, (int)keysFloat.Count * 4);
+        //    foreach (var key in keysFloat)
+        //    {
+
+        //       // streamFloatValue.Position = address * 4;
+        //        streamFloatValue.Read(floatBuffer, 0, 4);
+
+        //        var readValue = BitConverter.ToSingle(floatBuffer, 0);
+        //        if(readValue != valueList[key])
+        //        {
+
+        //        }
+
+        //        valueList[key] = BitConverter.ToSingle(floatBuffer, 0);
+        //        yield return null;
+        //    }
+
+        //    var address = valueAddressFloat[key];
+        //    streamFloatValue.Position = address * 4;
+        //    streamFloatValue.Write(BitConverter.GetBytes(value), 0, 4);
+        //}
+
         public float GetFloat(string key)
         {
-            bool valueFound = true;
-            float returnValue = 0;
-            int address = 0;
-            //check the server keys for the value
-            try
-            {
-                address = valueAddressFloat[key];
+            //bool valueFound = true;
+            //float returnValue = 0;
+            //int address = 0;
+            ////check the server keys for the value
+            //try
+            //{
+            //    address = valueAddressFloat[key];
 
 
 
-            }
-            catch { valueFound = false; };// Debug.Log("Value not found, returning 0. Key: " + key + " " + Time.frameCount); }
+            //}
+            //catch { valueFound = false; };// Debug.Log("Value not found, returning 0. Key: " + key + " " + Time.frameCount); }
 
-            if (valueFound)
-            {
-               // Debug.Log("look for key " + key + " at position " + )
-                streamFloatValue.Position = address * 4;
-                streamFloatValue.Read(floatBuffer, 0, 4);
-               // Debug.Log("successfully read from memory " + key);
-                returnValue = BitConverter.ToSingle(floatBuffer, 0);
-            }
-           
+            //if (valueFound)
+            //{
+            //   // Debug.Log("look for key " + key + " at position " + )
+            //    streamFloatValue.Position = address * 4;
+            //    streamFloatValue.Read(floatBuffer, 0, 4);
+            //   // Debug.Log("successfully read from memory " + key);
+            //    returnValue = BitConverter.ToSingle(floatBuffer, 0);
+            //}
 
+            var returnValue = valueList[key];
             return returnValue;
         }
 
