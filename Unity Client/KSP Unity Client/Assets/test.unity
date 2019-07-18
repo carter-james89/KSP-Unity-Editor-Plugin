@@ -561,9 +561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76da4e12812da6648be83f9479f61e6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  robotStatus: 0
   limbs: []
-  limbs0: []
-  limbs1: []
   baseTargets: {fileID: 0}
   directionTarget: {fileID: 0}
   vesselControl: {fileID: 0}
@@ -573,8 +572,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  robotActive: 0
   walkSpeed: 1
+  steeringError: 0
 --- !u!1 &491640104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,10 +1099,10 @@ MonoBehaviour:
   kneePID_D: 0
   kneePID_Max: 0
   kneePID_Min: 0
-  strideLength: 1.7
+  strideLength: 2.2
   baseLerpSpeed: 2
   walkSpeed: 2
-  gaitDistance: 5
+  gaitDistance: 3.1
   hipAngle: 0
 --- !u!114 &2110264085
 MonoBehaviour:
