@@ -240,7 +240,7 @@ Transform:
   m_Children:
   - {fileID: 1801136349}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &367205231
 GameObject:
@@ -572,7 +572,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  walkSpeed: 1
+  walkSpeed: 0.5
   steeringError: 0
 --- !u!1 &491640104
 GameObject:
@@ -696,6 +696,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 49.688004, y: -30.633001, z: -0.82800007}
+--- !u!1 &1592809256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1592809257}
+  m_Layer: 0
+  m_Name: Ground
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1592809257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592809256}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -19.45, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2141777307}
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1730743997
 GameObject:
   m_ObjectHideFlags: 0
@@ -1036,7 +1067,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9d9071e2d6c72a418f72cb017793f4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CamText: {fileID: 0}
+  CamText: {fileID: 1730743998}
 --- !u!1 &2110264082
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,10 +1130,10 @@ MonoBehaviour:
   kneePID_D: 0
   kneePID_Max: 0
   kneePID_Min: 0
-  strideLength: 2.2
+  strideLength: 2.4
   baseLerpSpeed: 2
-  walkSpeed: 2
-  gaitDistance: 3.1
+  walkSpeed: 0.7
+  gaitDistance: 3.2
   hipAngle: 0
 --- !u!114 &2110264085
 MonoBehaviour:
@@ -1130,7 +1161,7 @@ GameObject:
   - component: {fileID: 2141777305}
   - component: {fileID: 2141777304}
   m_Layer: 0
-  m_Name: Ground
+  m_Name: GroundMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1202,12 +1233,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2141777303}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -80.18157, y: 16.415, z: -55.321552}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.23538415, y: 0.23538415, z: 0.23538415}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 1592809257}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1730940007187242306
 PrefabInstance:
@@ -1275,6 +1306,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730940006530598522, guid: 968d275a18728e245b838114d0312f0f,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.21815535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730940006530598522, guid: 968d275a18728e245b838114d0312f0f,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.21815535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730940006530598522, guid: 968d275a18728e245b838114d0312f0f,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.21815535
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 968d275a18728e245b838114d0312f0f, type: 3}

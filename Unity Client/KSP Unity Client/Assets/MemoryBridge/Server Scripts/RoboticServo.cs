@@ -161,6 +161,7 @@ public class RoboticServo : MonoBehaviour
         foot.GetComponent<MeshRenderer>().material.color = color;
         // footOffset.y = -footOffset.y;
         foot.transform.localPosition = footOffset;
+      //  foot.transform.position = transform.InverseTransformPoint(memoryBridge.GetVector3(servoName + "CollisionPoint"));
 
         memoryBridge.SetVector3(servoName + "contactPoint",footOffset);
 
@@ -176,12 +177,15 @@ public class RoboticServo : MonoBehaviour
         footRenderer.SetPosition(1, wristOffset);
         footRenderer.material.color = color;
 
+        
+       
+
         //  limbLength = Vector3.Distance(transform.position, foot.transform.position);
-        groundPoint = foot.transform;
-        limbController.contactPoint = groundPoint;
+        // groundPoint = foot.transform;
+        // limbController.contactPoint = groundPoint;
         return foot;
     }
-    public Transform groundPoint;
+   // public Transform groundPoint;
 
     public void Clone(RoboticServo servoToClone)
     {

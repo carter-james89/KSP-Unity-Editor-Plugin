@@ -16,7 +16,9 @@ public class RoboticLimb : MonoBehaviour
     
     public LimbController limbController;
 
-    public Transform limbEnd;
+    public Transform limbEndPoint;
+
+    // public Transform limbEnd;
 
     private void Awake()
     {
@@ -39,11 +41,11 @@ public class RoboticLimb : MonoBehaviour
 
     public void FindEndPoint()
     {
-        limbEnd = servoWrist.CalculateTarget().transform;
-        foreach (var servo in servos)
-        {
-            servo.groundPoint = limbEnd;
-        }
+        limbEndPoint = servoWrist.CalculateTarget().transform;
+        //foreach (var servo in servos)
+        //{
+        //    servo.groundPoint = limbEnd;
+        //}
     }
 
     public void SetLimbReference()

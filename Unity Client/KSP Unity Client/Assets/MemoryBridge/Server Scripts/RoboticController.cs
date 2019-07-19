@@ -215,47 +215,41 @@ public class RoboticController : MonoBehaviour
     {
         
         simTime += Time.deltaTime;
-        if(simTime > 1 && !activateIK)
+        // if(simTime > 1 && !activateIK)
+        // {
+        //     ActivateIK();
+        //     activateIK = true;
+        // }
+        //else if(simTime > 3 && !moveGait)
+        // {
+        //     MoveGaitToStartPosition();
+        // }
+        // else if(simTime> 8 & !walk)
+        // {
+        //     //foreach (var item in groupLeft.limbs)
+        //     //{
+        //     //    item.SetGaitRotation(10);
+        //     //}
+        //     walk = true;
+        //     BeginWalkCycle();
+        // }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            ActivateIK();
-            activateIK = true;
-        }
-       else if(simTime > 3 && !moveGait)
-        {
-            Debug.Log("point mid ", group0.limbs[0].limbIK.pointMid.gameObject);
-            group0.limbs[0].AddGaitTarget(group0.limbs[0].limbIK.pointMid, LimbController.LegMode.Rotate);
-            group0.limbs[1].AddGaitTarget(group0.limbs[1].limbIK.pointMid, LimbController.LegMode.Rotate);
-            group0.limbs[2].AddGaitTarget(group0.limbs[2].limbIK.pointMid, LimbController.LegMode.Rotate);
-
-            group1.limbs[0].AddGaitTarget(group1.limbs[0].limbIK.pointMid, LimbController.LegMode.Rotate);
-            group1.limbs[1].AddGaitTarget(group1.limbs[1].limbIK.pointMid, LimbController.LegMode.Rotate);
-            group1.limbs[2].AddGaitTarget(group1.limbs[2].limbIK.pointMid, LimbController.LegMode.Rotate);
-
-            group0.limbs[0].StartGait();
-            group0.limbs[1].StartGait();
-            group0.limbs[2].StartGait();
-
-            movingGroup0 = true;
-            moveGait = true;
-
-            robotStatus = RobotStatus.AdjustingGaitPosition;
-        }
-        else if(simTime> 8 & !walk)
-        {
-            //foreach (var item in groupLeft.limbs)
+             ActivateIK();
+            //foreach (var item in limbs)
             //{
-            //    item.SetGaitRotation(10);
+            //    item.limbIK.IKtargetTransform.position = item.limbMirror.limbEnd.position;
             //}
-            walk = true;
-            BeginWalkCycle();
+            
         }
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            BeginWalkCycle();
+            MoveGaitToStartPosition();
+            //BeginWalkCycle();
         }
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            ResetLimbPositions();
+            BeginWalkCycle();
         }
 
         foreach (var limb in limbs)
@@ -268,6 +262,7 @@ public class RoboticController : MonoBehaviour
 
         if (robotStatus != RobotStatus.Deactivated)
         {
+            //set robot walk height
             if (directionTarget.position != targetBaseHeight)
             {
                 directionTarget.position = Vector3.Lerp(directionTarget.position, targetBaseHeight, Time.deltaTime);
@@ -276,13 +271,9 @@ public class RoboticController : MonoBehaviour
                     directionTarget.position = targetBaseHeight;
                 }
             }
+            //Set gait height
             foreach (var limb in limbs)
             {
-                //mirror the servos from ksp
-                // limb.MirrorServos();
-                //calculate the ground position
-                // limb.CheckClearance();
-                //set the gait height according to baseOffset
                 limb.SetGaitHeight();
             }
 
@@ -393,6 +384,27 @@ public class RoboticController : MonoBehaviour
         }
     }
 
+    void MoveGaitToStartPosition()
+    {
+        Debug.Log("point mid ", group0.limbs[0].limbIK.pointMid.gameObject);
+        group0.limbs[0].AddGaitTarget(group0.limbs[0].limbIK.pointMid, LimbController.LegMode.Rotate);
+        group0.limbs[1].AddGaitTarget(group0.limbs[1].limbIK.pointMid, LimbController.LegMode.Rotate);
+        group0.limbs[2].AddGaitTarget(group0.limbs[2].limbIK.pointMid, LimbController.LegMode.Rotate);
+
+        group1.limbs[0].AddGaitTarget(group1.limbs[0].limbIK.pointMid, LimbController.LegMode.Rotate);
+        group1.limbs[1].AddGaitTarget(group1.limbs[1].limbIK.pointMid, LimbController.LegMode.Rotate);
+        group1.limbs[2].AddGaitTarget(group1.limbs[2].limbIK.pointMid, LimbController.LegMode.Rotate);
+
+        group0.limbs[0].StartGait();
+        group0.limbs[1].StartGait();
+        group0.limbs[2].StartGait();
+
+        movingGroup0 = true;
+        moveGait = true;
+
+        robotStatus = RobotStatus.AdjustingGaitPosition;
+    }
+
     float strideTime = 0;
     public float steeringError;
     void CheckCycleComplete()
@@ -433,7 +445,6 @@ public class RoboticController : MonoBehaviour
             var offset = directionTarget.InverseTransformPoint(forwardPoint);
 
             steeringError = offset.x;
-
           
             walkCycle++;
             foreach (var limb in limbs)
@@ -441,7 +452,7 @@ public class RoboticController : MonoBehaviour
                 limb.NextGaitSeguence();
             }
           //  strideAdjust = -.3f;
-            if (Math.Abs(steeringError) > .1f)
+            if (Math.Abs(steeringError) > .05f)
             {
                 System.TimeSpan deltaTime = TimeSpan.FromSeconds(strideTime);// new TimeSpan(0, 0, (int)strideTime);         
                 steeringPID.ProcessVariable = steeringError;

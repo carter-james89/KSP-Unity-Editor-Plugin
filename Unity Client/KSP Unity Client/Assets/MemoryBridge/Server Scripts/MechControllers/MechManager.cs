@@ -28,11 +28,11 @@ namespace KSPMechs
         protected virtual void Update()
         {
             // memoryBridge.Update();
-            if (Input.GetKeyDown(KeyCode.Alpha6))
-            {
-                memoryBridge.roboticController.ActivateIK();
-                Debug.Log("IK Activated");
-            }
+            //if (Input.GetKeyDown(KeyCode.Alpha6))
+            //{
+            //    memoryBridge.roboticController.ActivateIK();
+            //    Debug.Log("IK Activated");
+            //}
               //  ActivateIK();
 
             if (Input.anyKeyDown)

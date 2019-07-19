@@ -20,9 +20,13 @@ public class RoboticServoIK : RoboticServo
 
     float offset = 0;
 
+    LimbController limbController;
+
     public override void CustomStart(string servoName, MemoryBridge memoryBridge, LimbController limbController, int parentID)
     {
         base.CustomStart(servoName, memoryBridge, limbController, parentID);
+
+        this.limbController = limbController;
 
         //  speedPID = new PidController.PidController(mech.hipRotPIDP, mech.hipRotPIDI, mech.hipRotPIDD, mech.hipRotPIDMax, 0);
         Debug.Log("Create pid");
@@ -63,13 +67,13 @@ public class RoboticServoIK : RoboticServo
         this.limbController = mirrorServo.limbController;
         servoBase = transform.parent;
         memoryBridge = mirrorServo.memoryBridge;
-        this.groundPoint = mirrorServo.groundPoint;
+      //  this.groundPoint = mirrorServo.groundPoint;
         setAngle = 0;
 
         if (limbControllerPart == RoboticLimb.LimbPart.Wrist)
         {
-            limbLength = Vector3.Distance(transform.position, groundPoint.position);
-            var limbOffset = transform.InverseTransformPoint(groundPoint.position);
+            limbLength = Vector3.Distance(transform.position, memoryBridge.GetVector3(mirrorServo.servoName + "CollisionPoint"));
+            var limbOffset = transform.InverseTransformPoint(memoryBridge.GetVector3(mirrorServo.servoName + "CollisionPoint"));
             targetOffset = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
             targetOffset *= (float)(180 / Math.PI);
 
@@ -90,6 +94,11 @@ public class RoboticServoIK : RoboticServo
             limitMin = -90;
             //targetOffset = 0;
         }
+
+        //limbLength = Vector3.Distance(transform.position, limbController.limbIK.limbEndPoint.position);
+        //var limbOffset = transform.InverseTransformPoint(groundPoint.position);
+        //targetOffset = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
+        //targetOffset *= (float)(180 / Math.PI);
 
         var tempPos = newPos -= targetOffset;
 

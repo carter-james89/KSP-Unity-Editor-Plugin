@@ -14,24 +14,35 @@ public class LimbController : MonoBehaviour
     List<RoboticServoIK> servosIK;
 
     Transform baseMirror, baseIK;
+    [HideInInspector]
     public RoboticLimbMirror limbMirror;
+    [HideInInspector]
     public RoboticLimbIK limbIK;
 
     public RoboticServo servoBase;
+    [HideInInspector]
     public VesselControl vesselControl;
 
     bool gaitSequenceActive = false;
 
-    public Transform ground, baseTarget, contactPoint;
+    [HideInInspector]
+    public Transform ground, baseTarget;// contactPoint;
+    [HideInInspector]
     public MeshRenderer groundRenderer;
 
+    [HideInInspector]
     public RoboticController roboticController;
 
     public enum LegMode { Translate, Rotate }
     public LegMode legMode;
 
+    public Vector3 contactPointOffset;
+
     public virtual void CustomAwake(MemoryBridge memoryBridge, string limbName, VesselControl vesselControl)
     {
+        
+
+
         this.memoryBridge = memoryBridge;
         this.vesselControl = vesselControl;
         limbFile = MemoryMappedFile.Open(MapAccess.FileMapAllAccess, limbName);
@@ -109,13 +120,19 @@ public class LimbController : MonoBehaviour
         gaitSequenceActive = true;
         limbIK.StartGaitSequence();
     }
+    [HideInInspector]
     public float servoAcceleration = 5;
     public float baseLerpSpeed = 2;
+    [HideInInspector]
     public float baseError;
-
+    [HideInInspector]
     public float baseRotOffset;
 
-    public float hipHeightError;
+    public float hipHeightError, hipHeightErrorGlobal;
+    public float gaitBelowGround;
+    public float targetEndPointError;
+    public float IKtargetError;
+    public float IKtargetYOffset;
 
     public void SetGaitRotation(float newRotation)
     {
@@ -124,9 +141,15 @@ public class LimbController : MonoBehaviour
     public void SetGaitHeight()
     {
         limbIK.gait.transform.rotation = Quaternion.LookRotation(vesselControl.vessel.transform.forward, Vector3.up);
+        var tempEuler = limbIK.gait.eulerAngles;
+        tempEuler.x = 0;
+        limbIK.gait.eulerAngles = tempEuler;
 
 
+        
         var baseOffset = baseTarget.InverseTransformPoint(limbIK.IKAxisX.servo1.transform.position);
+     
+
         // var baseOffset = limbIK.IKAxisX.servo1.transform.position - baseTarget.transform.position;
         var globalPoint = limbIK.transform.TransformPoint(limbIK.gaitStartPos);
         globalPoint.y = ground.position.y;
@@ -137,12 +160,17 @@ public class LimbController : MonoBehaviour
         //baseRotOffset = (float)(90 - angle);
 
         hipHeightError = baseOffset.y;
+       // hipHeightErrorGlobal = Vector3.Distance(baseTarget.position, adjustedGlobalPoint);
+
         if (legMode == LegMode.Translate || mirrorAtTarget)
         {
+          //  Debug.Log("setting gait height");
             globalPoint.y += baseOffset.y;
             // limbIK.gait.localPosition = Vector3.Lerp(limbIK.gait.localPosition, limbIK.transform.InverseTransformPoint(globalPoint), Time.deltaTime * baseLerpSpeed);
             // limbIK.gait.position = Vector3.Lerp(limbIK.gait.position, globalPoint, Time.deltaTime * baseLerpSpeed);
             limbIK.gait.position = globalPoint;
+           // ground.transform.localScale = Vector3.one;
+            gaitBelowGround = ground.InverseTransformPoint(limbIK.gait.transform.position).y;
             //limbIK.gait.position = Vector3.Lerp(globalPoint,globalPoint + baseOffset.y,)
             //  limbIK.gait.position = ground.position - new Vector3(0, baseOffset.y, 0);
         }
@@ -151,6 +179,7 @@ public class LimbController : MonoBehaviour
             // limbIK.gait.localPosition = limbIK.transform.InverseTransformPoint(globalPoint);
             limbIK.gait.position = globalPoint;
         }
+        targetEndPointError = Vector3.Distance(limbMirror.limbEndPoint.transform.position, limbIK.IKtargetTransform.position);
         //var tempEuler = limbIK.gait.eulerAngles;// = Vector3.zero;
         //tempEuler.x = 0;
         //limbIK.gait.eulerAngles = tempEuler;
@@ -169,6 +198,8 @@ public class LimbController : MonoBehaviour
     {
         limbIK.RunIK();
         SetServos();
+        IKtargetError = Vector3.Distance(limbIK.limbEndPoint.position, limbIK.IKtargetTransform.position);
+        IKtargetYOffset = limbIK.limbEndPoint.position.y - limbIK.IKtargetTransform.position.y;
     }
     public void SetServos()
     {
@@ -181,10 +212,10 @@ public class LimbController : MonoBehaviour
         mirrorAtTarget = false;
         if (limbIK.currentTarget)
         {
-            var groundClearance = ground.InverseTransformPoint(limbMirror.limbEnd.position).normalized;
-            limbError = Vector3.Distance(limbMirror.limbEnd.position, limbIK.currentTarget.position);
+            var groundClearance = ground.InverseTransformPoint(limbMirror.limbEndPoint.position).normalized;
+            limbError = Vector3.Distance(limbMirror.limbEndPoint.position, limbIK.currentTarget.position);
 
-            var yDif = limbMirror.limbEnd.position.y - ground.position.y;
+            var yDif = limbMirror.limbEndPoint.position.y - ground.position.y;
 
             if (legMode == LegMode.Rotate)
             {
@@ -207,7 +238,7 @@ public class LimbController : MonoBehaviour
     public bool debugClearance;
     float footClearance = 0;
     public bool groundContact;
-    Transform collisionPoint;
+   // Transform collisionPoint;
 
     public void SetBaseTarget(Transform baseTarget)
     {
@@ -224,6 +255,7 @@ public class LimbController : MonoBehaviour
         limbMirror.CustomStart(this);
         limbMirror.servosMirror = servosMirror;
         limbMirror.SetLimbReference();
+
         limbMirror.FindEndPoint();
         //Move the Limb controller component Object into place
         transform.SetParent(baseMirror);
@@ -250,7 +282,7 @@ public class LimbController : MonoBehaviour
         limbIK.servoWrist = mirrorLimb.servoWrist;
         limbIK.servoBase = mirrorLimb.servoBase;
         //limbIK.limbController = mirrorLimb.limbController;
-        limbIK.limbEnd = mirrorLimb.limbEnd;
+      //  limbIK.limbEnd = mirrorLimb.limbEnd;
         Destroy(mirrorLimb);
 
         limbIK.ConvertToIKLimb(limbMirror);
@@ -264,6 +296,7 @@ public class LimbController : MonoBehaviour
         limbIK.ActivateIK();
         SetServos();
         IKactive = true;
+        mirrorAtTarget = true;
     }
 
     public void AddGaitTarget(Transform newTarget, LimbController.LegMode newMode)
@@ -294,6 +327,11 @@ public class LimbController : MonoBehaviour
 
     public void CheckClearance()
     {
+        if (IKactive)//& legMode == LegMode.Translate)
+        {
+            limbMirror.limbEndPoint.position = limbMirror.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
+            limbIK.limbEndPoint.position = limbIK.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
+        }
         torque = memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "torque");
         velocity = torque.magnitude;
         explosionPotential = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "explosionPotential");
@@ -308,7 +346,11 @@ public class LimbController : MonoBehaviour
         }
 
         rawClearance = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "KSPFootClearance");
-        var contactPointOffSet = limbMirror.servoWrist.transform.position.y - contactPoint.position.y;
+        if(limbMirror.limbEndPoint == null)
+        {
+            Debug.Log("end point null");
+        }
+        var contactPointOffSet = limbMirror.servoWrist.transform.position.y - limbMirror.limbEndPoint.position.y;
         footClearance = rawClearance - contactPointOffSet;
         if (footClearance < .03f)
         {
@@ -316,24 +358,20 @@ public class LimbController : MonoBehaviour
         }
         groundContact = memoryBridge.GetBool(limbMirror.servoWrist.servoName + "GroundContact");
 
-        if (!collisionPoint)
-        {
-            collisionPoint = new GameObject("CollisionPoint").transform;
-            DebugVector.DrawVector(collisionPoint, DebugVector.Direction.all, .5f, .1f, Color.red, Color.white, Color.blue);
-        }
-        collisionPoint.position = limbMirror.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
+        //if (!collisionPoint)
+        //{
+        //    collisionPoint = new GameObject("CollisionPoint").transform;
+        //   // DebugVector.DrawVector(collisionPoint, DebugVector.Direction.all, .5f, .1f, Color.red, Color.white, Color.blue);
+        //}
+        //collisionPoint.position = limbMirror.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
 
         // limbMirror.
         //if(limbIK)
-        if (IKactive & legMode == LegMode.Translate)
-        {
-            limbMirror.limbEnd.position = limbMirror.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
-            limbIK.limbEndPoint.position = limbIK.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
-        }
+      
 
         //if (!groundContact)
         // ground.position = limbMirror.servoWrist.transform.position - new Vector3(0, rawClearance, 0);
-        var localPoint = limbMirror.limbEnd.localPosition - new Vector3(0, .4f, 0);
+        var localPoint = limbMirror.limbEndPoint.localPosition - new Vector3(0, .4f, 0);
         ground.position = limbMirror.servoWrist.transform.TransformPoint(localPoint) - new Vector3(0, rawClearance, 0);
     }
     //public void SetBaseHeight(float globalY)
