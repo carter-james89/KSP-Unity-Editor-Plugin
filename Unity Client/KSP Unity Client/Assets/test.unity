@@ -565,6 +565,49 @@ MonoBehaviour:
   limbs: []
   baseTargets: {fileID: 0}
   directionTarget: {fileID: 0}
+  strideLength: 2
+  curveX:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25851285
+      value: 0.027679931
+      inSlope: 0.0071024015
+      outSlope: 0.0071024015
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.9529985
+      value: 0.018942587
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 2
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   vesselControl: {fileID: 0}
   gaitDistance: 0
   IKactivaed:
@@ -1132,8 +1175,8 @@ MonoBehaviour:
   kneePID_Min: 0
   strideLength: 2.4
   baseLerpSpeed: 2
-  walkSpeed: 1
-  gaitDistance: 3.2
+  walkSpeed: 0.2
+  gaitDistance: 3
   hipAngle: 0
 --- !u!114 &2110264085
 MonoBehaviour:

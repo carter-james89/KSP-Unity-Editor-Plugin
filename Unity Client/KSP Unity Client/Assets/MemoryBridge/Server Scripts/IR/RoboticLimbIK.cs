@@ -50,6 +50,9 @@ public class RoboticLimbIK : RoboticLimb
     public List<Transform> gaitSequenceTarget;
     public List<LimbController.LegMode> gaitSequenceMode;
 
+    AnimationCurve gaitCurve;
+
+
     #region Setup
     public void AddGaitTarget(Transform newTarget, LimbController.LegMode legMode)
     {
@@ -82,6 +85,7 @@ public class RoboticLimbIK : RoboticLimb
     }
     public void ActivateIK()
     {
+        gaitCurve = limbController.roboticController.curveX;
         foreach (var servo in servosIK)
         {
             servo.SetServo(servo.mirrorServo.kspStartAngle);
@@ -204,6 +208,7 @@ public class RoboticLimbIK : RoboticLimb
         gaitAdjust = newRotation;
     }
 
+    public float gaitCurveY;
     public float rotPercent;
     public void RunGait(float avgStridePercent)
     {
@@ -230,6 +235,8 @@ public class RoboticLimbIK : RoboticLimb
                                 }
                                 IKtargetTransform.position = Vector3.MoveTowards(IKtargetTransform.position, currentTarget.transform.position, speed);
                                 var dir = IKtargetTransform.position - currentTarget.position;
+
+                              
 
                                 // if (CalculateTranslateStridePercent() < .95)
                                 // IKtargetTransform.Translate(-dir.normalized * (limbController.roboticController.walkSpeed * Time.deltaTime));
@@ -283,6 +290,7 @@ public class RoboticLimbIK : RoboticLimb
                             //{
                             if (limbController.roboticController.robotStatus == RoboticController.RobotStatus.Walking && limbController.roboticController.walkCycle >= 1)
                             {
+                                gaitCurveY = gaitCurve.Evaluate(avgStridePercent);
                                 if (avgStridePercent  < .5)
                                 {
                                     Vector3 strideHeight = new Vector3(0, 0, -.3f);

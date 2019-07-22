@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
 public class RoboticController : MonoBehaviour
 {
     public enum RobotStatus { Deactivated, Idle, AdjustingGaitPosition, Walking }
@@ -21,7 +22,13 @@ public class RoboticController : MonoBehaviour
     MemoryBridge memoryBridge;
     PidController steeringPID;
 
+    public float strideLength = 2;
+
+    public AnimationCurve curveX = AnimationCurve.EaseInOut(0, 0, 3, 0);
+
     public VesselControl vesselControl;
+
+    //public AnimationCurve myCurve;
 
     public void CustomAwake(MemoryBridge memoryBridge)
     {
@@ -216,24 +223,24 @@ public class RoboticController : MonoBehaviour
     {
         
         simTime += Time.deltaTime;
-        // if(simTime > 1 && !activateIK)
-        // {
-        //     ActivateIK();
-        //     activateIK = true;
-        // }
-        //else if(simTime > 3 && !moveGait)
-        // {
-        //     MoveGaitToStartPosition();
-        // }
-        // else if(simTime> 8 & !walk)
-        // {
-        //     //foreach (var item in groupLeft.limbs)
-        //     //{
-        //     //    item.SetGaitRotation(10);
-        //     //}
-        //     walk = true;
-        //     BeginWalkCycle();
-        // }
+        if (simTime > 1 && !activateIK)
+        {
+            ActivateIK();
+            activateIK = true;
+        }
+        else if (simTime > 3 && !moveGait)
+        {
+            MoveGaitToStartPosition();
+        }
+        else if (simTime > 8 & !walk)
+        {
+            //foreach (var item in groupLeft.limbs)
+            //{
+            //    item.SetGaitRotation(10);
+            //}
+            walk = true;
+            BeginWalkCycle();
+        }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
              ActivateIK();
