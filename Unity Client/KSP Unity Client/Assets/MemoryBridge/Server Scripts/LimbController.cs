@@ -38,11 +38,10 @@ public class LimbController : MonoBehaviour
 
     public Vector3 contactPointOffset;
 
+   
+
     public virtual void CustomAwake(MemoryBridge memoryBridge, string limbName, VesselControl vesselControl)
     {
-        
-
-
         this.memoryBridge = memoryBridge;
         this.vesselControl = vesselControl;
         limbFile = MemoryMappedFile.Open(MapAccess.FileMapAllAccess, limbName);
@@ -165,7 +164,7 @@ public class LimbController : MonoBehaviour
         if (legMode == LegMode.Translate || mirrorAtTarget)
         {
           //  Debug.Log("setting gait height");
-            globalPoint.y += baseOffset.y;
+             globalPoint.y += baseOffset.y;
             // limbIK.gait.localPosition = Vector3.Lerp(limbIK.gait.localPosition, limbIK.transform.InverseTransformPoint(globalPoint), Time.deltaTime * baseLerpSpeed);
             // limbIK.gait.position = Vector3.Lerp(limbIK.gait.position, globalPoint, Time.deltaTime * baseLerpSpeed);
             limbIK.gait.position = globalPoint;
@@ -179,7 +178,7 @@ public class LimbController : MonoBehaviour
             // limbIK.gait.localPosition = limbIK.transform.InverseTransformPoint(globalPoint);
             limbIK.gait.position = globalPoint;
         }
-        targetEndPointError = Vector3.Distance(limbMirror.limbEndPoint.transform.position, limbIK.IKtargetTransform.position);
+        targetEndPointError = Vector3.Distance(limbMirror.limbEnd.transform.position, limbIK.IKtargetTransform.position);
         //var tempEuler = limbIK.gait.eulerAngles;// = Vector3.zero;
         //tempEuler.x = 0;
         //limbIK.gait.eulerAngles = tempEuler;
@@ -198,8 +197,8 @@ public class LimbController : MonoBehaviour
     {
         limbIK.RunIK();
         SetServos();
-        IKtargetError = Vector3.Distance(limbIK.limbEndPoint.position, limbIK.IKtargetTransform.position);
-        IKtargetYOffset = limbIK.limbEndPoint.position.y - limbIK.IKtargetTransform.position.y;
+        IKtargetError = Vector3.Distance(limbIK.limbEnd.position, limbIK.IKtargetTransform.position);
+        IKtargetYOffset = limbIK.limbEnd.position.y - limbIK.IKtargetTransform.position.y;
     }
     public void SetServos()
     {
@@ -212,10 +211,10 @@ public class LimbController : MonoBehaviour
         mirrorAtTarget = false;
         if (limbIK.currentTarget)
         {
-            var groundClearance = ground.InverseTransformPoint(limbMirror.limbEndPoint.position).normalized;
-            limbError = Vector3.Distance(limbMirror.limbEndPoint.position, limbIK.currentTarget.position);
+            var groundClearance = ground.InverseTransformPoint(limbMirror.limbEnd.position).normalized;
+            limbError = Vector3.Distance(limbMirror.limbEnd.position, limbIK.currentTarget.position);
 
-            var yDif = limbMirror.limbEndPoint.position.y - ground.position.y;
+            var yDif = limbMirror.limbEnd.position.y - ground.position.y;
 
             if (legMode == LegMode.Rotate)
             {
@@ -259,7 +258,6 @@ public class LimbController : MonoBehaviour
         limbMirror.FindEndPoint();
         //Move the Limb controller component Object into place
         transform.SetParent(baseMirror);
-        // transform.localEulerAngles = Vector3.zero;
         transform.localPosition = Vector3.zero;
         transform.LookAt(baseMirror.up);//,vesselControl.mirrorVessel.transform.up);
         transform.rotation = Quaternion.LookRotation(baseMirror.up, vesselControl.adjustedGimbal.up);
@@ -279,14 +277,19 @@ public class LimbController : MonoBehaviour
         var mirrorLimb = baseIK.gameObject.GetComponent<RoboticLimbMirror>();
         limbIK = baseIK.gameObject.AddComponent<RoboticLimbIK>();
         limbIK.CustomStart(this);
-        limbIK.servoWrist = mirrorLimb.servoWrist;
-        limbIK.servoBase = mirrorLimb.servoBase;
+      //  limbIK.servoWrist = mirrorLimb.servoWrist;
+     //   limbIK.servoBase = mirrorLimb.servoBase;
         //limbIK.limbController = mirrorLimb.limbController;
       //  limbIK.limbEnd = mirrorLimb.limbEnd;
         Destroy(mirrorLimb);
 
+
+       
         limbIK.ConvertToIKLimb(limbMirror);
         limbIK.SetLimbReference();
+
+
+        // limbIK.FindEndPoint(false, "ik");
         limbIK.StoreGroupedServos();
     }
     bool IKactive = false;
@@ -329,8 +332,8 @@ public class LimbController : MonoBehaviour
     {
         if (IKactive)//& legMode == LegMode.Translate)
         {
-            limbMirror.limbEndPoint.position = limbMirror.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
-            limbIK.limbEndPoint.position = limbIK.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
+            //limbMirror.contactPoint.position = limbMirror.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
+           // limbIK.contactPoint.position = limbIK.servoWrist.transform.TransformPoint(memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "CollisionPoint"));
         }
         torque = memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "torque");
         velocity = torque.magnitude;
@@ -346,11 +349,11 @@ public class LimbController : MonoBehaviour
         }
 
         rawClearance = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "KSPFootClearance");
-        if(limbMirror.limbEndPoint == null)
-        {
-            Debug.Log("end point null");
-        }
-        var contactPointOffSet = limbMirror.servoWrist.transform.position.y - limbMirror.limbEndPoint.position.y;
+        //if(limbMirror.limbEnd == null)
+        //{
+        //    Debug.Log("end point null");
+        //}
+        var contactPointOffSet = limbMirror.servoWrist.transform.position.y - limbMirror.trueLimbEnd.position.y;
         footClearance = rawClearance - contactPointOffSet;
         if (footClearance < .03f)
         {
@@ -371,7 +374,7 @@ public class LimbController : MonoBehaviour
 
         //if (!groundContact)
         // ground.position = limbMirror.servoWrist.transform.position - new Vector3(0, rawClearance, 0);
-        var localPoint = limbMirror.limbEndPoint.localPosition - new Vector3(0, .4f, 0);
+        var localPoint = limbMirror.limbEnd.localPosition - new Vector3(0, .4f, 0);
         ground.position = limbMirror.servoWrist.transform.TransformPoint(localPoint) - new Vector3(0, rawClearance, 0);
     }
     //public void SetBaseHeight(float globalY)

@@ -70,15 +70,15 @@ public class RoboticServoIK : RoboticServo
       //  this.groundPoint = mirrorServo.groundPoint;
         setAngle = 0;
 
-        if (limbControllerPart == RoboticLimb.LimbPart.Wrist)
-        {
-            limbLength = Vector3.Distance(transform.position, memoryBridge.GetVector3(mirrorServo.servoName + "CollisionPoint"));
-            var limbOffset = transform.InverseTransformPoint(memoryBridge.GetVector3(mirrorServo.servoName + "CollisionPoint"));
-            targetOffset = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
-            targetOffset *= (float)(180 / Math.PI);
+        //if (limbControllerPart == RoboticLimb.LimbPart.Wrist)
+        //{
+        //    //  limbLength = Vector3.Distance(transform.position, memoryBridge.GetVector3(mirrorServo.servoName + "CollisionPoint"));
+        //    var limbOffset = limb.trueLimbEnd.localPosition; //transform.InverseTransformPoint(memoryBridge.GetVector3(mirrorServo.servoName + "CollisionPoint"));
+        //    targetOffset = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
+        //    targetOffset *= (float)(180 / Math.PI);
 
-            //  Debug.Log("limb offset " + targetOffset);
-        }
+        //    //  Debug.Log("limb offset " + targetOffset);
+        //}
 
         if (hostPart.name.ToLower().Contains("down"))
         {

@@ -29,6 +29,7 @@ public class RoboticController : MonoBehaviour
         vesselControl = memoryBridge.vesselControl;
 
         IRmanager = gameObject.GetComponent<IR_Manager>();
+        //convert IR parts on this vessel to robotic servos and create limbcontroller/limbs
         IRmanager.CustomAwake(memoryBridge, memoryBridge.vesselControl, ref limbs);
 
         steeringPID = new PidController(1, 0, .3f, .3, -.3f);

@@ -10,7 +10,6 @@ using Winterdom.IO.FileMap;
 
 public class VesselSerializer : MonoBehaviour
 {
-
     public List<Mesh> meshList;
     public List<Part> parts;
     MemoryMappedFile vesselFile;
@@ -58,8 +57,7 @@ public class VesselSerializer : MonoBehaviour
             UnityEditor.EditorApplication.isPlaying = false;
           
 #endif
-        }
-            
+        }          
 
         int byteCount = 0;
         int partCount = 0;
@@ -100,7 +98,6 @@ public class VesselSerializer : MonoBehaviour
                 GameObject newPart = new GameObject();
                 var newPartObject = newPart.AddComponent(typeof(Part)) as Part;
                 
-
                 Vector3 vesselPartOffset = Vector3.zero;
                 var tempBuffer = new Byte[4];
                 mapStream.Read(tempBuffer, 0, 4);

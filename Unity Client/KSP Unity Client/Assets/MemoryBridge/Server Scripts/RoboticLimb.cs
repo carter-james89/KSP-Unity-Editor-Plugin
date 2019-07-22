@@ -16,7 +16,9 @@ public class RoboticLimb : MonoBehaviour
     
     public LimbController limbController;
 
-    public Transform limbEndPoint;
+    public Transform trueLimbEnd;
+    public Transform contactPoint { get; protected set; }
+    public Transform limbEnd { get; protected set; }
 
     // public Transform limbEnd;
 
@@ -39,9 +41,10 @@ public class RoboticLimb : MonoBehaviour
         }
     }
 
-    public void FindEndPoint()
+    public void FindEndPoint(bool andWrite = true, string name = "mirror")
     {
-        limbEndPoint = servoWrist.CalculateTarget().transform;
+        trueLimbEnd = servoWrist.CalculateTarget(andWrite,name).transform;
+        limbEnd = trueLimbEnd;
         //foreach (var servo in servos)
         //{
         //    servo.groundPoint = limbEnd;

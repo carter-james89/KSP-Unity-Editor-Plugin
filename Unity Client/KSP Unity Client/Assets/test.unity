@@ -1132,7 +1132,7 @@ MonoBehaviour:
   kneePID_Min: 0
   strideLength: 2.4
   baseLerpSpeed: 2
-  walkSpeed: 0.7
+  walkSpeed: 1
   gaitDistance: 3.2
   hipAngle: 0
 --- !u!114 &2110264085

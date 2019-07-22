@@ -12,7 +12,7 @@ public class RoboticLimbIK : RoboticLimb
     public struct IKAxis { public List<RoboticServoIK> servoGroup; public RoboticServoIK fixedAngleServo; public RoboticServoIK servo0; public RoboticServoIK servo1; public bool isBaseAxis; }
     public IKAxis IKAxisX, IKAxisY, IKAxisZ;
     public List<RoboticServoIK> servosIK;//, servoGroup0, servoGroup1, servoGroup2;
-   
+
     public Transform IKtargetTransform, rotAxis;
 
     bool IKactive = false;
@@ -96,14 +96,10 @@ public class RoboticLimbIK : RoboticLimb
         //gait.position = limbController.limbMirror.limbEnd.position;
         gait.SetParent(transform);//limbController.roboticController.directionTarget);
 
-
         gait.position = transform.position + transform.up * limbController.roboticController.gaitDistance;
         var tempPos = gait.position;
-        tempPos.y = limbController.limbMirror.limbEndPoint.position.y;
+        tempPos.y = limbController.limbMirror.trueLimbEnd.position.y;
         gait.position = tempPos;
-
-
-        // Debug.LogError("");
 
         gaitStartPos = gait.localPosition;// transform.position - gait.position;//transform.InverseTransformPoint(gait.position);
 
@@ -112,8 +108,7 @@ public class RoboticLimbIK : RoboticLimb
         //gait.eulerAngles = tempEuler;
         gait.transform.rotation = Quaternion.LookRotation(limbController.vesselControl.vessel.transform.forward, Vector3.up);
 
-        IKtargetTransform.position = limbController.limbMirror.limbEndPoint.position;
-
+        IKtargetTransform.position = limbController.limbMirror.trueLimbEnd.position;
 
         pointFront.localPosition = new Vector3(0, 0, strideLength / 2);
         pointBack.localPosition = new Vector3(0, 0, (strideLength / -2));
@@ -122,16 +117,6 @@ public class RoboticLimbIK : RoboticLimb
 
         currentTarget = pointMid;
 
-        var children = GetComponentsInChildren<Transform>();
-        foreach (var child in children)
-        {
-            if (child.name == "Foot(Clone)")
-            {
-                limbEndPoint = child;
-                limbEndPoint.name = "Collision Point";
-                //  DebugVector.DrawVector(limbEndPoint, DebugVector.Direction.all, 5f, .1f, Color.red, Color.white, Color.blue);
-            }
-        }
         RunIK();
     }
     #endregion
@@ -177,7 +162,7 @@ public class RoboticLimbIK : RoboticLimb
         //  Debug.Log("move to new target " + newTransform.gameObject);
 
         rotAxis.localEulerAngles = Vector3.zero;
-        rotAxis.position = limbEndPoint.position + (newTransform.position - limbEndPoint.position) / 2;
+        rotAxis.position = trueLimbEnd.position + (newTransform.position - trueLimbEnd.position) / 2;
 
 
         // Debug.LogError("");
@@ -191,7 +176,7 @@ public class RoboticLimbIK : RoboticLimb
         if (legMode == LimbController.LegMode.Rotate)//newTargetOffset.z > 0)// & legdDir == LegDirection.Forward)
         {
             rotAxis.LookAt(newTransform, -Vector3.up);
-            IKtargetTransform.position = limbEndPoint.position;
+            IKtargetTransform.position = trueLimbEnd.position;
 
             startRot = rotAxis.localRotation;
             targetRot = Quaternion.Euler(rotAxis.localEulerAngles + new Vector3(179, 0, 0));
@@ -232,13 +217,18 @@ public class RoboticLimbIK : RoboticLimb
             }
             else
             {
-                var error = Vector3.Distance(IKtargetTransform.position, limbController.limbMirror.limbEndPoint.position);
+                var error = Vector3.Distance(IKtargetTransform.position, trueLimbEnd.position);
                 if (error < .5f)
                     switch (limbController.legMode)
                     {
                         case LimbController.LegMode.Translate:
                             {
-                                IKtargetTransform.position = Vector3.MoveTowards(IKtargetTransform.position, currentTarget.transform.position, (limbController.roboticController.walkSpeed * Time.deltaTime));
+                                var speed = Time.deltaTime;
+                                if(limbController.roboticController.walkCycle >= 1)
+                                {
+                                    speed *= limbController.roboticController.walkSpeed;
+                                }
+                                IKtargetTransform.position = Vector3.MoveTowards(IKtargetTransform.position, currentTarget.transform.position, speed);
                                 var dir = IKtargetTransform.position - currentTarget.position;
 
                                 // if (CalculateTranslateStridePercent() < .95)
@@ -291,6 +281,28 @@ public class RoboticLimbIK : RoboticLimb
                             //}
                             //else
                             //{
+                            if (limbController.roboticController.robotStatus == RoboticController.RobotStatus.Walking && limbController.roboticController.walkCycle >= 1)
+                            {
+                                if (avgStridePercent  < .5)
+                                {
+                                    Vector3 strideHeight = new Vector3(0, 0, -.3f);
+                                    IKtargetTransform.localPosition = Vector3.Lerp(new Vector3(0, 0, -strideLength / 2), strideHeight, avgStridePercent * 2);
+                                }
+                                else if (avgStridePercent >= .5 )
+                                {
+                                    Vector3 strideHeight = new Vector3(0, 0, -.3f);
+                                   // Debug.Log("set ik target percent " + (1 - (avgStridePercent * 2)));
+                                    IKtargetTransform.localPosition = Vector3.Lerp(strideHeight, new Vector3(0, 0, -strideLength / 2),(avgStridePercent * 2) - 1);
+                                }
+                               // else
+                               // {
+                               //
+                                //    IKtargetTransform.localPosition = new Vector3(0, 0, -strideLength / 2);
+
+                               // }
+                            }
+                            
+                                
                             rotAxis.localRotation = Quaternion.Lerp(startRot, targetRot, avgStridePercent + .03f);
                             //}
 
@@ -407,8 +419,8 @@ public class RoboticLimbIK : RoboticLimb
                 //{
                 //    if (child.name == "Foot(Clone)")
                 //    {
-                //        limbEndPoint = child;
-                //        DebugVector.DrawVector(limbEndPoint, DebugVector.Direction.all, 5f, .1f, Color.red, Color.white, Color.blue);
+                //        trueLimbEnd = child;
+                //        DebugVector.DrawVector(trueLimbEnd, DebugVector.Direction.all, 5f, .1f, Color.red, Color.white, Color.blue);
                 //    }
 
                 //}
@@ -423,7 +435,7 @@ public class RoboticLimbIK : RoboticLimb
             }
             servo1_0Dist = Vector3.Distance(IKAxis.servo1.transform.position, IKAxis.servo0.transform.position);
 
-            var localPos = IKAxis.servo0.transform.InverseTransformPoint(limbEndPoint.position);
+            var localPos = IKAxis.servo0.transform.InverseTransformPoint(trueLimbEnd.position);
             localPos.x = 0;
             var globalPos = IKAxis.servo0.transform.TransformPoint(localPos);
             servo0_GroundPointDist = Vector3.Distance(IKAxis.servo0.transform.position, globalPos);
@@ -464,10 +476,10 @@ public class RoboticLimbIK : RoboticLimb
             if (IKAxis.fixedAngleServo)
             {
 
-               // Debug.Log("run servo 0 fixed angle");
-               // var yDif = IKAxis.servo0.groundPoint.position.y - IKtargetTransform.position.y;
-               // Debug.Log(yDif);
-               // var limbDist = Vector3.Distance(IKAxis.fixedAngleServo.transform.position, IKAxis.fixedAngleServo.groundPoint.position);
+                // Debug.Log("run servo 0 fixed angle");
+                // var yDif = IKAxis.servo0.groundPoint.position.y - IKtargetTransform.position.y;
+                // Debug.Log(yDif);
+                // var limbDist = Vector3.Distance(IKAxis.fixedAngleServo.transform.position, IKAxis.fixedAngleServo.groundPoint.position);
                 var targetPos = IKtargetTransform.position;// + new Vector3(0, limbDist, 0);
                                                            //  if (testTarget)
                                                            //     testTarget.position = targetPos;
@@ -483,15 +495,15 @@ public class RoboticLimbIK : RoboticLimb
             }
             else
             {
-                var footOffset = IKAxis.servo0.transform.InverseTransformPoint(limbEndPoint.position);
+                var footOffset = IKAxis.servo0.transform.InverseTransformPoint(trueLimbEnd.position);
                 xOffset = footOffset.z;
-               Vector3 targetOffset;
+                Vector3 targetOffset;
                 //if (IKAxis.servo0 == servoBase && Math.Abs(footOffset.z) > .1f)
                 //    targetOffset = IKAxis.servo0.servoBase.InverseTransformPoint(IKtargetTransform.position - (IKAxis.servo0.transform.forward * footOffset.z));
                 //else
                 //{
-                    targetOffset = IKAxis.servo0.servoBase.InverseTransformPoint(IKtargetTransform.position);
-              //  }
+                targetOffset = IKAxis.servo0.servoBase.InverseTransformPoint(IKtargetTransform.position);
+                //  }
 
 
                 var angle = Math.Atan2(targetOffset.z, targetOffset.y);
@@ -594,13 +606,18 @@ public class RoboticLimbIK : RoboticLimb
         var servoGroup = IKAxis.servoGroup;
         for (int i = 0; i < servoGroup.Count; i++)
         {
+            //set the wrist dist
             if (i == 0)
             {
                 servoGroup[i].limbLength = Vector3.Distance(servoGroup[i].transform.position, limbController.contactPointOffset);
+
+                var limbOffset = servoGroup[i].servoBase.InverseTransformPoint(limbEnd.position);
+                var tempAngle = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
+                tempAngle = (float)(tempAngle * 180 / Math.PI);
+                servoGroup[i].targetOffset = tempAngle;
             }
             else
             {
-                //  Debug.Log("Set servo limb length to ");
                 servoGroup[i].limbLength = Vector3.Distance(servoGroup[i].transform.position, servoGroup[i - 1].transform.position);
                 var limbOffset = servoGroup[i].servoBase.InverseTransformPoint(servoGroup[i - 1].transform.position);
                 var tempAngle = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
@@ -676,5 +693,17 @@ public class RoboticLimbIK : RoboticLimb
         servosMirror = new List<RoboticServoMirror>().ToArray();
         servos = newServos.ToArray();
         DisableParts();
+
+        var children = GetComponentsInChildren<Transform>();
+        foreach (var child in children)
+        {
+            if (child.name.Contains("True End Point "))
+            {
+                trueLimbEnd = child;
+                limbEnd = trueLimbEnd;
+                //  trueLimbEnd.name = "Collision Point";
+                //  DebugVector.DrawVector(trueLimbEnd, DebugVector.Direction.all, 5f, .1f, Color.red, Color.white, Color.blue);
+            }
+        }
     }
 }

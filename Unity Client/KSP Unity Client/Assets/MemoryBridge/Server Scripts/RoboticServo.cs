@@ -26,7 +26,6 @@ public class RoboticServo : MonoBehaviour
     Color color;
 
     public Part hostPart;
-    Vector3 footOffset;
     public LimbController limbController;
     public RoboticLimb limb;
 
@@ -48,7 +47,7 @@ public class RoboticServo : MonoBehaviour
 
         limitMin = memoryBridge.GetFloat(servoName + "minPos");
         limitMax = memoryBridge.GetFloat(servoName + "maxPos");
-       // Debug.Log(limitMax);
+        // Debug.Log(limitMax);
 
         if (servoName.ToLower().Contains("base"))
         {
@@ -126,7 +125,7 @@ public class RoboticServo : MonoBehaviour
         //servoBase.LookAt(lookAtPoint, Vector3.up);
     }
 
-    public GameObject CalculateTarget()
+    public GameObject CalculateTarget(bool andWrite, string name)
     {
         var worldVertPositions = new List<Vector3>();
         var offsets = new List<Vector3>();
@@ -156,20 +155,23 @@ public class RoboticServo : MonoBehaviour
                 footOffset = offsets[i];
             }
         }
+        Debug.Log("offset " + name + " " + footOffset, gameObject);
         var foot = Instantiate(Resources.Load("Foot", typeof(GameObject))) as GameObject;
+        foot.name = "True End Point " + name;
         foot.transform.SetParent(transform);
         foot.GetComponent<MeshRenderer>().material.color = color;
         // footOffset.y = -footOffset.y;
         foot.transform.localPosition = footOffset;
-      //  foot.transform.position = transform.InverseTransformPoint(memoryBridge.GetVector3(servoName + "CollisionPoint"));
+        //  foot.transform.position = transform.InverseTransformPoint(memoryBridge.GetVector3(servoName + "CollisionPoint"));
 
-        memoryBridge.SetVector3(servoName + "contactPoint",footOffset);
+        if (andWrite)
+            memoryBridge.SetVector3(servoName + "contactPoint", footOffset);
 
         targetOffset = (float)(Math.Atan2(footOffset.z, footOffset.y));
 
         targetOffset *= (float)(180 / Math.PI);
         //targetOffset = Vector3.Angle(transform.position, foot.transform.position);
-       // Debug.Log("target offset " + targetOffset);
+        // Debug.Log("target offset " + targetOffset);
 
         var footRenderer = foot.GetComponent<LineRenderer>();
         footRenderer.SetPosition(0, Vector3.zero);
@@ -177,15 +179,15 @@ public class RoboticServo : MonoBehaviour
         footRenderer.SetPosition(1, wristOffset);
         footRenderer.material.color = color;
 
-        
-       
+
+
 
         //  limbLength = Vector3.Distance(transform.position, foot.transform.position);
         // groundPoint = foot.transform;
         // limbController.contactPoint = groundPoint;
         return foot;
     }
-   // public Transform groundPoint;
+    // public Transform groundPoint;
 
     public void Clone(RoboticServo servoToClone)
     {
@@ -284,7 +286,7 @@ public class RoboticServo : MonoBehaviour
         if (disable)
         {
             Debug.Log("disable " + name);
-         //   hostPart.lineRenderer.material.color = Color.red;
+            //   hostPart.lineRenderer.material.color = Color.red;
         }
     }
 
