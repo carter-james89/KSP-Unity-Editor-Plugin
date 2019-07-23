@@ -566,56 +566,57 @@ MonoBehaviour:
   baseTargets: {fileID: 0}
   directionTarget: {fileID: 0}
   strideLength: 2
-  curveX:
+  gaitType: 1
+  gaitCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: -1.2
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 0.321412
+      outSlope: 0.321412
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.21497364
     - serializedVersion: 3
-      time: 0.25851285
-      value: 0.027679931
-      inSlope: 0.0071024015
-      outSlope: 0.0071024015
+      time: -0.98605347
+      value: 0.5023575
+      inSlope: -0.04037605
+      outSlope: -0.04037605
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.09964071
+    - serializedVersion: 3
+      time: 1.1518239
+      value: 0.08769163
+      inSlope: -0.18484856
+      outSlope: -0.18484856
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1.9529985
-      value: 0.018942587
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 2
+      time: 1.2
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.042829003
+      outSlope: -0.042829003
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+      inWeight: 0.17390008
+      outWeight: 0.24377571
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   vesselControl: {fileID: 0}
-  gaitDistance: 0
+  gaitDistance: 3
   IKactivaed:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  walkSpeed: 0.5
+  walkSpeed: 2
   steeringError: 0
 --- !u!1 &491640104
 GameObject:
@@ -1173,9 +1174,9 @@ MonoBehaviour:
   kneePID_D: 0
   kneePID_Max: 0
   kneePID_Min: 0
-  strideLength: 2.4
+  strideLength: 2
   baseLerpSpeed: 2
-  walkSpeed: 0.2
+  walkSpeed: 3
   gaitDistance: 3
   hipAngle: 0
 --- !u!114 &2110264085

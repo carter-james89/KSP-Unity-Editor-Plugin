@@ -24,7 +24,10 @@ public class RoboticController : MonoBehaviour
 
     public float strideLength = 2;
 
-    public AnimationCurve curveX = AnimationCurve.EaseInOut(0, 0, 3, 0);
+    public enum GaitType { Arc, Graph}
+    public GaitType gaitType;
+
+    public AnimationCurve gaitCurve = AnimationCurve.EaseInOut(-1, 0, 1, 0);
 
     public VesselControl vesselControl;
 

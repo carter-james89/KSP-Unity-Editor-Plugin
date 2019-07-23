@@ -50,7 +50,7 @@ public class RoboticLimbIK : RoboticLimb
     public List<Transform> gaitSequenceTarget;
     public List<LimbController.LegMode> gaitSequenceMode;
 
-    AnimationCurve gaitCurve;
+   public  AnimationCurve gaitCurve;
 
 
     #region Setup
@@ -85,7 +85,7 @@ public class RoboticLimbIK : RoboticLimb
     }
     public void ActivateIK()
     {
-        gaitCurve = limbController.roboticController.curveX;
+        gaitCurve = limbController.roboticController.gaitCurve;
         foreach (var servo in servosIK)
         {
             servo.SetServo(servo.mirrorServo.kspStartAngle);
@@ -114,8 +114,8 @@ public class RoboticLimbIK : RoboticLimb
 
         IKtargetTransform.position = limbController.limbMirror.trueLimbEnd.position;
 
-        pointFront.localPosition = new Vector3(0, 0, strideLength / 2);
-        pointBack.localPosition = new Vector3(0, 0, (strideLength / -2));
+        DefaultStrideLength();
+        
         defaultBackPos = (strideLength / -2);// - .3f;
         IKactive = true;
 
@@ -208,7 +208,7 @@ public class RoboticLimbIK : RoboticLimb
         gaitAdjust = newRotation;
     }
 
-    public float gaitCurveY;
+    public float gaitCurveY, gaitCurveX;
     public float rotPercent;
     public void RunGait(float avgStridePercent)
     {
@@ -290,18 +290,39 @@ public class RoboticLimbIK : RoboticLimb
                             //{
                             if (limbController.roboticController.robotStatus == RoboticController.RobotStatus.Walking && limbController.roboticController.walkCycle >= 1)
                             {
-                                gaitCurveY = gaitCurve.Evaluate(avgStridePercent);
-                                if (avgStridePercent  < .5)
+
+                                if(limbController.roboticController.gaitType == RoboticController.GaitType.Graph)
                                 {
-                                    Vector3 strideHeight = new Vector3(0, 0, -.3f);
-                                    IKtargetTransform.localPosition = Vector3.Lerp(new Vector3(0, 0, -strideLength / 2), strideHeight, avgStridePercent * 2);
+                                    pointBack.localScale = Vector3.one;
+
+                                    var length = Math.Abs(gaitCurve.keys[0].time) + gaitCurve.keys[gaitCurve.keys.Length - 1].time;
+                                    gaitCurveX = (avgStridePercent + .03f) * length;
+
+                                    IKtargetTransform.position = pointBack.TransformPoint(new Vector3(0, 0, gaitCurveX));
+
+                                    gaitCurveY = gaitCurve.Evaluate(gait.InverseTransformPoint(IKtargetTransform.position).z);
+
+                                    
+
+                                    IKtargetTransform.position = pointBack.TransformPoint(new Vector3(0, gaitCurveY, gaitCurveX));
                                 }
-                                else if (avgStridePercent >= .5 )
+                                else
                                 {
-                                    Vector3 strideHeight = new Vector3(0, 0, -.3f);
-                                   // Debug.Log("set ik target percent " + (1 - (avgStridePercent * 2)));
-                                    IKtargetTransform.localPosition = Vector3.Lerp(strideHeight, new Vector3(0, 0, -strideLength / 2),(avgStridePercent * 2) - 1);
+                                    rotAxis.localRotation = Quaternion.Lerp(startRot, targetRot, avgStridePercent + .03f);
                                 }
+
+                             //   IKtargetTransform.localPosition = new Vector3(0, gaitCurveY, gaitCurveY);
+                                //if (avgStridePercent  < .5)
+                                //{
+                                //    Vector3 strideHeight = new Vector3(0, 0, -.3f);
+                                //    IKtargetTransform.localPosition = Vector3.Lerp(new Vector3(0, 0, -strideLength / 2), strideHeight, avgStridePercent * 2);
+                                //}
+                                //else if (avgStridePercent >= .5 )
+                                //{
+                                //    Vector3 strideHeight = new Vector3(0, 0, -.3f);
+                                //   // Debug.Log("set ik target percent " + (1 - (avgStridePercent * 2)));
+                                //    IKtargetTransform.localPosition = Vector3.Lerp(strideHeight, new Vector3(0, 0, -strideLength / 2),(avgStridePercent * 2) - 1);
+                                //}
                                // else
                                // {
                                //
@@ -309,9 +330,8 @@ public class RoboticLimbIK : RoboticLimb
 
                                // }
                             }
-                            
-                                
-                            rotAxis.localRotation = Quaternion.Lerp(startRot, targetRot, avgStridePercent + .03f);
+                            else
+                                  rotAxis.localRotation = Quaternion.Lerp(startRot, targetRot, avgStridePercent + .03f);
                             //}
 
                             rotPercent = avgStridePercent;
@@ -551,7 +571,19 @@ public class RoboticLimbIK : RoboticLimb
     {
         // pointFront.localPosition = new Vector3(0, 0, strideLength / 2);
 
-        pointBack.localPosition = new Vector3(0, 0, -strideLength / 2);
+        if (limbController.roboticController.gaitType == RoboticController.GaitType.Arc)
+        {
+            pointFront.localPosition = new Vector3(0, 0, strideLength / 2);
+            pointBack.localPosition = new Vector3(0, 0, (strideLength / -2));
+        }
+        else
+        {
+
+            pointBack.localPosition = new Vector3(0, 0, gaitCurve.keys[0].time);
+            pointFront.localPosition = new Vector3(0, 0, gaitCurve.keys[gaitCurve.keys.Length - 1].time);
+        }
+
+       // pointBack.localPosition = new Vector3(0, 0, -strideLength / 2);
         // adjustedStride = false;
     }
 
