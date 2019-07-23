@@ -42,6 +42,7 @@ public class LimbController : MonoBehaviour
 
     public virtual void CustomAwake(MemoryBridge memoryBridge, string limbName, VesselControl vesselControl)
     {
+        Debug.Log("Custom Awake Limb : " + limbName);
         this.memoryBridge = memoryBridge;
         this.vesselControl = vesselControl;
         limbFile = MemoryMappedFile.Open(MapAccess.FileMapAllAccess, limbName);
@@ -218,7 +219,7 @@ public class LimbController : MonoBehaviour
 
             if (legMode == LegMode.Rotate)
             {
-                if (yDif < .05f & limbError < .3f)// & groundContact)
+                if (yDif < .03f && limbError < .2f)// & groundContact)
                 {
                     mirrorAtTarget = true;
                 }
@@ -345,7 +346,7 @@ public class LimbController : MonoBehaviour
         if (hasExploded)
         {
             CamUI.SetCamText(name + " has exploded");
-            Debug.LogError("Leg " + name + " has exploded at velocity " + velocity);
+            Debug.LogError("Exploded Leg : " + name + " Velocity : " + velocity + " Mode : " + limbIK.gaitSequenceMode.ToString() + " Percent : " + CalculateStridePercent());
         }
 
         rawClearance = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "KSPFootClearance");

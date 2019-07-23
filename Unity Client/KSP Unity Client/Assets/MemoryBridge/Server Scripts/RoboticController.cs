@@ -12,9 +12,9 @@ public class RoboticController : MonoBehaviour
     IR_Manager IRmanager;
     public List<LimbController> limbs;
 
-    struct HexapodLimbGroup { public List<LimbController> limbs; public LimbController limb0, limb1, limb2; public float rotStridePercent; public bool steeringAdjust; }
+    public struct HexapodLimbGroup { public List<LimbController> limbs; public LimbController limb0, limb1, limb2; public float rotStridePercent; public bool steeringAdjust; }
 
-    HexapodLimbGroup groupLeft, groupRight, group0, group1;
+   public  HexapodLimbGroup groupLeft, groupRight, group0, group1;
 
     // public List<LimbController> limbs0, limbs1;
     public Transform baseTargets, directionTarget;

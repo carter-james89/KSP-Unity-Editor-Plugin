@@ -579,7 +579,7 @@ public class RoboticLimbIK : RoboticLimb
         else
         {
 
-            pointBack.localPosition = new Vector3(0, 0, gaitCurve.keys[0].time);
+            pointBack.localPosition = new Vector3(0, 0, -gaitCurve.keys[gaitCurve.keys.Length - 1].time);// gaitCurve.keys[0].time);
             pointFront.localPosition = new Vector3(0, 0, gaitCurve.keys[gaitCurve.keys.Length - 1].time);
         }
 
@@ -590,8 +590,22 @@ public class RoboticLimbIK : RoboticLimb
     public void UpdateStrideLength(float newStrideLength)
     {
         // pointFront.localPosition = new Vector3(0, 0, newStrideLength / 2);
-        pointBack.localPosition = new Vector3(0, 0, -newStrideLength / 2);// - .1f);
-                                                                          // adjustedStride = true;
+        if(limbController.roboticController.gaitType == RoboticController.GaitType.Arc)
+        {
+            pointBack.localPosition = new Vector3(0, 0, -newStrideLength / 2);
+        }
+        else
+        {
+            for (int i = 0; i < gaitCurve.keys.Length; i++)
+            {
+                var key = gaitCurve.keys[i];
+                if (key.time < 1)
+                {
+                    key.time = -gaitCurve.keys[gaitCurve.keys.Length - 1].time + newStrideLength;
+                }
+            }
+            pointBack.localPosition = new Vector3(0, 0, gaitCurve.keys[0].time);
+        }
     }
 
     public void StoreGroupedServos()

@@ -189,7 +189,11 @@ namespace MemoryBridgeServer
         void OnDestroy()
         {
             if (LimbFile != null)
+            {
+                LimbFile.Dispose();
                 LimbFile.Close();
+            }
+                
         }
     }
 

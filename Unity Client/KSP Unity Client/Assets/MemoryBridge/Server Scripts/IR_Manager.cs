@@ -27,7 +27,7 @@ public class IR_Manager : MonoBehaviour {
             mapStream.Read(floatBuffer, 0, 4);
             limbCount = BitConverter.ToInt32(floatBuffer, 0);
         }
-
+        Debug.Log("vessel has limbs " + limbCount);
         using (Stream mapStream = IRFile.MapView(MapAccess.FileMapAllAccess, 0, (int)byteCount))
         {
             mapStream.Position = 16;
