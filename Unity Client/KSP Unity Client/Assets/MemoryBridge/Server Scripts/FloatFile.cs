@@ -229,7 +229,8 @@ public class FloatFile : MonoBehaviour
         {
             address = valueAddressFloat[key];
         }
-        catch { Debug.Log("value " + key + " not found"); valueFound = false; }
+        catch { //Debug.Log("value " + key + " not found"); valueFound = false; 
+        }
 
         if (valueFound)
         {

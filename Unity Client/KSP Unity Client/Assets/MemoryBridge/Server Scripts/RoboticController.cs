@@ -4,17 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+using System.IO;
+using System.Text;
+using Winterdom.IO.FileMap;
 
 public class RoboticController : MonoBehaviour
 {
+    MemoryMappedFile IRFile;
+
     public enum RobotStatus { Deactivated, Idle, AdjustingGaitPosition, Walking }
     public RobotStatus robotStatus = RobotStatus.Deactivated;
-    IR_Manager IRmanager;
+   // IR_Manager IRmanager;
     public List<LimbController> limbs;
+    public List<LegController> legs;
 
     public struct HexapodLimbGroup { public List<LimbController> limbs; public LimbController limb0, limb1, limb2; public float rotStridePercent; public bool steeringAdjust; }
 
-   public  HexapodLimbGroup groupLeft, groupRight, group0, group1;
+    public HexapodLimbGroup groupLeft, groupRight, group0, group1;
 
     // public List<LimbController> limbs0, limbs1;
     public Transform baseTargets, directionTarget;
@@ -22,113 +28,104 @@ public class RoboticController : MonoBehaviour
     MemoryBridge memoryBridge;
     PidController steeringPID;
 
+    float footClearance = 0;
+    public bool groundContact;
+
     public float strideLength = 2;
 
-    public enum GaitType { Arc, Graph}
+    public enum GaitType { Arc, Graph }
     public GaitType gaitType;
 
     public AnimationCurve gaitCurve = AnimationCurve.EaseInOut(-1, 0, 1, 0);
 
     public VesselControl vesselControl;
 
+    protected List<GameObject> limbObjects;
+
     //public AnimationCurve myCurve;
 
-    public void CustomAwake(MemoryBridge memoryBridge)
+    void ReadLegsFromBridge()
+    {
+        IRFile = MemoryMappedFile.Open(MapAccess.FileMapAllAccess, "IRFile" + memoryBridge.fileName);
+        limbs = new List<LimbController>();
+        float byteCount;
+        float limbCount;
+        using (Stream mapStream = IRFile.MapView(MapAccess.FileMapAllAccess, 0, 16))
+        {
+            var floatBuffer = new byte[4];
+
+            mapStream.Read(floatBuffer, 0, 4);
+            byteCount = BitConverter.ToInt32(floatBuffer, 0);
+            mapStream.Read(floatBuffer, 0, 4);
+            limbCount = BitConverter.ToInt32(floatBuffer, 0);
+        }
+        Debug.Log("vessel has limbs " + limbCount);
+        limbObjects = new List<GameObject>();
+        using (Stream mapStream = IRFile.MapView(MapAccess.FileMapAllAccess, 0, (int)byteCount))
+        {
+            mapStream.Position = 16;
+
+            for (int i = 0; i < limbCount; i++)
+            {
+                var floatBuffer = new byte[4];
+                mapStream.Read(floatBuffer, 0, 4);
+                var stringByteLength = BitConverter.ToSingle(floatBuffer, 0);
+
+                var stringBuffer = new byte[(int)stringByteLength];
+                mapStream.Read(stringBuffer, 0, stringBuffer.Length);
+                string limbName = ASCIIEncoding.ASCII.GetString(stringBuffer);
+
+                var newLimbObject = new GameObject();
+                newLimbObject.name = limbName;
+                newLimbObject.transform.SetParent(vesselControl.vessel.transform);
+
+                limbObjects.Add(newLimbObject);
+                //if (limbName.ToLower().Contains("leg"))
+                //{
+                //    newLimb = newLimbObject.AddComponent<LegController>();
+
+                //}
+                //else
+                //{
+                //    newLimb = newLimbObject.AddComponent(typeof(LimbController)) as LimbController;
+                //}
+
+                //newLimb.CustomAwake(memoryBridge, limbName, vesselControl);
+                //limbs.Add(newLimb);
+                //  Debug.Log("Add limb " + limbName);
+            }
+        }
+    }
+
+    public virtual void CustomAwake(MemoryBridge memoryBridge)
     {
         this.memoryBridge = memoryBridge;
         vesselControl = memoryBridge.vesselControl;
 
-        IRmanager = gameObject.GetComponent<IR_Manager>();
+        ReadLegsFromBridge();
+        // IRmanager = gameObject.GetComponent<IR_Manager>();
         //convert IR parts on this vessel to robotic servos and create limbcontroller/limbs
-        IRmanager.CustomAwake(memoryBridge, memoryBridge.vesselControl, ref limbs);
+        // IRmanager.CustomAwake(memoryBridge, memoryBridge.vesselControl, ref limbs);
+
+        //legs = new List<LegController>();
+        //foreach (var limb in limbs)
+        //{
+        //    limb.roboticController = this;
+        //    if (limb.GetType() == typeof(LegController))
+        //    {
+        //        legs.Add(limb as LegController);
+        //    }
+        //}
 
         steeringPID = new PidController(1, 0, .3f, .3, -.3f);
         steeringPID.SetPoint = 0;
 
         Debug.Log("IR Manager Enabled, Limb Count : " + limbs.Count);
-
-        if (limbs.Count == 6)
-        {
-            Debug.Log("robot is a hexapod");
-            groupLeft = new HexapodLimbGroup();
-            groupLeft.limbs = new List<LimbController>();
-            groupRight = new HexapodLimbGroup();
-            groupRight.limbs = new List<LimbController>();
-
-            group0 = new HexapodLimbGroup();
-            group0.limbs = new List<LimbController>();
-            group1 = new HexapodLimbGroup();
-            group1.limbs = new List<LimbController>();
-
-
-            foreach (var limb in limbs)
-            {
-                limb.roboticController = this;
-                var offset = memoryBridge.vesselControl.vessel.transform.InverseTransformPoint(limb.transform.position);
-                Debug.Log(limb.name);
-                var group = groupRight;
-                if (offset.x < 0)
-                {
-                    Debug.Log("left leg found");
-                    group = groupLeft;
-                }
-
-                group.limbs.Add(limb);
-                if (limb.name.Contains("1"))
-                {
-                    Debug.Log("limb one found");
-                    group.limb0 = limb;
-                }
-                if (limb.name.Contains("2"))
-                {
-                    Debug.Log("limb two found");
-                    group.limb1 = limb;
-                }
-                if (limb.name.Contains("3"))
-                {
-                    Debug.Log("limb three found");
-                    group.limb2 = limb;
-                }
-
-                if (offset.x < 0)
-                {
-                    groupLeft = group;
-                }
-                else
-                {
-                    groupRight = group;
-                }
-            }
-
-            foreach (var item in groupRight.limbs)
-            {
-                Debug.Log(item.name);
-            }
-
-            group0.limbs.Add(groupLeft.limb0);
-            group0.limbs.Add(groupLeft.limb2);
-            group0.limbs.Add(groupRight.limb1);
-
-            group1.limbs.Add(groupRight.limb0);
-            group1.limbs.Add(groupRight.limb2);
-            group1.limbs.Add(groupLeft.limb1);
-
-            foreach (var limb in groupLeft.limbs)
-            {
-                Debug.Log("Group Left Limb : " + limb.name);
-            }
-            foreach (var limb in groupRight.limbs)
-            {
-                Debug.Log("Group Right Limb : " + limb.name);
-            }
-
-
-        }
     }
     public float gaitDistance;
     public UnityEngine.Events.UnityEvent IKactivaed;
 
-    public void ActivateIK()
+    public virtual void ActivateIK()
     {
         Debug.Log("activate Ik");
         robotStatus = RobotStatus.Idle;
@@ -142,13 +139,12 @@ public class RoboticController : MonoBehaviour
         directionTarget.SetParent(GameObject.Find("Gimbal").transform);
         directionTarget.localEulerAngles = GameObject.Find("Mirror Vessel COM").transform.localEulerAngles;
         targetBaseHeight = directionTarget.position;
-        foreach (var limb in limbs)
+        foreach (var leg in legs)
         {
             var baseTarget = Instantiate(GameObject.Find("Base Target")).transform;
             baseTarget.SetParent(baseTargets);
-            limb.SetBaseTarget(baseTarget);
-
-            limb.ActivateIK();
+            leg.SetBaseTarget(baseTarget);
+            leg.ActivateIK(true);
         }
         baseTargets.SetParent(directionTarget);
         IKactivaed.Invoke();
@@ -159,7 +155,6 @@ public class RoboticController : MonoBehaviour
         DebugVector.DrawVector(steeringPoint.transform, DebugVector.Direction.all, 2, .1f, Color.red, Color.white, Color.blue);
         // Debug.LogError("");
     }
-
 
     void BeginWalkCycle()
     {
@@ -178,7 +173,6 @@ public class RoboticController : MonoBehaviour
         // groupLeft.limb2.AddGaitTarget(groupLeft.limb2.limbIK.pointHeight);
         groupLeft.limb2.AddGaitTarget(groupLeft.limb2.limbIK.pointFront, LimbController.LegMode.Rotate);
         groupLeft.limb2.StartGait();
-
 
         groupRight.limb0.AddGaitTarget(groupRight.limb0.limbIK.pointFront, LimbController.LegMode.Rotate);
         groupRight.limb0.AddGaitTarget(groupRight.limb0.limbIK.pointBack, LimbController.LegMode.Translate);
@@ -224,7 +218,7 @@ public class RoboticController : MonoBehaviour
     bool walk = false;
     public void CustomUpdate()
     {
-        
+
         simTime += Time.deltaTime;
         if (simTime > 1 && !activateIK)
         {
@@ -246,12 +240,12 @@ public class RoboticController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-             ActivateIK();
+            ActivateIK();
             //foreach (var item in limbs)
             //{
             //    item.limbIK.IKtargetTransform.position = item.limbMirror.limbEnd.position;
             //}
-            
+
         }
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
@@ -267,8 +261,11 @@ public class RoboticController : MonoBehaviour
         {
             //mirror the servos from ksp
             limb.MirrorServos();
+        }
+        foreach (var leg in legs)
+        {
             //calculate the ground position
-            limb.CheckClearance();
+            leg.CheckClearance();
         }
 
         if (robotStatus != RobotStatus.Deactivated)
@@ -283,9 +280,9 @@ public class RoboticController : MonoBehaviour
                 }
             }
             //Set gait height
-            foreach (var limb in limbs)
+            foreach (var leg in legs)
             {
-                limb.SetGaitHeight();
+                leg.SetGaitHeight();
             }
 
             if (robotStatus == RobotStatus.AdjustingGaitPosition)
@@ -295,7 +292,7 @@ public class RoboticController : MonoBehaviour
                 {
                     foreach (var limb in group0.limbs)
                     {
-                        limb.RunGait(rotPercent += Time.deltaTime/4);
+                        limb.RunGait(rotPercent += Time.deltaTime / 4);
                         var atTarget = limb.MirrorLegAtTarget();
                         if (!atTarget)
                             group0AtTarget = false;
@@ -328,7 +325,7 @@ public class RoboticController : MonoBehaviour
                             limb.ResetGaitSequence();
                         }
                         robotStatus = RobotStatus.Idle;
-                    }                    
+                    }
                 }
                 // group0.limbs[0].RunGait(rotPercent += Time.deltaTime / 30);
             }
@@ -449,20 +446,20 @@ public class RoboticController : MonoBehaviour
             //  var dirError = directionTarget.eulerAngles.y - memoryBridge.vesselControl.mirrorVessel.vesselOffset.eulerAngles.y;
             // var angleError = Vector3.Angle(directionTarget.forward, memoryBridge.vesselControl.mirrorVessel.vesselOffset.forward);
 
-           // limbEndPoint.position + (newTransform.position - limbEndPoint.position) / 2
+            // limbEndPoint.position + (newTransform.position - limbEndPoint.position) / 2
 
             var forwardPoint = memoryBridge.vesselControl.mirrorVessel.vesselOffset.position + (memoryBridge.vesselControl.mirrorVessel.vesselOffset.forward.normalized * 3);
             steeringPoint.transform.position = forwardPoint;
             var offset = directionTarget.InverseTransformPoint(forwardPoint);
 
             steeringError = offset.x;
-          
+
             walkCycle++;
-            foreach (var limb in limbs)
+            foreach (var limb in legs)
             {
                 limb.NextGaitSeguence();
             }
-          //  strideAdjust = -.3f;
+            //  strideAdjust = -.3f;
             if (Math.Abs(steeringError) > .05f)
             {
                 System.TimeSpan deltaTime = TimeSpan.FromSeconds(strideTime);// new TimeSpan(0, 0, (int)strideTime);         
@@ -474,15 +471,15 @@ public class RoboticController : MonoBehaviour
                     // groupLeft.steeringAdjust = true;
                     // groupRight.steeringAdjust = false;
                     Debug.Log("Dir ErrorRight " + offset.x);
-                     Debug.Log("Shorten left stride : " + strideAdjust);
+                    Debug.Log("Shorten left stride : " + strideAdjust);
                     foreach (var limb in groupRight.limbs)
                     {
-                         if (limb.legMode == LimbController.LegMode.Translate)
-                             limb.limbIK.UpdateStrideLength((float)(limb.limbIK.strideLength - strideAdjust));
+                        if (limb.legMode == LimbController.LegMode.Translate)
+                            limb.limbIK.UpdateStrideLength((float)(limb.limbIK.strideLength - strideAdjust));
                     }
                     foreach (var limb in groupLeft.limbs)
                     {
-                         limb.limbIK.DefaultStrideLength();
+                        limb.limbIK.DefaultStrideLength();
                     }
                 }
                 else
@@ -494,23 +491,32 @@ public class RoboticController : MonoBehaviour
                     Debug.Log("Shorten right stride : " + strideAdjust);
                     foreach (var limb in groupLeft.limbs)
                     {
-                         if (limb.legMode == LimbController.LegMode.Translate)
-                             limb.limbIK.UpdateStrideLength((float)(limb.limbIK.strideLength + strideAdjust));
+                        if (limb.legMode == LimbController.LegMode.Translate)
+                            limb.limbIK.UpdateStrideLength((float)(limb.limbIK.strideLength + strideAdjust));
                     }
                     foreach (var limb in groupRight.limbs)
                     {
-                         limb.limbIK.DefaultStrideLength();
+                        limb.limbIK.DefaultStrideLength();
                     }
                 }
             }
             else
             {
-                foreach (var limb in limbs)
+                foreach (var limb in legs)
                 {
-                     limb.limbIK.DefaultStrideLength();
+                    limb.limbIK.DefaultStrideLength();
                 }
             }
             strideTime = 0;
+        }
+    }
+
+    protected virtual void OnDestroy()
+    {
+        if (IRFile != null)
+        {
+            IRFile.Dispose();
+            IRFile.Close();
         }
     }
 

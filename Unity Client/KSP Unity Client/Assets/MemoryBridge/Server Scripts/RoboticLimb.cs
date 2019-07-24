@@ -20,8 +20,6 @@ public class RoboticLimb : MonoBehaviour
     public Transform contactPoint { get; protected set; }
     public Transform limbEnd { get; protected set; }
 
-    // public Transform limbEnd;
-
     private void Awake()
     {
         limbParts = gameObject.GetComponentsInChildren<Part>();
@@ -34,7 +32,7 @@ public class RoboticLimb : MonoBehaviour
 
     public void SetStartAngles()
     {
-        Debug.Log("Set start pos at limb");
+       // Debug.Log("Set start pos at limb");
         foreach (var servo in servos)
         {
             servo.SetStartAngle();
@@ -45,10 +43,6 @@ public class RoboticLimb : MonoBehaviour
     {
         trueLimbEnd = servoWrist.CalculateTarget(andWrite,name).transform;
         limbEnd = trueLimbEnd;
-        //foreach (var servo in servos)
-        //{
-        //    servo.groundPoint = limbEnd;
-        //}
     }
 
     public void SetLimbReference()

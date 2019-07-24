@@ -51,8 +51,6 @@ public class Part : MonoBehaviour
         ToggleRenderers(false);
         GameObject fakeJoint = null;
 
-       // Debug.Log(kspPartName + " added");
-
         if (kspPartName == "IR.Rotatron.Basic.v3")
         {
             fakeJoint = Instantiate(Resources.Load("Rotatron", typeof(GameObject))) as GameObject;

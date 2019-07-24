@@ -51,7 +51,7 @@ public class RoboticServo : MonoBehaviour
 
         if (servoName.ToLower().Contains("base"))
         {
-            Debug.Log("Let limb base");
+            //Debug.Log("Let limb base");
             limbControllerPart = RoboticLimb.LimbPart.Base;
             limbController.servoBase = this;
         }
@@ -82,14 +82,12 @@ public class RoboticServo : MonoBehaviour
         if (hostPart.name.ToLower().Contains("skip"))
         {
             DisableServo(true);
-            Debug.Log(name + " disabled");
+           // Debug.Log(name + " disabled");
         }
-
     }
 
     public virtual void CustomUpdate()
     {
-
     }
 
     public virtual void CreateBaseAnchor()
@@ -155,7 +153,7 @@ public class RoboticServo : MonoBehaviour
                 footOffset = offsets[i];
             }
         }
-        Debug.Log("offset " + name + " " + footOffset, gameObject);
+       // Debug.Log("offset " + name + " " + footOffset, gameObject);
         var foot = Instantiate(Resources.Load("Foot", typeof(GameObject))) as GameObject;
         foot.name = "True End Point " + name;
         foot.transform.SetParent(transform);
@@ -257,7 +255,7 @@ public class RoboticServo : MonoBehaviour
 
         if (disabled)
         {
-            Debug.Log("servo disabled at sort");
+           // Debug.Log("servo disabled at sort");
             color = Color.white;
         }
 
@@ -281,11 +279,11 @@ public class RoboticServo : MonoBehaviour
     public void DisableServo(bool disable)
     {
         disabled = disable;
-        Debug.Log("d");
+       // Debug.Log("d");
 
         if (disable)
         {
-            Debug.Log("disable " + name);
+           // Debug.Log("disable " + name);
             //   hostPart.lineRenderer.material.color = Color.red;
         }
     }

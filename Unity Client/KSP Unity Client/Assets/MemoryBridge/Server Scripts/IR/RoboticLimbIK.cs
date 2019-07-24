@@ -15,6 +15,8 @@ public class RoboticLimbIK : RoboticLimb
 
     public Transform IKtargetTransform, rotAxis;
 
+    public float xOffset;
+
     bool IKactive = false;
 
     public Transform gait { get; private set; }
@@ -44,14 +46,15 @@ public class RoboticLimbIK : RoboticLimb
     public float strideLength = 1.7f;
     public float defaultBackPos;
 
+    public float gaitAdjust = 0;
+
     float localStridePercent;
 
     public struct GaitPoint { Transform target; LimbController.LegMode legMode; }
     public List<Transform> gaitSequenceTarget;
     public List<LimbController.LegMode> gaitSequenceMode;
 
-   public  AnimationCurve gaitCurve;
-
+    public AnimationCurve gaitCurve;
 
     #region Setup
     public void AddGaitTarget(Transform newTarget, LimbController.LegMode legMode)
@@ -83,44 +86,50 @@ public class RoboticLimbIK : RoboticLimb
         gaitSequenceTarget = new List<Transform>();
         gaitSequenceMode = new List<LimbController.LegMode>();
     }
-    public void ActivateIK()
+    public void ActivateIK(bool createGait)
     {
+        Debug.Log("Activate Ik on limb " + name);
         gaitCurve = limbController.roboticController.gaitCurve;
         foreach (var servo in servosIK)
         {
             servo.SetServo(servo.mirrorServo.kspStartAngle);
         }
-        var newObject = Instantiate(Resources.Load("Gait", typeof(GameObject))) as GameObject;
-        gait = newObject.transform;
-        rotAxis = gait.Find("Axis Point");
-        IKtargetTransform = rotAxis.Find("Limb Target");
-        pointMid = gait.Find("Point Mid");
-        pointFront = gait.Find("Point Front");
-        pointBack = gait.Find("Point Back");
-        //gait.position = limbController.limbMirror.limbEnd.position;
-        gait.SetParent(transform);//limbController.roboticController.directionTarget);
+        var obj = Instantiate(Resources.Load("Limb Target", typeof(GameObject))) as GameObject;
+        IKtargetTransform = obj.transform; // GameObject.Find("Limb Target").transform;
+        if (createGait)
+        {
+            Debug.Log("Create Gait");
+            var newObject = Instantiate(Resources.Load("Gait", typeof(GameObject))) as GameObject;
+            gait = newObject.transform;
+            rotAxis = gait.Find("Axis Point");
+            IKtargetTransform.SetParent(rotAxis);
+            pointMid = gait.Find("Point Mid");
+            pointFront = gait.Find("Point Front");
+            pointBack = gait.Find("Point Back");
+            //gait.position = limbController.limbMirror.limbEnd.position;
+            gait.SetParent(transform);//limbController.roboticController.directionTarget);
 
-        gait.position = transform.position + transform.up * limbController.roboticController.gaitDistance;
-        var tempPos = gait.position;
-        tempPos.y = limbController.limbMirror.trueLimbEnd.position.y;
-        gait.position = tempPos;
+            gait.position = transform.position + transform.up * limbController.roboticController.gaitDistance;
+            var tempPos = gait.position;
+            tempPos.y = limbController.limbMirror.trueLimbEnd.position.y;
+            gait.position = tempPos;
 
-        gaitStartPos = gait.localPosition;// transform.position - gait.position;//transform.InverseTransformPoint(gait.position);
+            gaitStartPos = gait.localPosition;// transform.position - gait.position;//transform.InverseTransformPoint(gait.position);
 
-        // var tempEuler = gait.eulerAngles;
-        // tempEuler.y = limbController.vesselControl.vessel.transform.eulerAngles.y;
-        //gait.eulerAngles = tempEuler;
-        gait.transform.rotation = Quaternion.LookRotation(limbController.vesselControl.vessel.transform.forward, Vector3.up);
+            // var tempEuler = gait.eulerAngles;
+            // tempEuler.y = limbController.vesselControl.vessel.transform.eulerAngles.y;
+            //gait.eulerAngles = tempEuler;
+            gait.transform.rotation = Quaternion.LookRotation(limbController.vesselControl.vessel.transform.forward, Vector3.up);
 
+            DefaultStrideLength();
+
+            defaultBackPos = (strideLength / -2);// - .3f;
+            currentTarget = pointMid;
+        }
+     
         IKtargetTransform.position = limbController.limbMirror.trueLimbEnd.position;
-
-        DefaultStrideLength();
-        
-        defaultBackPos = (strideLength / -2);// - .3f;
+     
         IKactive = true;
-
-        currentTarget = pointMid;
-
         RunIK();
     }
     #endregion
@@ -202,7 +211,6 @@ public class RoboticLimbIK : RoboticLimb
     }
     #endregion
 
-    public float gaitAdjust = 0;
     public void SetGaitRotation(float newRotation)
     {
         gaitAdjust = newRotation;
@@ -229,14 +237,14 @@ public class RoboticLimbIK : RoboticLimb
                         case LimbController.LegMode.Translate:
                             {
                                 var speed = Time.deltaTime;
-                                if(limbController.roboticController.walkCycle >= 1)
+                                if (limbController.roboticController.walkCycle >= 1)
                                 {
                                     speed *= limbController.roboticController.walkSpeed;
                                 }
                                 IKtargetTransform.position = Vector3.MoveTowards(IKtargetTransform.position, currentTarget.transform.position, speed);
                                 var dir = IKtargetTransform.position - currentTarget.position;
 
-                              
+
 
                                 // if (CalculateTranslateStridePercent() < .95)
                                 // IKtargetTransform.Translate(-dir.normalized * (limbController.roboticController.walkSpeed * Time.deltaTime));
@@ -291,7 +299,7 @@ public class RoboticLimbIK : RoboticLimb
                             if (limbController.roboticController.robotStatus == RoboticController.RobotStatus.Walking && limbController.roboticController.walkCycle >= 1)
                             {
 
-                                if(limbController.roboticController.gaitType == RoboticController.GaitType.Graph)
+                                if (limbController.roboticController.gaitType == RoboticController.GaitType.Graph)
                                 {
                                     pointBack.localScale = Vector3.one;
 
@@ -302,7 +310,7 @@ public class RoboticLimbIK : RoboticLimb
 
                                     gaitCurveY = gaitCurve.Evaluate(gait.InverseTransformPoint(IKtargetTransform.position).z);
 
-                                    
+
 
                                     IKtargetTransform.position = pointBack.TransformPoint(new Vector3(0, gaitCurveY, gaitCurveX));
                                 }
@@ -311,7 +319,7 @@ public class RoboticLimbIK : RoboticLimb
                                     rotAxis.localRotation = Quaternion.Lerp(startRot, targetRot, avgStridePercent + .03f);
                                 }
 
-                             //   IKtargetTransform.localPosition = new Vector3(0, gaitCurveY, gaitCurveY);
+                                //   IKtargetTransform.localPosition = new Vector3(0, gaitCurveY, gaitCurveY);
                                 //if (avgStridePercent  < .5)
                                 //{
                                 //    Vector3 strideHeight = new Vector3(0, 0, -.3f);
@@ -323,15 +331,15 @@ public class RoboticLimbIK : RoboticLimb
                                 //   // Debug.Log("set ik target percent " + (1 - (avgStridePercent * 2)));
                                 //    IKtargetTransform.localPosition = Vector3.Lerp(strideHeight, new Vector3(0, 0, -strideLength / 2),(avgStridePercent * 2) - 1);
                                 //}
-                               // else
-                               // {
-                               //
+                                // else
+                                // {
+                                //
                                 //    IKtargetTransform.localPosition = new Vector3(0, 0, -strideLength / 2);
 
-                               // }
+                                // }
                             }
                             else
-                                  rotAxis.localRotation = Quaternion.Lerp(startRot, targetRot, avgStridePercent + .03f);
+                                rotAxis.localRotation = Quaternion.Lerp(startRot, targetRot, avgStridePercent + .03f);
                             //}
 
                             rotPercent = avgStridePercent;
@@ -398,7 +406,6 @@ public class RoboticLimbIK : RoboticLimb
         }
 
         translateDist = currentStrideLength - translateDistToTarget;
-
 
         if (translateDist < .01f)
         {
@@ -500,10 +507,8 @@ public class RoboticLimbIK : RoboticLimb
         }
         if (IKAxis.servo0)
         {
-
             if (IKAxis.fixedAngleServo)
             {
-
                 // Debug.Log("run servo 0 fixed angle");
                 // var yDif = IKAxis.servo0.groundPoint.position.y - IKtargetTransform.position.y;
                 // Debug.Log(yDif);
@@ -532,8 +537,6 @@ public class RoboticLimbIK : RoboticLimb
                 //{
                 targetOffset = IKAxis.servo0.servoBase.InverseTransformPoint(IKtargetTransform.position);
                 //  }
-
-
                 var angle = Math.Atan2(targetOffset.z, targetOffset.y);
                 angle *= (180 / Math.PI);
 
@@ -546,7 +549,7 @@ public class RoboticLimbIK : RoboticLimb
 
 
     }
-    public float xOffset;
+
     public float LawOfCosines(float a, float b, float c)
     {
         var topEqu = (Math.Pow(c, 2) + Math.Pow(a, 2) - Math.Pow(b, 2));
@@ -583,14 +586,14 @@ public class RoboticLimbIK : RoboticLimb
             pointFront.localPosition = new Vector3(0, 0, gaitCurve.keys[gaitCurve.keys.Length - 1].time);
         }
 
-       // pointBack.localPosition = new Vector3(0, 0, -strideLength / 2);
+        // pointBack.localPosition = new Vector3(0, 0, -strideLength / 2);
         // adjustedStride = false;
     }
 
     public void UpdateStrideLength(float newStrideLength)
     {
         // pointFront.localPosition = new Vector3(0, 0, newStrideLength / 2);
-        if(limbController.roboticController.gaitType == RoboticController.GaitType.Arc)
+        if (limbController.roboticController.gaitType == RoboticController.GaitType.Arc)
         {
             pointBack.localPosition = new Vector3(0, 0, -newStrideLength / 2);
         }
