@@ -18,7 +18,7 @@ namespace MemoryBridgeServer
 
 
         // List<Part> parts;
-        public void CustomAwake(IRWrapper.IControlGroup limbGroup, IRWrapper.IServo servoBase, IRWrapper.IServo servoWrist, MemoryBridge memoryBridge)
+        public void CustomAwake(IRWrapper.IControlGroup limbGroup, IRWrapper.IServo servoBase, IRWrapper.IServo servoWrist, ref MemoryBridge memoryBridge)
         {
             Debug.Log("Robotic Arm custom awake");
             this.memoryBridge = memoryBridge;
@@ -37,7 +37,7 @@ namespace MemoryBridgeServer
             }
             var newServo = servoBase.HostPart.gameObject.AddComponent(typeof(RoboticServo)) as RoboticServo;
             Debug.Log("new servo created");
-            newServo.CustomStart(servoBase, memoryBridge, this);
+            newServo.CustomStart(servoBase, ref memoryBridge, this);
             limbServos.Add(newServo);
             Debug.Log("new servo added");
 
@@ -73,7 +73,7 @@ namespace MemoryBridgeServer
                         Debug.Log("found servo on part");
 
                         newServo = part.gameObject.AddComponent(typeof(RoboticServo)) as RoboticServo;
-                        newServo.CustomStart(testServo, memoryBridge, this);
+                        newServo.CustomStart(testServo, ref memoryBridge, this);
                         limbServos.Add(newServo);
                         //  }
                         if (testServo.Name.ToLower().Contains("wrist"))

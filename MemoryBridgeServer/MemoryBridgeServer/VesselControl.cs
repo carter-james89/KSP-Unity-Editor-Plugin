@@ -19,7 +19,7 @@ namespace MemoryBridgeServer
 
         bool autoPilot = false;
 
-        MemoryMappedFile vesselFile;
+      //  MemoryMappedFile vesselFile;
 
         public Transform gimbal;
         public Transform vesselCOM, adjustedVessel;
@@ -69,10 +69,10 @@ namespace MemoryBridgeServer
                 vesselCOM.localEulerAngles += new Vector3(-90, 0, 0);
 
             vesselSerializer = gameObject.AddComponent(typeof(VesselSerializer)) as VesselSerializer;
-            vesselSerializer.SerializeVessel(this.vessel, this.memoryBridge, this);
+            vesselSerializer.SerializeVessel(this.vessel, ref this.memoryBridge, this);
 
             IRmanager = gameObject.AddComponent(typeof(IR_Manager)) as IR_Manager;
-            IRmanager.CustomStart(vessel.Parts, memoryBridge);
+            IRmanager.CustomStart(vessel.Parts, ref memoryBridge);
 
             ToggleAutoPilot(true);
         }
@@ -104,6 +104,8 @@ namespace MemoryBridgeServer
             var vesselGimbleOffset = Quaternion.Inverse(gimbal.rotation) * adjustedVessel.rotation;//gimbal.eulerAngles - vesselTransform.eulerAngles;
             memoryBridge.SetQuaternion("VesselGimbleOffset" + memoryBridge.fileName, vesselGimbleOffset);
 
+            CheckVesselClearance();
+
             IRmanager.CustomUpdate();
             
 
@@ -115,6 +117,26 @@ namespace MemoryBridgeServer
             }
         }
 
+        void CheckVesselClearance()
+        {
+            LayerMask mask = (1 << 0) | (1 << 10);
+            mask = ~mask;
+            RaycastHit hit;
+
+            Vector3 rayRot = -gimbal.up;// -controller.launchVector.trans.up;
+            float clearance = 0;
+            if (Physics.Raycast(vessel.vesselTransform.position, rayRot, out hit, 100, mask))
+            {
+                clearance = hit.distance;
+            }
+            if (!groundPoint)
+            {
+                groundPoint = new GameObject().transform;
+                DebugVector.DrawVector(groundPoint);
+            }
+            groundPoint.transform.position = vessel.vesselTransform.position - new Vector3(0, clearance, 0);
+        }
+        Transform groundPoint;
         public void ToggleActionGroup(int group)
         {
             //VesselControl.SetThrottle(1);

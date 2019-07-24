@@ -16,7 +16,7 @@ namespace MemoryBridgeServer
 
         int byteCount = 0;
         List<string> groups;
-        public void CustomStart(List<Part> parts, MemoryBridge memoryBridge)
+        public void CustomStart(List<Part> parts,ref  MemoryBridge memoryBridge)
         {
             Debug.Log("IR Manager custom start");
             limbs = new List<RoboticArm>();
@@ -47,7 +47,7 @@ namespace MemoryBridgeServer
                         }
                     }
                     var newLimb = gameObject.AddComponent(typeof(RoboticArm)) as RoboticArm;
-                    newLimb.CustomAwake(group,basePart,wristPart,memoryBridge);
+                    newLimb.CustomAwake(group,basePart,wristPart, ref memoryBridge);
                     limbs.Add(newLimb);
 
                     byteCount += 4;
@@ -127,7 +127,11 @@ namespace MemoryBridgeServer
         void OnDestroy()
         {
             if (IRFile != null)
+            {
+                IRFile.Dispose();
                 IRFile.Close();
+            }
+               
         }
     }
 }

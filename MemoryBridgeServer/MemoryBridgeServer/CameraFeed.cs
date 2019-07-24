@@ -150,7 +150,11 @@ namespace MemoryBridgeServer
         void OnDestroy()
         {
             if(camFeedFile != null)
+            {
+                camFeedFile.Dispose();
                 camFeedFile.Close();
+            }
+                
         }
     }
 }

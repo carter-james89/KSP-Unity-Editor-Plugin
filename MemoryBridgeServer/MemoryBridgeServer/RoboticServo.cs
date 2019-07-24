@@ -23,7 +23,7 @@ namespace MemoryBridgeServer
             // memoryBridge.SetFloat(servoName + "unityServoPos", servo.Position);
         }
 
-        public void CustomStart(IRWrapper.IServo servo, MemoryBridge memoryBridge, RoboticArm arm)
+        public void CustomStart(IRWrapper.IServo servo, ref MemoryBridge memoryBridge, RoboticArm arm)
         {
             this.servo = servo;
             //this.servo.SpeedLimit = 20;

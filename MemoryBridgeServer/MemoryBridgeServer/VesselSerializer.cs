@@ -29,7 +29,7 @@ namespace MemoryBridgeServer
 
         VesselPart partStruct;
         public List<MemoryPart> partList;
-        public void SerializeVessel(Vessel vessel, MemoryBridge memoryBridge, VesselControl vesselControl)
+        public void SerializeVessel(Vessel vessel,ref  MemoryBridge memoryBridge, VesselControl vesselControl)
         {
             Debug.Log("Vessel Control Awake");
             this.vessel = vessel;
@@ -48,7 +48,11 @@ namespace MemoryBridgeServer
         void OnDestroy()
         {
             if (vesselFile != null)
+            {
+                vesselFile.Dispose();
                 vesselFile.Close();
+            }
+               
         }
         void BuildVessel()
         {

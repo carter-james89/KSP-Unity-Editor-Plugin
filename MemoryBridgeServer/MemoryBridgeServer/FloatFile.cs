@@ -13,7 +13,7 @@ namespace MemoryBridgeServer
     class FloatFile : MonoBehaviour
     {
         int byteCountKeyFloat = 0, byteCountKeyFloatNew = 0;
-        MemoryMappedFile fileHeader, fileKeyFloat, fileValueFloat, fileKeyFloat1;
+        MemoryMappedFile fileHeader, fileKeyFloat, fileValueFloat;// fileKeyFloat1;
         Stream streamFloatValue;
 
         public float valuesListWrite, valuesListRead;
@@ -162,7 +162,7 @@ namespace MemoryBridgeServer
                 //Debug.Log("start float late update");
                 if (streamFloatValue != null)
                 {
-                   // streamFloatValue.Dispose();
+                    //streamFloatValue.Dispose();
                     streamFloatValue.Close();
                 }
 
@@ -382,10 +382,10 @@ namespace MemoryBridgeServer
 
         public void CustomOnDestroy()
         {
-            if (fileKeyFloat1 != null)
+            if (fileKeyFloat != null)
             {
-                fileKeyFloat1.Dispose();
-                fileKeyFloat1.Close();
+                fileKeyFloat.Dispose();
+                fileKeyFloat.Close();
             }
 
             if (streamFloatValue != null)
@@ -400,7 +400,7 @@ namespace MemoryBridgeServer
                 fileHeader.Close();
             }
                 
-            if (fileKeyFloat != null)
+            if (fileValueFloat != null)
             {
                 fileValueFloat.Dispose();
                 fileValueFloat.Close();
