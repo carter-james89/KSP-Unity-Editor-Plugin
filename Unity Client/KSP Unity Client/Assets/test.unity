@@ -444,7 +444,6 @@ GameObject:
   - component: {fileID: 477490265}
   - component: {fileID: 477490268}
   - component: {fileID: 477490264}
-  - component: {fileID: 477490267}
   - component: {fileID: 477490266}
   m_Layer: 0
   m_Name: Bridge Origin
@@ -537,18 +536,6 @@ MonoBehaviour:
   adjustedGimbal: {fileID: 0}
   targetVessel: {fileID: 0}
   mirrorVessel: {fileID: 0}
---- !u!114 &477490267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 477490263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 238293356fe375e438fd78473e058f1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &477490268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -618,7 +605,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  walkSpeed: 1
+  walkSpeed: 2.5
+  autoStartUp: 0
   steeringError: 0
 --- !u!1 &491640104
 GameObject:

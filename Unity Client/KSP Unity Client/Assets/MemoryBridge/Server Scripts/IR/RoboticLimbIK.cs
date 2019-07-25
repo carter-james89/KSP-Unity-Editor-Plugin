@@ -89,7 +89,7 @@ public class RoboticLimbIK : RoboticLimb
     public void ActivateIK(bool createGait)
     {
         Debug.Log("Activate Ik on limb " + name);
-        gaitCurve = limbController.roboticController.gaitCurve;
+      
         foreach (var servo in servosIK)
         {
             servo.SetServo(servo.mirrorServo.kspStartAngle);
@@ -98,6 +98,7 @@ public class RoboticLimbIK : RoboticLimb
         IKtargetTransform = obj.transform; // GameObject.Find("Limb Target").transform;
         if (createGait)
         {
+            gaitCurve = limbController.roboticController.gaitCurve;
             Debug.Log("Create Gait");
             var newObject = Instantiate(Resources.Load("Gait", typeof(GameObject))) as GameObject;
             gait = newObject.transform;
@@ -114,7 +115,7 @@ public class RoboticLimbIK : RoboticLimb
             tempPos.y = limbController.limbMirror.trueLimbEnd.position.y;
             gait.position = tempPos;
 
-            gaitStartPos = gait.localPosition;// transform.position - gait.position;//transform.InverseTransformPoint(gait.position);
+           // transform.position - gait.position;//transform.InverseTransformPoint(gait.position);
 
             // var tempEuler = gait.eulerAngles;
             // tempEuler.y = limbController.vesselControl.vessel.transform.eulerAngles.y;
@@ -125,12 +126,15 @@ public class RoboticLimbIK : RoboticLimb
 
             defaultBackPos = (strideLength / -2);// - .3f;
             currentTarget = pointMid;
+            gaitStartPos = gait.localPosition;
+            RunIK();
+
         }
      
         IKtargetTransform.position = limbController.limbMirror.trueLimbEnd.position;
      
         IKactive = true;
-        RunIK();
+       
     }
     #endregion
 
@@ -396,6 +400,7 @@ public class RoboticLimbIK : RoboticLimb
     {
         //IKtargetTransform.localPosition, currentTarget.transform.position,
         // var dist = Vector3.Distance(currentTarget.transform.position, IKtargetTransform.transform.position);
+        Debug.Log("CHECK STRIDE PERCENT " + transform.parent.name);
         translateDistToTarget = Vector3.Distance(IKtargetTransform.position, currentTarget.transform.position);
 
         currentStrideLength = Vector3.Distance(pointFront.position, pointBack.position);//strideLength;
@@ -429,7 +434,7 @@ public class RoboticLimbIK : RoboticLimb
         //   CalculateIK(IKAxisZ);
     }
 
-    void CalculateIK(IKAxis IKAxis)
+    public void CalculateIK(IKAxis IKAxis)
     {
         var servoGroup = IKAxis.servoGroup;
         if (IKAxis.fixedAngleServo)

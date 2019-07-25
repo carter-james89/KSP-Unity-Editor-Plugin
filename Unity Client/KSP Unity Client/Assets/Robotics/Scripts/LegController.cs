@@ -21,8 +21,8 @@ public class LegController : LimbController
 
     public void SetBaseTarget(Transform baseTarget)
     {
+        Debug.Log("SET BASE TARGET " + name);
         this.baseTarget = baseTarget;
-        Debug.Log("servo pos ", limbIK.IKAxisX.servo1.gameObject);
         this.baseTarget.position = limbIK.IKAxisX.servo1.transform.position;//limbMirror.servoBase.transform.position;
     }
 

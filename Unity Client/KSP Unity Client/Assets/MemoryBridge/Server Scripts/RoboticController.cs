@@ -146,7 +146,7 @@ public class RoboticController : MonoBehaviour
             leg.SetBaseTarget(baseTarget);
             leg.ActivateIK(true);
         }
-        baseTargets.SetParent(directionTarget);
+       // baseTargets.SetParent(directionTarget);
         IKactivaed.Invoke();
         DebugVector.DrawVector(directionTarget, DebugVector.Direction.z, 3, .1f, Color.red, Color.white, Color.green);
         DebugVector.DrawVector(memoryBridge.vesselControl.mirrorVessel.vesselOffset, DebugVector.Direction.z, 3, .1f, Color.red, Color.white, Color.blue);
@@ -199,6 +199,7 @@ public class RoboticController : MonoBehaviour
         //tempPos.y = newHeight;
         //baseTargets.localPosition = tempPos;
         //Debug.Log("Set base targets to height " + newHeight);
+        Debug.Log("______________Adjust base height");
         targetBaseHeight = directionTarget.position + new Vector3(0, newHeight, 0);
     }
 
@@ -212,32 +213,38 @@ public class RoboticController : MonoBehaviour
 
     GameObject steeringPoint;
 
+    protected float baseHeight, targetHeight;
+
     float simTime = 0;
     bool activateIK = false;
     bool moveGait = false;
     bool walk = false;
-    public void CustomUpdate()
+    public bool autoStartUp;
+    public virtual void CustomUpdate()
     {
-
-        simTime += Time.deltaTime;
-        if (simTime > 1 && !activateIK)
+        if (autoStartUp)
         {
-            ActivateIK();
-            activateIK = true;
+            simTime += Time.deltaTime;
+            if (simTime > 1 && !activateIK)
+            {
+                ActivateIK();
+                activateIK = true;
+            }
+            else if (simTime > 3 && !moveGait)
+            {
+                MoveGaitToStartPosition();
+            }
+            else if (simTime > 8 & !walk)
+            {
+                //foreach (var item in groupLeft.limbs)
+                //{
+                //    item.SetGaitRotation(10);
+                //}
+                walk = true;
+                BeginWalkCycle();
+            }
         }
-        else if (simTime > 3 && !moveGait)
-        {
-            MoveGaitToStartPosition();
-        }
-        else if (simTime > 8 & !walk)
-        {
-            //foreach (var item in groupLeft.limbs)
-            //{
-            //    item.SetGaitRotation(10);
-            //}
-            walk = true;
-            BeginWalkCycle();
-        }
+    
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             ActivateIK();
@@ -271,14 +278,23 @@ public class RoboticController : MonoBehaviour
         if (robotStatus != RobotStatus.Deactivated)
         {
             //set robot walk height
-            if (directionTarget.position != targetBaseHeight)
-            {
-                directionTarget.position = Vector3.Lerp(directionTarget.position, targetBaseHeight, Time.deltaTime);
-                if (Vector3.Distance(directionTarget.position, targetBaseHeight) < .02f)
-                {
-                    directionTarget.position = targetBaseHeight;
-                }
-            }
+            //if (directionTarget.position != targetBaseHeight)
+            //{
+            //    directionTarget.position = Vector3.Lerp(directionTarget.position, targetBaseHeight, Time.deltaTime);
+            //    if (Vector3.Distance(directionTarget.position, targetBaseHeight) < .02f)
+            //    {
+            //        directionTarget.position = targetBaseHeight;
+            //    }
+            //}
+            //set robot walk height
+            //if (targetHeight != baseHeight)
+            //{
+            //    baseHeight = float.Lerp(directionTarget.position, targetBaseHeight, Time.deltaTime);
+            //    if (Vector3.Distance(directionTarget.position, targetBaseHeight) < .02f)
+            //    {
+            //        directionTarget.position = targetBaseHeight;
+            //    }
+            //}
             //Set gait height
             foreach (var leg in legs)
             {
@@ -319,6 +335,7 @@ public class RoboticController : MonoBehaviour
                     if (group0AtTarget)
                     {
                         // directionTarget.position += new Vector3(0, .2f, 0);
+                        baseHeight = 1.5f;
                         SetBaseHeights((directionTarget.position + new Vector3(0, .2f, 0)).y);
                         foreach (var limb in limbs)
                         {
@@ -385,7 +402,7 @@ public class RoboticController : MonoBehaviour
             }
 
             //runs the ik and sets ther memory bridge servo values
-            foreach (var limb in limbs)
+            foreach (var limb in legs)
             {
                 limb.LimbUpdate();
             }

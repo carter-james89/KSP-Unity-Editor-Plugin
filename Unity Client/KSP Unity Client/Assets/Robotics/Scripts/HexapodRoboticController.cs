@@ -5,6 +5,7 @@ using UnityEngine;
 public class HexapodRoboticController : RoboticController
 {
     LimbController neckArm;
+    Vector3 groundPos;
     public override void CustomAwake(MemoryBridge memoryBridge)
     {
         base.CustomAwake(memoryBridge);
@@ -41,10 +42,10 @@ public class HexapodRoboticController : RoboticController
             group1 = new HexapodLimbGroup();
             group1.limbs = new List<LimbController>();
 
-            foreach (var legs in limbs)
+            foreach (var leg in legs)
             {
-                var offset = memoryBridge.vesselControl.vessel.transform.InverseTransformPoint(legs.transform.position);
-                Debug.Log(legs.name);
+                var offset = memoryBridge.vesselControl.vessel.transform.InverseTransformPoint(leg.transform.position);
+                Debug.Log(leg.name);
                 var group = groupRight;
                 if (offset.x < 0)
                 {
@@ -52,21 +53,21 @@ public class HexapodRoboticController : RoboticController
                     group = groupLeft;
                 }
 
-                group.limbs.Add(legs);
-                if (legs.name.Contains("1"))
+                group.limbs.Add(leg);
+                if (leg.name.Contains("1"))
                 {
                     Debug.Log("legs one found");
-                    group.limb0 = legs;
+                    group.limb0 = leg;
                 }
-                if (legs.name.Contains("2"))
+                if (leg.name.Contains("2"))
                 {
                     Debug.Log("limb two found");
-                    group.limb1 = legs;
+                    group.limb1 = leg;
                 }
-                if (legs.name.Contains("3"))
+                if (leg.name.Contains("3"))
                 {
                     Debug.Log("legs three found");
-                    group.limb2 = legs;
+                    group.limb2 = leg;
                 }
 
                 if (offset.x < 0)
@@ -94,10 +95,41 @@ public class HexapodRoboticController : RoboticController
         }
     }
 
+    public override void CustomUpdate()
+    {
+        base.CustomUpdate();
+        var groundAvg =
+            legs[0].ground.position +
+            legs[1].ground.position +
+            legs[2].ground.position +
+            legs[3].ground.position +
+            legs[4].ground.position +
+            legs[5].ground.position;
+        groundPos = groundAvg / 6;
+
+        if (baseTargets)
+        {
+            baseTargets.transform.position = groundPos + new Vector3(0, baseHeight, 0);
+            foreach (var item in baseTargets.GetComponentsInChildren<Transform>())
+            {
+                if (item != baseTargets)
+                {
+                    var tempPos = item.localPosition;
+                    tempPos.y = 0;
+                    item.localPosition = tempPos;
+                }
+            }
+        }
+
+      //  neckArm.limbIK.CalculateIK(neckArm.limbIK.IKAxisY);
+    }
+
     public override void ActivateIK()
     {
         base.ActivateIK();
         if (neckArm)
             neckArm.ActivateIK(false);
+
+       baseHeight = legs[0].servoBase.transform.position.y - groundPos.y;
     }
 }
