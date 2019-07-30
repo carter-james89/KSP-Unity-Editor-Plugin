@@ -19,7 +19,9 @@ namespace MemoryBridgeServer
 
         bool autoPilot = false;
 
-      //  MemoryMappedFile vesselFile;
+        LineRenderer clearanceRenderer;
+
+        //  MemoryMappedFile vesselFile;
 
         public Transform gimbal;
         public Transform vesselCOM, adjustedVessel;
@@ -34,6 +36,12 @@ namespace MemoryBridgeServer
         {
             this.vessel = vessel;
             this.memoryBridge = memoryBridge;
+
+           clearanceRenderer = gameObject.AddComponent<LineRenderer>();
+            Material redMat = new Material(Shader.Find("Transparent/Diffuse"));
+            redMat.color = Color.red;
+           clearanceRenderer.material = redMat;
+           clearanceRenderer.SetWidth(.1f, .1f);
 
             //  var IVAcam = vessel.gameObject.GetComponentInChildren<IVACamera>();
 
@@ -134,7 +142,13 @@ namespace MemoryBridgeServer
                 groundPoint = new GameObject().transform;
                 DebugVector.DrawVector(groundPoint);
             }
-            groundPoint.transform.position = vessel.vesselTransform.position - new Vector3(0, clearance, 0);
+            // groundPoint.transform.position = hit.transform.position;
+            groundPoint.transform.position = vessel.vesselTransform.position + -gimbal.up * clearance;
+          //  Debug.Log("hitting " + hit.transform.name + " at dist " + clearance);
+            clearanceRenderer.SetPosition(0, vessel.vesselTransform.position);
+            clearanceRenderer.SetPosition(1, groundPoint.transform.position);
+            memoryBridge.SetFloat("VesselClearance" + memoryBridge.fileName, clearance);
+
         }
         Transform groundPoint;
         public void ToggleActionGroup(int group)

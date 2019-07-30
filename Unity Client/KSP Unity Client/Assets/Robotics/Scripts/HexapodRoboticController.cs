@@ -98,38 +98,23 @@ public class HexapodRoboticController : RoboticController
     public override void CustomUpdate()
     {
         base.CustomUpdate();
-        var groundAvg =
-            legs[0].ground.position +
-            legs[1].ground.position +
-            legs[2].ground.position +
-            legs[3].ground.position +
-            legs[4].ground.position +
-            legs[5].ground.position;
-        groundPos = groundAvg / 6;
 
-        if (baseTargets)
+        if (robotStatus != RobotStatus.Deactivated)
         {
-            baseTargets.transform.position = groundPos + new Vector3(0, baseHeight, 0);
-            foreach (var item in baseTargets.GetComponentsInChildren<Transform>())
-            {
-                if (item != baseTargets)
-                {
-                    var tempPos = item.localPosition;
-                    tempPos.y = 0;
-                    item.localPosition = tempPos;
-                }
-            }
+            neckArm.limbIK.CalculateIK(neckArm.limbIK.IKAxisY);
+          //  neckArm.limbIK.CalculateIK(neckArm.limbIK.IKAxisZ);
+            neckArm.SetServos();
         }
-
-      //  neckArm.limbIK.CalculateIK(neckArm.limbIK.IKAxisY);
     }
 
     public override void ActivateIK()
     {
         base.ActivateIK();
-        if (neckArm)
+
+        if (neckArm && neckArm)
             neckArm.ActivateIK(false);
 
-       baseHeight = legs[0].servoBase.transform.position.y - groundPos.y;
+
+        //   baseHeight = legs[0].servoBase.transform.position.y - groundPos.y;
     }
 }

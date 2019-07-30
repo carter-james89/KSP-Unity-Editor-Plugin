@@ -84,7 +84,7 @@ namespace MemoryBridgeServer
 
         void GetFloatKeys(float keysToRead, float byteCount)
         {
-              Debug.Log("Get float keys count  " + keysToRead);
+            Debug.Log("Get float keys count  " + keysToRead);
             //  fileKeyFloat = MemoryMappedFile.Open(MapAccess.FileMapAllAccess, "FileKeysFloat");
             keysFloat = new List<string>();
             valueAddressFloat = new Dictionary<string, int>();
@@ -192,8 +192,12 @@ namespace MemoryBridgeServer
                             keyWriter.Write(stringBuffer, 0, stringBuffer.Length);
                             Debug.Log("Add server key: " + entry.Key);
 
-                            keysFloat.Add(entry.Key);
-                            valueAddressFloat.Add(entry.Key, keysFloat.Count - 1);
+                            if (!keysFloat.Contains(entry.Key))
+                            {
+                                keysFloat.Add(entry.Key);
+                                valueAddressFloat.Add(entry.Key, keysFloat.Count - 1);
+                            }
+                               
                         }
                     }
                     byteCountKeyFloat += byteCountKeyFloatNew;
@@ -393,19 +397,19 @@ namespace MemoryBridgeServer
                 streamFloatValue.Dispose();
                 streamFloatValue.Close();
             }
-                
+
             if (fileHeader != null)
             {
                 fileHeader.Dispose();
                 fileHeader.Close();
             }
-                
+
             if (fileValueFloat != null)
             {
                 fileValueFloat.Dispose();
                 fileValueFloat.Close();
             }
-                
+
 
         }
 

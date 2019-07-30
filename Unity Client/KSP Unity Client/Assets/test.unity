@@ -536,6 +536,7 @@ MonoBehaviour:
   adjustedGimbal: {fileID: 0}
   targetVessel: {fileID: 0}
   mirrorVessel: {fileID: 0}
+  ground: {fileID: 0}
 --- !u!114 &477490268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,7 +555,7 @@ MonoBehaviour:
   baseTargets: {fileID: 0}
   directionTarget: {fileID: 0}
   groundContact: 0
-  strideLength: 2
+  strideLength: 0
   gaitType: 1
   gaitCurve:
     serializedVersion: 2
@@ -569,22 +570,22 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.1169306
     - serializedVersion: 3
-      time: -0.5628737
-      value: 0.12209161
-      inSlope: 0.009409337
-      outSlope: 0.009409337
+      time: -0.4776024
+      value: 0.11905722
+      inSlope: 0.022254637
+      outSlope: 0.022254637
       tangentMode: 0
       weightedMode: 0
       inWeight: 1
-      outWeight: 0.24438421
+      outWeight: 0.12707976
     - serializedVersion: 3
       time: 1.0932056
       value: 0.050608538
-      inSlope: -0.18484856
-      outSlope: -0.18484856
+      inSlope: -0.095101684
+      outSlope: -0.095101684
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.069502205
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1.1
@@ -605,6 +606,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  walkHeight: 1.5
   walkSpeed: 2.5
   autoStartUp: 0
   steeringError: 0

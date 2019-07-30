@@ -132,13 +132,23 @@ public class RoboticController : MonoBehaviour
         baseTargets = new GameObject("Base Targets").transform;
         baseTargets.SetParent(GameObject.Find("Vessel Offset").transform);
         baseTargets.localEulerAngles = Vector3.zero;
+
+        Vector3 baseOffset = Vector3.zero;
+        foreach (var leg in legs)
+        {
+            baseOffset += vesselControl.adjustedGimbal.InverseTransformPoint(leg.servoBase.transform.position);
+        }
+        baseOffset /= legs.Count;
+        baseTargets.transform.position = baseOffset;
+        SetBaseHeights(baseTargets.position.y - vesselControl.ground.position.y, false);
+
         baseTargets.SetParent(null);
-        baseTargets.localPosition = Vector3.zero;
+       // baseTargets.localPosition = Vector3.zero;
 
         directionTarget = new GameObject("Direction Target").transform;
         directionTarget.SetParent(GameObject.Find("Gimbal").transform);
         directionTarget.localEulerAngles = GameObject.Find("Mirror Vessel COM").transform.localEulerAngles;
-        targetBaseHeight = directionTarget.position;
+    
         foreach (var leg in legs)
         {
             var baseTarget = Instantiate(GameObject.Find("Base Target")).transform;
@@ -192,15 +202,16 @@ public class RoboticController : MonoBehaviour
         robotStatus = RobotStatus.Walking;
     }
 
-    Vector3 targetBaseHeight;
-    public void SetBaseHeights(float newHeight)
+    float targetBaseHeight;
+    public float walkHeight = 1;
+    public void SetBaseHeights(float newHeight, bool lerp = true)
     {
-        //var tempPos = baseTargets.localPosition;
-        //tempPos.y = newHeight;
-        //baseTargets.localPosition = tempPos;
-        //Debug.Log("Set base targets to height " + newHeight);
-        Debug.Log("______________Adjust base height");
-        targetBaseHeight = directionTarget.position + new Vector3(0, newHeight, 0);
+            Debug.Log("______________Adjust base height");
+            targetBaseHeight = newHeight;
+        if(!lerp)
+        {
+            baseHeight = newHeight;
+        }
     }
 
     public float walkSpeed = 1;
@@ -213,7 +224,7 @@ public class RoboticController : MonoBehaviour
 
     GameObject steeringPoint;
 
-    protected float baseHeight, targetHeight;
+    protected float baseHeight;
 
     float simTime = 0;
     bool activateIK = false;
@@ -287,14 +298,15 @@ public class RoboticController : MonoBehaviour
             //    }
             //}
             //set robot walk height
-            //if (targetHeight != baseHeight)
-            //{
-            //    baseHeight = float.Lerp(directionTarget.position, targetBaseHeight, Time.deltaTime);
-            //    if (Vector3.Distance(directionTarget.position, targetBaseHeight) < .02f)
-            //    {
-            //        directionTarget.position = targetBaseHeight;
-            //    }
-            //}
+            if (targetBaseHeight != baseHeight)
+            {
+                baseHeight = Mathf.Lerp(baseHeight, targetBaseHeight, Time.deltaTime);
+                if (Math.Abs(targetBaseHeight - baseHeight) < .02f)
+                {
+                    baseHeight = targetBaseHeight;
+                }
+            }
+            baseTargets.transform.position = vesselControl.ground.position + new Vector3(0, baseHeight, 0);
             //Set gait height
             foreach (var leg in legs)
             {
@@ -335,8 +347,8 @@ public class RoboticController : MonoBehaviour
                     if (group0AtTarget)
                     {
                         // directionTarget.position += new Vector3(0, .2f, 0);
-                        baseHeight = 1.5f;
-                        SetBaseHeights((directionTarget.position + new Vector3(0, .2f, 0)).y);
+                        SetBaseHeights(walkHeight);
+                      //  SetBaseHeights((directionTarget.position + new Vector3(0, .2f, 0)).y);
                         foreach (var limb in limbs)
                         {
                             limb.ResetGaitSequence();

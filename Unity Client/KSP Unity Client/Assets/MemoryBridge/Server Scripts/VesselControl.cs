@@ -37,6 +37,8 @@ public class VesselControl : MonoBehaviour
 
     PID PIDyaw, PIDpitch, PIDroll;
 
+    public Transform ground;
+
     public void ControlAwake(MemoryBridge memoryBridge)
     {
         this.memoryBridge = memoryBridge;
@@ -74,6 +76,11 @@ public class VesselControl : MonoBehaviour
         memoryBridge.SetFloat("VesselPitch", 1.1f);
         memoryBridge.SetFloat("VesselRoll", 1.1f);
 
+        ground = Instantiate(GameObject.Find("Ground")).transform;
+        ground.transform.position = targetVessel.vessel.position + -adjustedGimbal.transform.up * memoryBridge.GetFloat("VesselClearance" + memoryBridge.fileName);
+
+
+
         //memoryBridge.SetFloat("testnull" , null);
 
         //   targetVessel.gameObject.SetActive(false);
@@ -90,12 +97,13 @@ public class VesselControl : MonoBehaviour
 
         //COM.position = Vector3.zero;
 
-        if(controlMode == FlightControlMode.RawStick)
+        if (controlMode == FlightControlMode.RawStick)
         {
             targetVessel.vessel.gameObject.SetActive(false);
         }
 
     }
+    float vesselGroundClearance;
     bool autoPilot = false;
     bool vesselInRange = false;
     public void VesselUpdate()
@@ -113,6 +121,9 @@ public class VesselControl : MonoBehaviour
         tempRot.x = 0;
         tempRot.z = 0;
         adjustedGimbal.localRotation = tempRot;
+
+        vesselGroundClearance = memoryBridge.GetFloat("VesselClearance" + memoryBridge.fileName);
+        ground.transform.position = targetVessel.vesselOffset.position + -adjustedGimbal.transform.up * vesselGroundClearance;
 
         float prevDeltaTime = 0;
 

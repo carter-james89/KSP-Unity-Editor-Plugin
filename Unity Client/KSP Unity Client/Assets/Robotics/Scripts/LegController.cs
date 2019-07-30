@@ -24,6 +24,9 @@ public class LegController : LimbController
         Debug.Log("SET BASE TARGET " + name);
         this.baseTarget = baseTarget;
         this.baseTarget.position = limbIK.IKAxisX.servo1.transform.position;//limbMirror.servoBase.transform.position;
+        var tempPos = baseTarget.localPosition;
+        tempPos.y = 0;
+        baseTarget.localPosition = tempPos;
     }
 
     public void SetGaitHeight()
@@ -34,6 +37,16 @@ public class LegController : LimbController
         limbIK.gait.eulerAngles = tempEuler;
 
 
+            //baseTarget.transform.position = groundPos + new Vector3(0, baseHeight, 0);
+            //foreach (var item in baseTargets.GetComponentsInChildren<Transform>())
+            //{
+            //    if (item != baseTargets)
+            //    {
+            //        var tempPos = item.localPosition;
+            //        tempPos.y = 0;
+            //        item.localPosition = tempPos;
+            //    }
+            //}
 
         var baseOffset = baseTarget.InverseTransformPoint(limbIK.IKAxisX.servo1.transform.position);
 
