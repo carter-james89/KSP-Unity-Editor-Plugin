@@ -122,6 +122,7 @@ namespace MemoryBridgeServer
             foreach (var limb in limbs)
             {
                 limb.CustomUpdate();
+               
             }
         }
         void OnDestroy()

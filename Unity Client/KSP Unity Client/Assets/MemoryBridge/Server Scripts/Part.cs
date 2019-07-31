@@ -59,7 +59,7 @@ public class Part : MonoBehaviour
             fakeJoint.transform.localEulerAngles = new Vector3(0, 0, 90);
             lineRenderer = fakeJoint.GetComponent<LineRenderer>();
         }
-        if (kspPartName == "IR.Pivotron.RangeNinety" || kspPartName == "IR.Pivotron.Sixty" || kspPartName == "IR.Pivotron.Hinge.Basic.v3" || kspPartName == "IR.Pivotron.Basic" || kspPartName == "IR.Pivotron.OneTwenty.v3")
+        if (kspPartName == "IR.Pivotron.RangeNinety" || kspPartName == "IR.Pivotron.Sixty.v3" || kspPartName == "IR.Pivotron.Hinge.Basic.v3" || kspPartName == "IR.Pivotron.Basic" || kspPartName == "IR.Pivotron.OneTwenty.v3" || kspPartName == "IR.Pivotron.Basic.v3")
         {
             fakeJoint = Instantiate(Resources.Load("Pivotron", typeof(GameObject))) as GameObject;
             fakeJoint.transform.SetParent(transform);
@@ -67,14 +67,15 @@ public class Part : MonoBehaviour
             fakeJoint.transform.localEulerAngles = new Vector3(0, 0, 90);
             lineRenderer = fakeJoint.GetComponent<LineRenderer>();
         }
-        if (kspPartName == "IR.Extendatron.BasicHalf")
+        if (kspPartName == "IR.Extendatron.BasicHalf" || kspPartName == "IR.Extendatron.RightHalf.v3")
         {
             fakeJoint = Instantiate(Resources.Load("Extend", typeof(GameObject))) as GameObject;
             fakeJoint.transform.SetParent(transform);
             fakeJoint.transform.localPosition = Vector3.zero;
-            fakeJoint.transform.localEulerAngles = new Vector3(0, 0, 0);
+            fakeJoint.transform.localEulerAngles = new Vector3(90, 0, 0);
             lineRenderer = fakeJoint.GetComponent<LineRenderer>();
         }
+
         jointObject = fakeJoint;
         this.servo = servo;
     }

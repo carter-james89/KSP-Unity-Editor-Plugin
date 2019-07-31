@@ -95,6 +95,7 @@ public class HexapodRoboticController : RoboticController
         }
     }
 
+    public RoboticServoIK debugServo;
     public override void CustomUpdate()
     {
         base.CustomUpdate();
@@ -102,8 +103,12 @@ public class HexapodRoboticController : RoboticController
         if (robotStatus != RobotStatus.Deactivated)
         {
             neckArm.limbIK.CalculateIK(neckArm.limbIK.IKAxisY);
-          //  neckArm.limbIK.CalculateIK(neckArm.limbIK.IKAxisZ);
-            neckArm.SetServos();
+            neckArm.limbIK.CalculateTwoServoIK(neckArm.limbIK.IKAxisX.servoGroup[1], neckArm.limbIK.IKAxisX.servoGroup[2]);
+         //   neckArm.limbIK.IKAxisX.servoGroup[0].MatchTargetAngle(neckArm.limbIK.IKtargetTransform);
+            neckArm.limbIK.CalculateSingleServoIK(neckArm.limbIK.IKAxisX.servoGroup[0], neckArm.limbIK.IKAxisX.servoGroup[0].transform.position + neckArm.limbIK.IKtargetTransform.forward * .3f);
+            //  neckArm.limbIK.CalculateIK(neckArm.limbIK.IKAxisZ);
+          //  neckArm.SetServos();
+
         }
     }
 

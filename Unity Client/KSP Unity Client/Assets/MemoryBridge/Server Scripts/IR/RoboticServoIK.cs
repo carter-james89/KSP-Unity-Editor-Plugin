@@ -95,6 +95,10 @@ public class RoboticServoIK : RoboticServo
             //targetOffset = 0;
         }
 
+        if (this == FindObjectOfType<HexapodRoboticController>().debugServo)
+        {
+            Debug.Log("pre new pos : " + newPos);
+        }
         //limbLength = Vector3.Distance(transform.position, limbController.limbIK.limbEndPoint.position);
         //var limbOffset = transform.InverseTransformPoint(groundPoint.position);
         //targetOffset = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
@@ -120,14 +124,40 @@ public class RoboticServoIK : RoboticServo
             }
         }
 
+        if (this == FindObjectOfType<HexapodRoboticController>().debugServo)
+        {
+            Debug.Log("new pos : " + newPos + " Set Angle : " + setAngle);
+        }
+
         if (invert)
         {
             setAngle = -setAngle;
-        }    
+        }
         //if (hostPart.kspPartName.Contains("Half"))
         //{
         //    setAngle = -setAngle;
         //}
+        SetServo();
+    }
+
+    public void LookAt(Transform target)
+    {
+        
+    }
+    public void MatchTargetAngle(Transform target)
+    {
+        // var tempEuler = transform.eulerAngles;
+        // tempEuler.x = target.eulerAngles.x;
+        // transform.eulerAngles = tempEuler;
+        var prevParent = target.parent;
+        target.SetParent(transform.parent);
+
+        var rot = target.localEulerAngles.x;
+        Debug.Log(rot + " : " + Time.frameCount);
+        setAngle = rot;
+        target.SetParent(prevParent);
+        SetServo();
+       // transform.localRotation = Quaternion.Euler(target.eulerAngles.x, 0, 0);
     }
 
     public bool counteractRot = false;
@@ -155,6 +185,8 @@ public class RoboticServoIK : RoboticServo
             }
             // Debug.Log("set servo pos");
             RunServoPID();
+
+          
 
 
             memoryBridge.SetFloat(servoName + "unityServoPos", setAngle + offset);

@@ -113,6 +113,7 @@ namespace MemoryBridgeServer
                 }
 
                 DebugVector.DrawVector(servoAnchor);
+                DebugVector.DrawVector(anchorChild);
             }
         }
 
@@ -253,6 +254,7 @@ namespace MemoryBridgeServer
             // if (angleOffset != Vector3.zero)
             //    Debug.Log(name + " set adjusted offset");
             //    servoAnchor.localEulerAngles = angleOffset;
+          
             memoryBridge.SetFloat(servoName + "servoPos", servo.Position);
 
             //var acceleration = memoryBridge.GetFloat(servoName + "unityServoAcceleration");
@@ -282,7 +284,10 @@ namespace MemoryBridgeServer
             memoryBridge.SetQuaternion(servoName + "servoLocalRot", anchorChild.localRotation);
 
 
-
+            if (arm.limbName.Contains("neck") && servo.Name.Contains("base"))
+            {
+              //  Debug.Log(anchorChild.localRotation.ToString());
+            }
 
             //var servoAngle = memoryBridge.GetFloat(servoName + "ServoSetPos");
             //var servoSpeed = memoryBridge.GetFloat(servoName + "ServoSetSpeed");

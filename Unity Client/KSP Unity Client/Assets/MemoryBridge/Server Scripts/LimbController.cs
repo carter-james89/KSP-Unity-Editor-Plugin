@@ -234,7 +234,7 @@ public class LimbController : MonoBehaviour
 
     public void MirrorServos()
     {
-        Debug.Log(name + " mirror servo");
+       // Debug.Log(name + " mirror servo");
         limbMirror.MirrorServos();
     }
    
