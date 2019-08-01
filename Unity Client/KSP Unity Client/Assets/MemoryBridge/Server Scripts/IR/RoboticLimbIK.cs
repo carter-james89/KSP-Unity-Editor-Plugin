@@ -450,9 +450,13 @@ public class RoboticLimbIK : RoboticLimb
 
     public void CalculateTwoServoIK(RoboticServoIK servo0, RoboticServoIK servo1)
     {
+        CalculateTwoServoIK(servo0, servo1, IKtargetTransform.position);
+    }
+    public void CalculateTwoServoIK(RoboticServoIK servo0, RoboticServoIK servo1, Vector3 target)
+    {
         if (servo1)
         {
-            var targetOffset = servo1.servoBase.InverseTransformPoint(IKtargetTransform.position);
+            var targetOffset = servo1.servoBase.InverseTransformPoint(target);
             var angle0 = Math.Atan2(targetOffset.z, targetOffset.y);
             angle0 *= (180 / Math.PI);
 
@@ -473,7 +477,7 @@ public class RoboticLimbIK : RoboticLimb
             servo0_GroundPointDist = Vector3.Distance(servo0.transform.position, globalPos);
 
 
-            servo1_GroundPointDist = Vector3.Distance(servo1.transform.position, IKtargetTransform.position);
+            servo1_GroundPointDist = Vector3.Distance(servo1.transform.position, target);
 
             float angle1 = LawOfCosines(servo1_0Dist, servo0_GroundPointDist, servo1_GroundPointDist);
 
@@ -496,7 +500,7 @@ public class RoboticLimbIK : RoboticLimb
             xOffset = footOffset.z;
             Vector3 targetOffset;
 
-            targetOffset = servo0.servoBase.InverseTransformPoint(IKtargetTransform.position);
+            targetOffset = servo0.servoBase.InverseTransformPoint(target);
 
             var angle = Math.Atan2(targetOffset.z, targetOffset.y);
             angle *= (180 / Math.PI);

@@ -103,9 +103,10 @@ public class HexapodRoboticController : RoboticController
         if (robotStatus != RobotStatus.Deactivated)
         {
             neckArm.limbIK.CalculateIK(neckArm.limbIK.IKAxisY);
-            neckArm.limbIK.CalculateTwoServoIK(neckArm.limbIK.IKAxisX.servoGroup[1], neckArm.limbIK.IKAxisX.servoGroup[2]);
+
+            neckArm.limbIK.CalculateTwoServoIK(neckArm.limbIK.IKAxisX.servoGroup[1], neckArm.limbIK.IKAxisX.servoGroup[2], neckArm.limbIK.IKtargetTransform.position - neckArm.limbIK.IKtargetTransform.forward.normalized * .3f);
          //   neckArm.limbIK.IKAxisX.servoGroup[0].MatchTargetAngle(neckArm.limbIK.IKtargetTransform);
-            neckArm.limbIK.CalculateSingleServoIK(neckArm.limbIK.IKAxisX.servoGroup[0], neckArm.limbIK.IKAxisX.servoGroup[0].transform.position + neckArm.limbIK.IKtargetTransform.forward * .3f);
+            neckArm.limbIK.CalculateSingleServoIK(neckArm.limbIK.IKAxisX.servoGroup[0], neckArm.limbIK.IKAxisX.servoGroup[0].transform.position + neckArm.limbIK.IKtargetTransform.forward * .2f);
             //  neckArm.limbIK.CalculateIK(neckArm.limbIK.IKAxisZ);
           //  neckArm.SetServos();
 
@@ -118,6 +119,8 @@ public class HexapodRoboticController : RoboticController
 
         if (neckArm && neckArm)
             neckArm.ActivateIK(false);
+
+        neckArm.limbIK.IKtargetTransform.position = new Vector3(0.012f, 2.28f, 2.27f);
 
 
         //   baseHeight = legs[0].servoBase.transform.position.y - groundPos.y;

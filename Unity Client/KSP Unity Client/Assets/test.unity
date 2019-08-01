@@ -607,9 +607,10 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   walkHeight: 1.5
-  walkSpeed: 2.5
+  walkSpeed: 1.5
   autoStartUp: 0
   steeringError: 0
+  debugServo: {fileID: 0}
 --- !u!1 &491640104
 GameObject:
   m_ObjectHideFlags: 0
