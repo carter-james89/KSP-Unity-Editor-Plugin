@@ -111,6 +111,11 @@ namespace MemoryBridgeServer
                     //  DebugVector.DrawVector(anchorChild);
                     Debug.Log("Draw Vector");
                 }
+                else if (this.servo.HostPart.name == "IR.Rotatron.Right.v3")
+                {
+                    servoAnchor.localEulerAngles += new Vector3(0, 90, 0);
+                    anchorChild.localEulerAngles += new Vector3(0, 90, 0);
+                }
 
                 DebugVector.DrawVector(servoAnchor);
                 DebugVector.DrawVector(anchorChild);
@@ -279,6 +284,10 @@ namespace MemoryBridgeServer
             if (this.servo.HostPart.name == "IR.Rotatron.Basic.v3")
             {
                 anchorChild.localEulerAngles += new Vector3(0, 0, 90);
+            }
+            else if (servo.HostPart.name == "IR.Rotatron.Right.v3")
+            {
+                anchorChild.localEulerAngles += new Vector3(0, 90, 0);
             }
             memoryBridge.SetVector3(servoName + "servoLocalEuler", anchorChild.localEulerAngles);
             memoryBridge.SetQuaternion(servoName + "servoLocalRot", anchorChild.localRotation);

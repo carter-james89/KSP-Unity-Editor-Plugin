@@ -31,6 +31,14 @@ public class Part : MonoBehaviour
                 mesh.transform.localEulerAngles -= new Vector3(0, 0, 90);
             }
         }
+        else if(kspPartName == "IR.Rotatron.Right.v3")
+        {
+            transform.localEulerAngles += new Vector3(0, 90, 0);
+            foreach (var mesh in meshRenderers)
+            {
+                mesh.transform.localEulerAngles -= new Vector3(0, 90, 0);
+            }
+        }
 
         // partMeshes.hideFlags = HideFlags.HideInHierarchy;
     }
@@ -51,12 +59,17 @@ public class Part : MonoBehaviour
         ToggleRenderers(false);
         GameObject fakeJoint = null;
 
-        if (kspPartName == "IR.Rotatron.Basic.v3")
+        if (kspPartName.Contains("Rotatron"))
         {
             fakeJoint = Instantiate(Resources.Load("Rotatron", typeof(GameObject))) as GameObject;
             fakeJoint.transform.SetParent(transform);
             fakeJoint.transform.localPosition = Vector3.zero;
             fakeJoint.transform.localEulerAngles = new Vector3(0, 0, 90);
+            if(kspPartName == "IR.Rotatron.Right.v3")
+            {
+                Debug.Log("found right joint");
+                fakeJoint.transform.localEulerAngles = new Vector3(0, 0, 90);
+            }
             lineRenderer = fakeJoint.GetComponent<LineRenderer>();
         }
         if (kspPartName == "IR.Pivotron.RangeNinety" || kspPartName == "IR.Pivotron.Sixty.v3" || kspPartName == "IR.Pivotron.Hinge.Basic.v3" || kspPartName == "IR.Pivotron.Basic" || kspPartName == "IR.Pivotron.OneTwenty.v3" || kspPartName == "IR.Pivotron.Basic.v3")
