@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class RoboticServo : MonoBehaviour
 {
@@ -82,7 +83,7 @@ public class RoboticServo : MonoBehaviour
         if (hostPart.name.ToLower().Contains("skip"))
         {
             DisableServo(true);
-           // Debug.Log(name + " disabled");
+            // Debug.Log(name + " disabled");
         }
     }
 
@@ -125,6 +126,8 @@ public class RoboticServo : MonoBehaviour
 
     public GameObject CalculateTarget(bool andWrite, string name)
     {
+        Vector3 footOffset = Vector3.zero;
+
         var worldVertPositions = new List<Vector3>();
         var offsets = new List<Vector3>();
         var childFilters = GetComponentsInChildren<MeshFilter>();
@@ -144,16 +147,33 @@ public class RoboticServo : MonoBehaviour
             offsets.Add(offset);
         }
         float furthestY = 0;
-        Vector3 footOffset = Vector3.zero;
+
         for (int i = 0; i < offsets.Count; i++)
         {
-            if (offsets[i].y > furthestY)
+            if (offsets[i].y >= furthestY)
             {
                 furthestY = offsets[i].y;
                 footOffset = offsets[i];
             }
         }
-       // Debug.Log("offset " + name + " " + footOffset, gameObject);
+        List<float> averageMaxX = new List<float>();
+        List<float> averageMaxY = new List<float>();
+        List<float> averageMaxZ = new List<float>();
+        for (int i = 0; i < offsets.Count; i++)
+        {
+            if (offsets[i].y == furthestY)
+            {
+                averageMaxX.Add(offsets[i].x);
+                averageMaxY.Add(offsets[i].y);
+                averageMaxZ.Add(offsets[i].z);
+            }
+        }
+        footOffset.x = averageMaxX.Average();
+        footOffset.y = averageMaxY.Average();
+        footOffset.z = averageMaxZ.Average();
+
+
+        // Debug.Log("offset " + name + " " + footOffset, gameObject);
         var foot = Instantiate(Resources.Load("Foot", typeof(GameObject))) as GameObject;
         foot.name = "True End Point " + name;
         foot.transform.SetParent(transform);
@@ -255,7 +275,7 @@ public class RoboticServo : MonoBehaviour
 
         if (disabled)
         {
-           // Debug.Log("servo disabled at sort");
+            // Debug.Log("servo disabled at sort");
             color = Color.white;
         }
 
@@ -279,11 +299,11 @@ public class RoboticServo : MonoBehaviour
     public void DisableServo(bool disable)
     {
         disabled = disable;
-       // Debug.Log("d");
+        // Debug.Log("d");
 
         if (disable)
         {
-           // Debug.Log("disable " + name);
+            // Debug.Log("disable " + name);
             //   hostPart.lineRenderer.material.color = Color.red;
         }
     }

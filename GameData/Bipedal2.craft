@@ -1,0 +1,6689 @@
+ship = Bipedal2
+version = 1.6.0
+description = 
+type = SPH
+size = 2.56594849,5.29719925,1.21047938
+steamPublishedFileId = 0
+persistentId = 2858672948
+rot = 0,0,0,0
+missionFlag = Squad/Agencies/Kerlington
+vesselType = Debris
+PART
+{
+	part = probeStackSmall_4294465168
+	partName = Part
+	persistentId = 2396626849
+	pos = -0.0129336333,9.92347336,-0.000157263203
+	attPos = 0,0,0
+	attPos0 = -0.0129336333,9.92347336,-0.000157263203
+	rot = 0,0,0,-1
+	attRot = 0.707106709,0,0,-0.707106709
+	attRot0 = 0.707106769,0,0,0.707106769
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = 16886.6367
+	modMass = -0.0942400023
+	modSize = 0,0,0
+	link = IR.Rotatron.Basic.v3_4294455696
+	link = structuralMiniNode_4294183776
+	attN = bottom,structuralMiniNode_4294183776_0|-0.1|0
+	attN = top,IR.Rotatron.Basic.v3_4294455696_0|0.1|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleProbeControlPoint
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleCommand
+		isEnabled = True
+		hibernation = False
+		hibernateOnWarp = False
+		activeControlPointName = _default
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MakeReferenceToggle
+			{
+				actionGroup = None
+			}
+			HibernateToggle
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleReactionWheel
+		isEnabled = True
+		actuatorModeCycle = 0
+		authorityLimiter = 100
+		stateString = Active
+		stagingEnabled = True
+		WheelState = Active
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			CycleAction
+			{
+				actionGroup = None
+			}
+			Activate
+			{
+				actionGroup = None
+			}
+			Deactivate
+			{
+				actionGroup = None
+			}
+			Toggle
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleSAS
+		isEnabled = True
+		standaloneToggle = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleKerbNetAccess
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			OpenKerbNetAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleDataTransmitter
+		isEnabled = True
+		xmitIncomplete = False
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			StartTransmissionAction
+			{
+				actionGroup = None
+				active = False
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleScienceContainer
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			CollectAllAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 5000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.300000012
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 19136.6367
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleTripLogger
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		Log
+		{
+			flight = 0
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	RESOURCE
+	{
+		name = ElectricCharge
+		amount = 0.20736002471923926
+		maxAmount = 0.20736002471923926
+		flowState = True
+		isTweakable = True
+		hideFlow = False
+		isVisible = True
+		flowMode = Both
+	}
+}
+PART
+{
+	part = IR.Rotatron.Basic.v3_4294455696
+	partName = Part
+	persistentId = 1913946078
+	pos = -0.0129336333,10.1273975,-0.000157263203
+	attPos = 0,-0.0200756844,0
+	attPos0 = 0,0.25,0
+	rot = 1,0,0,0
+	attRot = 0.707106769,0,0,0.707106769
+	attRot0 = -1,0,0,0
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	link = IR.Pivotron.Sixty.v3_4293418232
+	attN = top,probeStackSmall_4294465168_0|0.2|0
+	attN = bottom,IR.Pivotron.Sixty.v3_4293418232_0|-0.1|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1
+		defaultScale = 1
+		defaultTransformScale = (0, 0, 0)
+		DryCost = 250
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = True
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -180|-90|0|90|180|
+		servoName = Rotatron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -360
+		maxPositionLimit = 360
+		torqueLimit = 30
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Sixty.v3_4293418232
+	partName = Part
+	persistentId = 1683878942
+	pos = -0.0129336333,10.4273977,-0.000157263203
+	attPos = 0,0,0
+	attPos0 = 0,-0.300000191,0
+	rot = 0,0,0,1
+	attRot = -0.707106709,0,0,0.707106709
+	attRot0 = -1,0,0,0
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	link = IR.Pivotron.Sixty.v3_4291800048
+	attN = top,IR.Pivotron.Sixty.v3_4291800048_0|0.2|0
+	attN = bottom,IR.Rotatron.Basic.v3_4294455696_0|-0.2|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1
+		defaultScale = 1
+		defaultTransformScale = (0, 0, 0)
+		DryCost = 250
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -60|0|60|
+		servoName = Joint Pivotron - Narrow
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -60
+		maxPositionLimit = 60
+		torqueLimit = 30
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 13.333333
+		factorAcceleration = 13.333333
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Sixty.v3_4291800048
+	partName = Part
+	persistentId = 1006741709
+	pos = -0.0129336333,10.8273973,-0.000157263203
+	attPos = 0,0,0
+	attPos0 = 0,0.399999619,0
+	rot = -7.45058202E-08,-0.707106829,-7.45058202E-08,0.707106829
+	attRot = -0.49999994,-0.49999994,0.49999994,0.49999994
+	attRot0 = 0,-0.707106829,0,0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	link = adapterEngines_4293417644
+	attN = top,adapterEngines_4293417644_0|0.2|0
+	attN = bottom,IR.Pivotron.Sixty.v3_4293418232_0|-0.2|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 1
+		defaultScale = 1
+		defaultTransformScale = (0, 0, 0)
+		DryCost = 250
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -60|0|60|
+		servoName = Joint Pivotron - Narrow
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -60
+		maxPositionLimit = 60
+		torqueLimit = 30
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 13.333333
+		factorAcceleration = 13.333333
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = adapterEngines_4293417644
+	partName = Part
+	persistentId = 2979874929
+	pos = -0.0129336417,10.7694788,0.0450560078
+	attPos = -0.127286881,-0.365730286,1.30385178E-08
+	attPos0 = 0.150000036,0.293749809,-1.4901163E-08
+	rot = 0,0,1.0536715E-07,-1.00000012
+	attRot = 0.707106709,0,0,-0.707106709
+	attRot0 = 0,-0.707106829,0,-0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -2469.58252
+	modMass = -0.69148308
+	modSize = 0,0,0
+	link = mk3FuselageMONO_4293417528
+	attN = top,mk3FuselageMONO_4293417528_0|0.46875|0
+	attN = bottom02,IR.Pivotron.Sixty.v3_4291800048_0|-0.46875|-0.75
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 15000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 15000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Dynamic
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.574999988
+		defaultScale = 2.5
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 30.4174976
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = mk3FuselageMONO_4293417528
+	partName = Part
+	persistentId = 3202519458
+	pos = -0.0129335886,11.0231247,0.045056086
+	attPos = 0,0,0
+	attPos0 = -1.77635546E-15,0.21875,1.49011514E-08
+	rot = 1.00000012,-1.0536715E-07,0,0
+	attRot = 0.707106769,0,0,0.707106769
+	attRot0 = -1,0,0,0
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -4975.97314
+	modMass = -1.38221478
+	modSize = 0,0,0
+	link = adapterSize3-Mk3_4293417490
+	attN = top,adapterEngines_4293417644_0|0.625|0
+	attN = bottom,adapterSize3-Mk3_4293417490_0|-0.625|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 33000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 33000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Dynamic
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.875
+		defaultScale = 3.75
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 32.0133324
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	RESOURCE
+	{
+		name = MonoPropellant
+		amount = 0
+		maxAmount = 26.677779426367582
+		flowState = True
+		isTweakable = True
+		hideFlow = False
+		isVisible = True
+		flowMode = Both
+	}
+}
+PART
+{
+	part = adapterSize3-Mk3_4293417490
+	partName = Part
+	persistentId = 3931314292
+	pos = -0.0129335113,11.3877096,0.0450561754
+	attPos = 0,0,0
+	attPos0 = 0,-0.3125,0
+	rot = 1.00000012,-1.0536715E-07,0,0
+	attRot = 0.707106769,0,0,0.707106769
+	attRot0 = 0,0,0,1
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -2468.24072
+	modMass = -1.76726031
+	modSize = 0,0,0
+	link = adapterSmallMiniShort_4293417452
+	link = Mk1FuselageStructural_4293417326
+	link = Mk1FuselageStructural_4293417226
+	attN = top,mk3FuselageMONO_4293417528_0|0.9375|0
+	attN = bottom,adapterSmallMiniShort_4293417452_0|-0.9375|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 32500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 32500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Dynamic
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.875
+		defaultScale = 3.75
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 17.1817703
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	RESOURCE
+	{
+		name = LiquidFuel
+		amount = 0
+		maxAmount = 14.291675531738308
+		flowState = True
+		isTweakable = True
+		hideFlow = False
+		isVisible = True
+		flowMode = Both
+	}
+	RESOURCE
+	{
+		name = Oxidizer
+		amount = 0
+		maxAmount = 17.467603427680153
+		flowState = True
+		isTweakable = True
+		hideFlow = False
+		isVisible = True
+		flowMode = Both
+	}
+}
+PART
+{
+	part = adapterSmallMiniShort_4293417452
+	partName = Part
+	persistentId = 2956317301
+	pos = -0.0129334657,11.6064606,0.045056317
+	attPos = 0,0,0
+	attPos0 = 0,-0.1875,0
+	rot = 0,0,1.0536715E-07,-1.00000012
+	attRot = 0.707106709,0,0,-0.707106709
+	attRot0 = 1,0,0,0
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -62.6752014
+	modMass = -0.0250700805
+	modSize = 0,0,0
+	link = IR.Rotatron.Basic.v3_4293417410
+	attN = top,IR.Rotatron.Basic.v3_4293417410_0|0.1875|0
+	attN = bottom,adapterSize3-Mk3_4293417490_0|0|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModulePartVariants
+		isEnabled = True
+		useVariantMass = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 1500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.899999976
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 37.3247986
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Rotatron.Basic.v3_4293417410
+	partName = Part
+	persistentId = 1129999263
+	pos = -0.012933434,11.7569857,0.045056425
+	attPos = 0,-0.100848764,0
+	attPos0 = 0,0.212500572,0
+	rot = 0,0,1.0536715E-07,-1.00000012
+	attRot = 0.707106709,0,0,-0.707106709
+	attRot0 = 0,0,0,1
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	link = IR.Pivotron.RangeNinety.v3_4293417368
+	attN = top,IR.Pivotron.RangeNinety.v3_4293417368_0|0.2|0
+	attN = bottom,adapterSmallMiniShort_4293417452_0|-0.1|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -180|-90|0|90|180|
+		servoName = Rotatron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -360
+		maxPositionLimit = 360
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.RangeNinety.v3_4293417368
+	partName = Part
+	persistentId = 2214286382
+	pos = -0.0129333241,12.1538363,0.0450564474
+	attPos = 0,0,0
+	attPos0 = 0,0.425992012,0
+	rot = 0,0,1.0536715E-07,-1.00000012
+	attRot = 0.707106709,0,0,-0.707106709
+	attRot0 = 0,0,0,1
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	attN = bottom,IR.Rotatron.Basic.v3_4293417410_0|-0.3|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = 0|45|90|
+		servoName = Joint Pivotron - Half Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 90
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = 0
+		maxPositionLimit = 90
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 10
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = Mk1FuselageStructural_4293417326
+	partName = Part
+	persistentId = 333339681
+	pos = -0.212933913,11.6086159,0.0450562127
+	attPos = 0.318786234,-0.119041383,-6.70552112E-08
+	attPos0 = -0.51878643,-0.101864815,4.09781933E-08
+	rot = 0.500000238,-0.49999994,-0.500000119,-0.50000006
+	attRot = 0.707106829,4.57624694E-08,-3.61562402E-09,0.707106829
+	attRot0 = 0.50000006,-0.49999997,0.49999997,0.500000119
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 1
+	modCost = -358.112
+	modMass = -0.0942400023
+	modSize = 0,0,0
+	link = IR.Rotatron.Basic.v3_4294591316
+	sym = Mk1FuselageStructural_4293417226
+	srfN = srfAttach,adapterSize3-Mk3_4293417490
+	attN = top,IR.Rotatron.Basic.v3_4294591316_0|0.9375|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 3500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.300000012
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 21.8880024
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = Mk1FuselageStructural_4293417226
+	partName = Part
+	persistentId = 440687898
+	pos = 0.187067032,11.6086159,0.0450562276
+	attPos = -0.318786204,-0.119041502,-8.19563866E-08
+	attPos0 = 0.51878643,-0.101864815,4.09781933E-08
+	rot = 0.500000358,0.5,0.500000119,-0.499999821
+	attRot = 0.707106829,4.57624694E-08,-3.61562402E-09,0.707106829
+	attRot0 = -1.09082992E-08,0.707106709,1.09082965E-08,0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 1
+	modCost = -358.112
+	modMass = -0.0942400023
+	modSize = 0,0,0
+	link = IR.Rotatron.Basic.v3_4293417126
+	sym = Mk1FuselageStructural_4293417326
+	srfN = srfAttach,adapterSize3-Mk3_4293417490
+	attN = top,IR.Rotatron.Basic.v3_4293417126_0|0.9375|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 3500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.300000012
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 21.8880024
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Rotatron.Basic.v3_4293417126
+	partName = Part
+	persistentId = 4013319719
+	pos = 0.462070197,11.6086159,0.0450557806
+	attPos = 0,0,0
+	attPos0 = 3.72528888E-08,0.324999839,9.68576952E-09
+	rot = 0.49999994,0.49999994,-0.5,0.500000298
+	attRot = 0,0,0.707106709,-0.707106709
+	attRot0 = -1.1920929E-07,-1,0,1.04308128E-07
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -125
+	modMass = -0.0500000007
+	modSize = 0,0,0
+	link = B9.Aero.HL.Extension.C_4293417084
+	attN = top,B9.Aero.HL.Extension.C_4293417084_0|0.2|0
+	attN = bottom,Mk1FuselageStructural_4293417226_0|-0.1|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.5
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 125
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -180|-90|0|90|180|
+		servoName = Rotatron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -360
+		maxPositionLimit = 360
+		torqueLimit = 15
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = B9.Aero.HL.Extension.C_4293417084
+	partName = Part
+	persistentId = 3357921095
+	pos = 0.661701441,11.6230259,0.0450563766
+	attPos = -3.97604083E-08,-0.420370162,-0.0144100077
+	attPos0 = -2.83123427E-08,0.600000024,-1.78814172E-08
+	rot = -0.49999994,-0.49999994,0.5,-0.500000298
+	attRot = 0,0,-0.707106709,0.707106709
+	attRot0 = 0,0,0,-1
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -440.121582
+	modMass = -0.122255996
+	modSize = 0,0,0
+	link = IR.Pivotron.Sixty.v3_4293417052
+	link = IR.Pivotron.OneTwenty.v3_4293417010
+	attN = top,IR.Pivotron.OneTwenty.v3_4293417010_0|0.5|0
+	attN = bottom,IR.Rotatron.Basic.v3_4293417126_0|-0.5|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 4000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.350000024
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 9.87840366
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Sixty.v3_4293417052
+	partName = Part
+	persistentId = 540672392
+	pos = 0.66736567,11.386467,0.0450589992
+	attPos = -0.0599380806,2.83122063E-07,-0.15372844
+	attPos0 = 0.0599361211,0.00485476851,0.348500222
+	rot = 0.707106709,-4.32133703E-07,-0.707106948,-2.23517532E-07
+	attRot = 0,0,0,-0.999999881
+	attRot0 = -0.707106829,9.03908415E-09,-1.92656131E-08,-0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 1
+	modCost = -92.5097504
+	modMass = -0.0370039009
+	modSize = 0,0,0
+	link = IR.Rotatron.Basic.v3_4293416968
+	srfN = srfAttach,B9.Aero.HL.Extension.C_4293417084
+	attN = top,IR.Rotatron.Basic.v3_4293416968_0|0.2|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.629961014
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 157.49025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -60|0|60|
+		servoName = Joint Pivotron - Narrow
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -60
+		maxPositionLimit = 60
+		torqueLimit = 18.8988304
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 13.333333
+		factorAcceleration = 13.333333
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Rotatron.Basic.v3_4293416968
+	partName = Part
+	persistentId = 2986597326
+	pos = 0.667366147,11.1974773,0.0450586416
+	attPos = 0,0,0
+	attPos0 = -2.99924139E-08,0.200000659,-5.96046199E-08
+	rot = -1.00000024,-3.11865449E-07,1.34110462E-06,-7.15255737E-07
+	attRot = 0.707106769,0,0,0.707106769
+	attRot0 = 2.98023224E-08,-0.707106829,0,-0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -92.5097504
+	modMass = -0.0370039009
+	modSize = 0,0,0
+	link = IR.Pivotron.Basic.v3_4293416926
+	attN = top,IR.Pivotron.Basic.v3_4293416926_0|0.2|0
+	attN = bottom,IR.Pivotron.Sixty.v3_4293417052_0|-0.1|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.629961014
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 157.49025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -180|-90|0|90|180|
+		servoName = Rotatron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -360
+		maxPositionLimit = 360
+		torqueLimit = 18.8988304
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.OneTwenty.v3_4293417010
+	partName = Part
+	persistentId = 2706580848
+	pos = 1.00003839,11.57195,0.0450556017
+	attPos = 2.36785276E-08,-0.231666207,0.0510759428
+	attPos0 = 5.51330004E-09,0.569999993,-1.67638063E-08
+	rot = -0.49999994,-0.49999994,0.5,-0.500000298
+	attRot = 0,0,-0.707106709,0.707106709
+	attRot0 = 0,0,0,1
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -125
+	modMass = -0.0500000007
+	modSize = 0,0,0
+	attN = bottom,B9.Aero.HL.Extension.C_4293417084_0|-0.45|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.5
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 125
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -120|0|120|
+		servoName = Joint Rotatron - Wide
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -120
+		maxPositionLimit = 120
+		torqueLimit = 15
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 26.666666
+		factorAcceleration = 26.666666
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 1500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Basic.v3_4293416926
+	partName = Part
+	persistentId = 4184931917
+	pos = 0.667366743,10.8824959,0.0450589992
+	attPos = 0,0,0
+	attPos0 = 3.23494902E-07,0.314981371,3.27600077E-07
+	rot = -2.68220901E-07,4.47035262E-08,-1.00000024,-2.39477629E-07
+	attRot = 0,0.707106709,0.707106709,0
+	attRot0 = -2.95027803E-07,1,7.16495606E-07,-1.31130173E-06
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -92.5097504
+	modMass = -0.0370039009
+	modSize = 0,0,0
+	link = IR.Rotatron.Basic.v3_4293416884
+	attN = top,IR.Rotatron.Basic.v3_4293416884_0|0.3|0
+	attN = bottom,IR.Rotatron.Basic.v3_4293416968_0|-0.3|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.629961014
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 157.49025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -90|0|90|
+		servoName = Joint Pivotron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -90
+		maxPositionLimit = 90
+		torqueLimit = 18.8988304
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Rotatron.Basic.v3_4293416884
+	partName = Part
+	persistentId = 2856719110
+	pos = 0.66736424,10.6305046,0.0450586416
+	attPos = 0,0,0
+	attPos0 = 6.52616521E-08,0.288989216,1.86743307E-07
+	rot = -0.707107246,1.80841184E-07,-0.707106531,-1.49011399E-08
+	attRot = 0.707106769,0,0,0.707106769
+	attRot0 = -6.32202912E-08,-0.707106829,3.34179404E-08,0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -92.5097504
+	modMass = -0.0370039009
+	modSize = 0,0,0
+	link = IR.Pivotron.Sixty.v3_4293416842
+	attN = top,IR.Pivotron.Sixty.v3_4293416842_0|0.2|0
+	attN = bottom,IR.Pivotron.Basic.v3_4293416926_0|-0.1|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.629961014
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 157.49025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -180|-90|0|90|180|
+		servoName = Rotatron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -360
+		maxPositionLimit = 360
+		torqueLimit = 18.8988304
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Sixty.v3_4293416842
+	partName = Part
+	persistentId = 4004058704
+	pos = 0.667365491,10.3785219,0.0450599529
+	attPos = 0,0,0
+	attPos0 = 4.5865125E-08,0.325992525,-1.15576483E-07
+	rot = 3.27825546E-07,1.19209268E-07,-1.00000012,1.38421541E-08
+	attRot = 0.49999997,0.49999997,0.49999997,0.49999997
+	attRot0 = 6.32202912E-08,0.707106829,-3.34179404E-08,0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -92.5097504
+	modMass = -0.0370039009
+	modSize = 0,0,0
+	link = GrapplingDevice_4293416800
+	attN = top,GrapplingDevice_4293416800_0|0.2|0
+	attN = bottom,IR.Rotatron.Basic.v3_4293416884_0|-0.2|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.629961014
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 157.49025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -60|0|60|
+		servoName = Joint Pivotron - Narrow
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -60
+		maxPositionLimit = 60
+		torqueLimit = 18.8988304
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 13.333333
+		factorAcceleration = 13.333333
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = GrapplingDevice_4293416800
+	partName = Part
+	persistentId = 2859161493
+	pos = 0.667363286,10.2187195,0.04505888
+	attPos = 0,0,0
+	attPos0 = 8.94832208E-09,0.266820073,7.14980928E-08
+	rot = -0.707107186,8.70697434E-08,-0.70710659,1.34110508E-07
+	attRot = 0.707106769,0,0,0.707106769
+	attRot0 = -6.32202912E-08,-0.707106829,3.34179404E-08,0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -443.779205
+	modMass = -0.0739632025
+	modSize = 0,0,0
+	attN = top,IR.Pivotron.Sixty.v3_4293416842_0|-0.1408267|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleGrappleNode
+		isEnabled = True
+		stagingEnabled = True
+		state = Ready
+		dockUId = 0
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			ReleaseAction
+			{
+				actionGroup = None
+			}
+			DecoupleAction
+			{
+				actionGroup = None
+			}
+			MakeReferenceToggle
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleAnimateGeneric
+		isEnabled = True
+		aniState = LOCKED
+		animSwitch = True
+		animTime = 0
+		animSpeed = 1
+		deployPercent = 100
+		animationIsDisabled = False
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			ToggleAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FXModuleLookAtConstraint
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FlagDecal
+		isEnabled = True
+		flagDisplayed = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.300000012
+		defaultScale = 1.25
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 6.22080088
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Rotatron.Basic.v3_4294591316
+	partName = Part
+	persistentId = 1258349930
+	pos = -0.487937629,11.6086159,0.0450556912
+	attPos = 0,0,0
+	attPos0 = -1.49011417E-08,0.275000274,5.96052763E-09
+	rot = -0.500000238,0.49999997,-0.500000119,-0.50000006
+	attRot = 0,0,-0.707106709,-0.707106709
+	attRot0 = 1.19209275E-07,-1,0,0
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -125
+	modMass = -0.0500000007
+	modSize = 0,0,0
+	link = B9.Aero.HL.Extension.C_4294591264
+	attN = top,B9.Aero.HL.Extension.C_4294591264_0|0.2|0
+	attN = bottom,Mk1FuselageStructural_4293417326_0|-0.1|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.5
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 125
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -180|-90|0|90|180|
+		servoName = Rotatron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -360
+		maxPositionLimit = 360
+		torqueLimit = 15
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = B9.Aero.HL.Extension.C_4294591264
+	partName = Part
+	persistentId = 4224772725
+	pos = -0.687570214,11.6230259,0.0450549461
+	attPos = -3.97604083E-08,-0.420370162,-0.0144100077
+	attPos0 = -2.83123427E-08,0.600000024,-1.78814172E-08
+	rot = 0.500000238,-0.49999997,0.500000119,0.50000006
+	attRot = 0,0,-0.707106709,0.707106709
+	attRot0 = 0,0,0,-1
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -440.121582
+	modMass = -0.122255996
+	modSize = 0,0,0
+	link = IR.Pivotron.Sixty.v3_4294591222
+	link = IR.Pivotron.OneTwenty.v3_4294590274
+	attN = top,IR.Pivotron.OneTwenty.v3_4294590274_0|0.5|0
+	attN = bottom,IR.Rotatron.Basic.v3_4294591316_0|-0.5|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 4000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.350000024
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 9.87840366
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Sixty.v3_4294591222
+	partName = Part
+	persistentId = 942557508
+	pos = -0.693234265,11.386467,0.0450517274
+	attPos = -0.0599380806,2.83122063E-07,-0.15372844
+	attPos0 = 0.0599361211,0.00485476851,0.348500222
+	rot = -0.707107008,-1.63912759E-07,-0.707106769,3.42726679E-07
+	attRot = 0,0,0,-0.999999881
+	attRot0 = -0.707106829,9.03908415E-09,-1.92656131E-08,-0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 1
+	modCost = -92.5097504
+	modMass = -0.0370039009
+	modSize = 0,0,0
+	link = IR.Rotatron.Basic.v3_4294591170
+	srfN = srfAttach,B9.Aero.HL.Extension.C_4294591264
+	attN = top,IR.Rotatron.Basic.v3_4294591170_0|0.2|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.629961014
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 157.49025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -60|0|60|
+		servoName = Joint Pivotron - Narrow
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -60
+		maxPositionLimit = 60
+		torqueLimit = 18.8988304
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 13.333333
+		factorAcceleration = 13.333333
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Rotatron.Basic.v3_4294591170
+	partName = Part
+	persistentId = 236505336
+	pos = -0.693234384,11.1974773,0.0450515486
+	attPos = 0,0,0
+	attPos0 = -2.99924139E-08,0.200000659,-5.96046199E-08
+	rot = 1.1920929E-06,-6.85453642E-07,1.00000024,7.55647989E-08
+	attRot = 0.707106769,0,0,0.707106769
+	attRot0 = 2.98023224E-08,-0.707106829,0,-0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -92.5097504
+	modMass = -0.0370039009
+	modSize = 0,0,0
+	link = IR.Pivotron.Basic.v3_4294591118
+	attN = top,IR.Pivotron.Basic.v3_4294591118_0|0.2|0
+	attN = bottom,IR.Pivotron.Sixty.v3_4294591222_0|-0.1|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.629961014
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 157.49025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -180|-90|0|90|180|
+		servoName = Rotatron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -360
+		maxPositionLimit = 360
+		torqueLimit = 18.8988304
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Basic.v3_4294591118
+	partName = Part
+	persistentId = 3022037244
+	pos = -0.693234503,10.8824959,0.0450513102
+	attPos = 0,0,0
+	attPos0 = 3.23494902E-07,0.314981371,3.27600077E-07
+	rot = -1.00000012,4.57624978E-08,2.38418565E-07,8.94070027E-08
+	attRot = 0,0.707106709,0.707106709,0
+	attRot0 = -2.95027803E-07,1,7.16495606E-07,-1.31130173E-06
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -92.5097504
+	modMass = -0.0370039009
+	modSize = 0,0,0
+	link = IR.Rotatron.Basic.v3_4294591066
+	attN = top,IR.Rotatron.Basic.v3_4294591066_0|0.3|0
+	attN = bottom,IR.Rotatron.Basic.v3_4294591170_0|-0.3|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.629961014
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 157.49025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -90|0|90|
+		servoName = Joint Pivotron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -90
+		maxPositionLimit = 90
+		torqueLimit = 18.8988304
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Rotatron.Basic.v3_4294591066
+	partName = Part
+	persistentId = 511703680
+	pos = -0.693232417,10.6305065,0.0450510122
+	attPos = 0,0,0
+	attPos0 = 6.52616521E-08,0.288989216,1.86743307E-07
+	rot = -0.707106531,9.27124546E-08,0.707107246,-1.34110437E-07
+	attRot = 0.707106769,0,0,0.707106769
+	attRot0 = -6.32202912E-08,-0.707106829,3.34179404E-08,0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -92.5097504
+	modMass = -0.0370039009
+	modSize = 0,0,0
+	link = IR.Pivotron.Sixty.v3_4294591014
+	attN = top,IR.Pivotron.Sixty.v3_4294591014_0|0.2|0
+	attN = bottom,IR.Pivotron.Basic.v3_4294591118_0|-0.1|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.629961014
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 157.49025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -180|-90|0|90|180|
+		servoName = Rotatron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -360
+		maxPositionLimit = 360
+		torqueLimit = 18.8988304
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Sixty.v3_4294591014
+	partName = Part
+	persistentId = 2033946626
+	pos = -0.693233132,10.3785219,0.0450492837
+	attPos = 0,0,0
+	attPos0 = 4.5865125E-08,0.325992525,-1.15576483E-07
+	rot = -1.00000012,2.84181112E-07,-2.38418536E-07,-4.17232627E-07
+	attRot = 0.49999997,0.49999997,0.49999997,0.49999997
+	attRot0 = 6.32202912E-08,0.707106829,-3.34179404E-08,0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -92.5097504
+	modMass = -0.0370039009
+	modSize = 0,0,0
+	link = GrapplingDevice_4294590962
+	attN = top,GrapplingDevice_4294590962_0|0.2|0
+	attN = bottom,IR.Rotatron.Basic.v3_4294591066_0|-0.2|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.629961014
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 157.49025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -60|0|60|
+		servoName = Joint Pivotron - Narrow
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -60
+		maxPositionLimit = 60
+		torqueLimit = 18.8988304
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 13.333333
+		factorAcceleration = 13.333333
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = GrapplingDevice_4294590962
+	partName = Part
+	persistentId = 2036111683
+	pos = -0.693231523,10.2187271,0.0450510718
+	attPos = 0,0,0
+	attPos0 = 8.94832208E-09,0.266820073,7.14980928E-08
+	rot = -0.707106709,1.98828417E-07,0.707107306,-1.04308093E-07
+	attRot = 0.707106769,0,0,0.707106769
+	attRot0 = -6.32202912E-08,-0.707106829,3.34179404E-08,0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -443.779205
+	modMass = -0.0739632025
+	modSize = 0,0,0
+	attN = top,IR.Pivotron.Sixty.v3_4294591014_0|-0.1408267|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = ModuleGrappleNode
+		isEnabled = True
+		stagingEnabled = True
+		state = Ready
+		dockUId = 0
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			ReleaseAction
+			{
+				actionGroup = None
+			}
+			DecoupleAction
+			{
+				actionGroup = None
+			}
+			MakeReferenceToggle
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleAnimateGeneric
+		isEnabled = True
+		aniState = LOCKED
+		animSwitch = True
+		animTime = 0
+		animSpeed = 1
+		deployPercent = 100
+		animationIsDisabled = False
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			ToggleAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FXModuleLookAtConstraint
+		isEnabled = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = FlagDecal
+		isEnabled = True
+		flagDisplayed = True
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.300000012
+		defaultScale = 1.25
+		defaultTransformScale = (1.25, 1.25, 1.25)
+		DryCost = 6.22080088
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.OneTwenty.v3_4294590274
+	partName = Part
+	persistentId = 2933618961
+	pos = -1.02590978,11.57195,0.0450552441
+	attPos = 2.36785276E-08,-0.231666207,0.0510759428
+	attPos0 = 5.51330004E-09,0.569999993,-1.67638063E-08
+	rot = 0.500000238,-0.49999997,0.500000119,0.50000006
+	attRot = 0,0,-0.707106709,0.707106709
+	attRot0 = 0,0,0,1
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -125
+	modMass = -0.0500000007
+	modSize = 0,0,0
+	attN = bottom,B9.Aero.HL.Extension.C_4294591264_0|-0.45|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.5
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 125
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -120|0|120|
+		servoName = Joint Rotatron - Wide
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -120
+		maxPositionLimit = 120
+		torqueLimit = 15
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 26.666666
+		factorAcceleration = 26.666666
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 1500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = structuralMiniNode_4294183776
+	partName = Part
+	persistentId = 1297251834
+	pos = -0.0129336333,9.71714783,-0.000157252332
+	attPos = 0,0,0
+	attPos0 = 0,-0.232325554,1.08702807E-08
+	rot = 0.707106829,0,0,0.707106829
+	attRot = 0,0,0,1
+	attRot0 = -0.707106829,0,0,-0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	link = IR.Rotatron.Basic.v3_4294153828
+	link = IR.Rotatron.Basic.v3_4294126060
+	attN = right,IR.Rotatron.Basic.v3_4294153828_0.1823258|0|0
+	attN = left,IR.Rotatron.Basic.v3_4294126060_-0.1823258|0|0
+	attN = front,probeStackSmall_4294465168_0|0|-0.1823258
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 5000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (0, 0, 0)
+		DryCost = 25
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Rotatron.Basic.v3_4294153828
+	partName = Part
+	persistentId = 3458531585
+	pos = 0.187066376,9.71714783,-0.000157252332
+	attPos = -0.0616958886,0,0
+	attPos0 = 0.261695892,0,0
+	rot = 0.707106829,0.707106829,0,0
+	attRot = 0.49999994,0.49999994,-0.49999994,0.49999994
+	attRot0 = 0.5,0.5,-0.5,0.5
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	link = IR.Pivotron.RangeNinety.v3_4294145942
+	attN = top,IR.Pivotron.RangeNinety.v3_4294145942_0|0.2|0
+	attN = bottom,structuralMiniNode_4294183776_0|-0.1|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -180|-90|0|90|180|
+		servoName = Rotatron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -360
+		maxPositionLimit = 360
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.RangeNinety.v3_4294145942
+	partName = Part
+	persistentId = 1669247568
+	pos = 0.583916903,9.71714783,-0.000157252332
+	attPos = 0,0,0
+	attPos0 = 0,0.50000006,0
+	rot = -0.50000006,-0.50000006,0.50000006,-0.50000006
+	attRot = 0,0,0.707106709,-0.707106709
+	attRot0 = 0,0.707106829,0,-0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	link = IR.Pivotron.Sixty.v3_4292173612
+	attN = top,IR.Pivotron.Sixty.v3_4292173612_0|0|0.3
+	attN = bottom,IR.Rotatron.Basic.v3_4294153828_0|-0.3|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = 0|45|90|
+		servoName = Joint Pivotron - Half Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 90
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = 0
+		maxPositionLimit = 90
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 10
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Sixty.v3_4292173612
+	partName = Part
+	persistentId = 153881487
+	pos = 0.583916903,9.32029724,-0.000157252332
+	attPos = 0,0,0
+	attPos0 = -4.97379712E-14,0,0.458740264
+	rot = 0.707106948,0,0.707106829,8.94069672E-08
+	attRot = 0.49999997,0.49999997,0.49999997,0.49999997
+	attRot0 = 0,-0.707106829,-0.707106829,0
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	link = IR.Pivotron.OneTwenty.v3_4292173560
+	attN = top,IR.Pivotron.OneTwenty.v3_4292173560_0|0.2|0
+	attN = bottom,IR.Pivotron.RangeNinety.v3_4294145942_0|-0.2|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -60|0|60|
+		servoName = Joint Pivotron - Narrow
+		groupName = ik leg
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -60
+		maxPositionLimit = 60
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 13.333333
+		factorAcceleration = 13.333333
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.OneTwenty.v3_4292173560
+	partName = Part
+	persistentId = 3414713287
+	pos = 0.583916783,8.804389,-0.000157252332
+	attPos = 0,0,0
+	attPos0 = 4.97379475E-14,0.515905797,-5.96046057E-08
+	rot = 0,0,1.00000012,0
+	attRot = 0,0.707106709,0.707106709,0
+	attRot0 = 0,0.707106829,0,0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	link = IR.Extendatron.RightHalf.v3_4292173508
+	attN = top,IR.Extendatron.RightHalf.v3_4292173508_0|0.45|0
+	attN = bottom,IR.Pivotron.Sixty.v3_4292173612_0|-0.45|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -120|0|120|
+		servoName = Joint Rotatron - Wide
+		groupName = ik leg
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -120
+		maxPositionLimit = 120
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 26.666666
+		factorAcceleration = 26.666666
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 1500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Extendatron.RightHalf.v3_4292173508
+	partName = Part
+	persistentId = 3123338357
+	pos = 0.583905697,7.95109653,-0.00015594103
+	attPos = 0,0,0
+	attPos0 = -9.38759229E-07,0.98216778,1.46861524E-07
+	rot = 0.500000596,0.499999821,-0.500000298,0.499999762
+	attRot = 0,0,0.707106769,0.707106769
+	attRot0 = -0.49999994,-0.500000119,-0.49999994,0.50000006
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.018566912
+	modSize = 0,0,0
+	link = IR.Pivotron.Sixty.v3_4292173456
+	attN = top,IR.Pivotron.Sixty.v3_4292173456_0|0|0.625
+	attN = top2,IR.Pivotron.OneTwenty.v3_4292173560_0|0|-0.625
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = True
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = 0|
+		servoName = skip
+		groupName = ik leg
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0.436535567
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = 0
+		maxPositionLimit = 0.436535537
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 0.0485039391
+		factorAcceleration = 0.0485039391
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 1500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Sixty.v3_4292173456
+	partName = Part
+	persistentId = 4050373252
+	pos = 0.583899975,7.29627657,-0.000158444425
+	attPos = 0,0,0
+	attPos0 = 1.7733926E-07,-8.94070126E-07,0.654805064
+	rot = 1.00000024,-5.79519224E-07,-1.791241E-07,1.78813934E-07
+	attRot = 0.707106769,0,0,0.707106769
+	attRot0 = 0.50000006,-0.5,-0.500000179,0.499999881
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	link = strutCube_4292173404
+	link = strutCube_4292173326
+	attN = bottom,IR.Extendatron.RightHalf.v3_4292173508_0|-0.2|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -60|0|60|
+		servoName = wrist
+		groupName = ik leg
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -60
+		maxPositionLimit = 60
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 13.333333
+		factorAcceleration = 13.333333
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = strutCube_4292173404
+	partName = Part
+	persistentId = 1967667900
+	pos = 0.586027622,7.17434406,-0.200166836
+	attPos = 0.0291260127,-0.0368182957,-0.0537391752
+	attPos0 = -0.031252671,0.15874514,0.253738999
+	rot = -0.0061697932,0.70708102,-0.707078993,-0.00617160555
+	attRot = 0.707106709,0,0,-0.707106709
+	attRot0 = 0.00617074687,0.707079768,0.707079887,-0.00617076177
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	link = B9.Aero.HL.Extension.C_4292173368
+	srfN = srfAttach,IR.Pivotron.Sixty.v3_4292173456
+	attN = top,B9.Aero.HL.Extension.C_4292173368_0|0.1287344|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (0, 0, 0)
+		DryCost = 16
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = B9.Aero.HL.Extension.C_4292173368
+	partName = Part
+	persistentId = 2576796472
+	pos = 0.579888105,7.24744034,-0.450454623
+	attPos = -0.00177454331,-0.378388256,-0.0730876327
+	attPos0 = -1.15483665E-07,0.6287328,4.1126973E-06
+	rot = -0.0123401135,0.707107186,-0.706999063,-1.24331564E-06
+	attRot = 0,0,0,1
+	attRot0 = 1.42463193E-07,-0.00872652978,1.41095313E-07,-0.999961913
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -437.850006
+	modMass = -0.121624999
+	modSize = 0,0,0
+	attN = bottom,strutCube_4292173404_0|-0.5|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 4000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.375
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 12.1500025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = strutCube_4292173326
+	partName = Part
+	persistentId = 1605220432
+	pos = 0.585463524,7.17642021,0.197611675
+	attPos = 0.000679779565,-0.0388913825,0.103723466
+	attPos0 = -0.00224609463,0.15874514,-0.301484019
+	rot = 0.00617063604,0.707080841,0.707079411,-0.00617105793
+	attRot = -0.707106709,0,0,-0.707106709
+	attRot0 = -0.00617080973,0.707079887,-0.707079887,-0.00617074687
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	link = B9.Aero.HL.Extension.C_4292173290
+	srfN = srfAttach,IR.Pivotron.Sixty.v3_4292173456
+	attN = top,B9.Aero.HL.Extension.C_4292173290_0|0.1287344|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (0, 0, 0)
+		DryCost = 16
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = B9.Aero.HL.Extension.C_4292173290
+	partName = Part
+	persistentId = 234159610
+	pos = 0.589003801,7.25229454,0.445917457
+	attPos = -0.000794457854,-0.0304160565,0.0758709088
+	attPos0 = -5.28523742E-07,0.278734386,-3.72526733E-06
+	rot = 0.707106948,0.0123406406,-6.28642738E-08,0.706999421
+	attRot = 0,0,0.999999881,0
+	attRot0 = 1.44354942E-07,-0.999961972,-1.19209247E-07,-0.00872660894
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -437.850006
+	modMass = -0.121624999
+	modSize = 0,0,0
+	attN = bottom,strutCube_4292173326_0|-0.5|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 4000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.375
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 12.1500025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Rotatron.Basic.v3_4294126060
+	partName = Part
+	persistentId = 3704972180
+	pos = -0.21293363,9.71714783,-0.000157252332
+	attPos = 0.0616958588,0,0
+	attPos0 = -0.261695862,0,0
+	rot = 0,0,0.707106829,0.707106829
+	attRot = -0.49999994,0.49999994,0.49999994,0.49999994
+	attRot0 = -0.5,0.5,0.5,0.5
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	link = IR.Pivotron.RangeNinety.v3_4294126008
+	attN = top,IR.Pivotron.RangeNinety.v3_4294126008_0|0.2|0
+	attN = bottom,structuralMiniNode_4294183776_0|-0.1|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -180|-90|0|90|180|
+		servoName = Rotatron - Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -360
+		maxPositionLimit = 360
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 20
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.RangeNinety.v3_4294126008
+	partName = Part
+	persistentId = 164262806
+	pos = -0.609784067,9.71714783,-0.000157252332
+	attPos = 0,0,0
+	attPos0 = 0,0.50000006,0
+	rot = -0.50000006,0.50000006,-0.50000006,-0.50000006
+	attRot = 0,0,0.707106709,-0.707106709
+	attRot0 = 0,0.707106829,0,-0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	link = IR.Pivotron.Sixty.v3_4294125956
+	attN = top,IR.Pivotron.Sixty.v3_4294125956_0|0|0.3
+	attN = bottom,IR.Rotatron.Basic.v3_4294126060_0|-0.3|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = 0|45|90|
+		servoName = Joint Pivotron - Half Basic
+		groupName = New Group
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 90
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = 0
+		maxPositionLimit = 90
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 20
+		factorAcceleration = 10
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Sixty.v3_4294125956
+	partName = Part
+	persistentId = 4208992335
+	pos = -0.609784067,9.32029724,-0.000157371542
+	attPos = 0,0,0
+	attPos0 = -4.97379712E-14,0,0.458740264
+	rot = -0.707106888,-5.96046448E-08,0.707106948,0
+	attRot = 0.49999997,0.49999997,0.49999997,0.49999997
+	attRot0 = 0,-0.707106829,-0.707106829,0
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	link = IR.Pivotron.OneTwenty.v3_4294125904
+	attN = top,IR.Pivotron.OneTwenty.v3_4294125904_0|0.2|0
+	attN = bottom,IR.Pivotron.RangeNinety.v3_4294126008_0|-0.2|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -60|0|60|
+		servoName = Joint Pivotron - Narrow
+		groupName = ik leg
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -60
+		maxPositionLimit = 60
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 13.333333
+		factorAcceleration = 13.333333
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.OneTwenty.v3_4294125904
+	partName = Part
+	persistentId = 4164907476
+	pos = -0.609783828,8.80438995,-0.000157490751
+	attPos = 0,0,0
+	attPos0 = 4.97379475E-14,0.515905797,-5.96046057E-08
+	rot = -1.00000036,1.05367093E-08,-1.58050696E-07,0
+	attRot = 0,0.707106709,0.707106709,0
+	attRot0 = 0,0.707106829,0,0.707106829
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	link = IR.Extendatron.RightHalf.v3_4294125852
+	attN = top,IR.Extendatron.RightHalf.v3_4294125852_0|0.45|0
+	attN = bottom,IR.Pivotron.Sixty.v3_4294125956_0|-0.45|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -120|0|120|
+		servoName = Joint Rotatron - Wide
+		groupName = ik leg
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -120
+		maxPositionLimit = 120
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 26.666666
+		factorAcceleration = 26.666666
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 1500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Extendatron.RightHalf.v3_4294125852
+	partName = Part
+	persistentId = 1761246693
+	pos = -0.609772384,7.95109606,-0.000159040472
+	attPos = 0,0,0
+	attPos0 = -9.38759229E-07,0.98216778,1.46861524E-07
+	rot = 0.500000358,-0.499999702,0.500000536,0.499999881
+	attRot = 0,0,0.707106769,0.707106769
+	attRot0 = -0.49999994,-0.500000119,-0.49999994,0.50000006
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.018566912
+	modSize = 0,0,0
+	link = IR.Pivotron.Sixty.v3_4294125800
+	attN = top,IR.Pivotron.Sixty.v3_4294125800_0|0|0.625
+	attN = top2,IR.Pivotron.OneTwenty.v3_4294125904_0|0|-0.625
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = True
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = 0|
+		servoName = skip
+		groupName = ik leg
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0.436535567
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = 0
+		maxPositionLimit = 0.436535537
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 0.0485039391
+		factorAcceleration = 0.0485039391
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 1500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = IR.Pivotron.Sixty.v3_4294125800
+	partName = Part
+	persistentId = 2270880559
+	pos = -0.609766424,7.29627609,-0.000156537077
+	attPos = 0,0,0
+	attPos0 = 1.7733926E-07,-8.94070126E-07,0.654805064
+	rot = 2.5288108E-07,-1.1920929E-07,1.00000024,-7.16496459E-07
+	attRot = 0.707106769,0,0,0.707106769
+	attRot0 = 0.50000006,-0.5,-0.500000179,0.499999881
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -51.5747528
+	modMass = -0.0206299014
+	modSize = 0,0,0
+	link = strutCube_4294125748
+	link = strutCube_4294125670
+	attN = bottom,IR.Extendatron.RightHalf.v3_4294125852_0|-0.2|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.793700993
+		defaultScale = 1
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 198.425247
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = ModuleIRServo_v3
+		isEnabled = True
+		swap = False
+		position = 0
+		correction_0 = 0
+		correction_1 = 0
+		force = 0
+		activateCollisions = False
+		presetsS = -60|0|60|
+		servoName = wrist
+		groupName = ik leg
+		isLocked = False
+		isInverted = False
+		zeroNormal = 0
+		zeroInvert = 0
+		defaultPosition = 0
+		hasPositionLimit = False
+		minPositionLimit = -60
+		maxPositionLimit = 60
+		torqueLimit = 23.8110294
+		accelerationLimit = 4
+		speedLimit = 1
+		jointSpring = Infinity
+		jointDamping = 0
+		hasSpring = False
+		factorTorque = 35
+		factorSpeed = 13.333333
+		factorAcceleration = 13.333333
+		scaleMass = 1
+		scaleElectricChargeRequired = 2
+		forwardKey = 
+		reverseKey = 
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+			MotionLockToggle
+			{
+				actionGroup = None
+			}
+			MoveNextPresetAction
+			{
+				actionGroup = None
+			}
+			MovePrevPresetAction
+			{
+				actionGroup = None
+			}
+			MovePlusAction
+			{
+				actionGroup = None
+			}
+			MoveMinusAction
+			{
+				actionGroup = None
+			}
+			MoveCenterAction
+			{
+				actionGroup = None
+			}
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 2000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = strutCube_4294125748
+	partName = Part
+	persistentId = 239585380
+	pos = -0.611894071,7.17434406,0.199851617
+	attPos = 0.0291260127,-0.0368182957,-0.0537391752
+	attPos0 = -0.031252671,0.15874514,0.253738999
+	rot = 0.707079172,0.00617152127,-0.00616983557,0.707081079
+	attRot = 0.707106709,0,0,-0.707106709
+	attRot0 = 0.00617074687,0.707079768,0.707079887,-0.00617076177
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	link = B9.Aero.HL.Extension.C_4294125712
+	srfN = srfAttach,IR.Pivotron.Sixty.v3_4294125800
+	attN = top,B9.Aero.HL.Extension.C_4294125712_0|0.1287344|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (0, 0, 0)
+		DryCost = 16
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = B9.Aero.HL.Extension.C_4294125712
+	partName = Part
+	persistentId = 3519097293
+	pos = -0.605754554,7.24744034,0.450139612
+	attPos = -0.00177454331,-0.378388256,-0.0730876327
+	attPos0 = -1.15483665E-07,0.6287328,4.1126973E-06
+	rot = 0.706999183,1.2642704E-06,-0.0123401135,0.707107306
+	attRot = 0,0,0,1
+	attRot0 = 1.42463193E-07,-0.00872652978,1.41095313E-07,-0.999961913
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -437.850006
+	modMass = -0.121624999
+	modSize = 0,0,0
+	attN = bottom,strutCube_4294125748_0|-0.5|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 4000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.375
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 12.1500025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = strutCube_4294125670
+	partName = Part
+	persistentId = 2343080737
+	pos = -0.611330211,7.17642021,-0.197926655
+	attPos = 0.000679779565,-0.0388913825,0.103723466
+	attPos0 = -0.00224609463,0.15874514,-0.301484019
+	rot = -0.707079411,0.00617107842,0.0061705308,0.707080603
+	attRot = -0.707106709,0,0,-0.707106709
+	attRot0 = -0.00617080973,0.707079887,-0.707079887,-0.00617074687
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 1
+	modCost = 0
+	modMass = 0
+	modSize = 0,0,0
+	link = B9.Aero.HL.Extension.C_4294125634
+	srfN = srfAttach,IR.Pivotron.Sixty.v3_4294125800
+	attN = top,B9.Aero.HL.Extension.C_4294125634_0|0.1287344|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 500
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 100
+		defaultScale = 100
+		defaultTransformScale = (0, 0, 0)
+		DryCost = 16
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}
+PART
+{
+	part = B9.Aero.HL.Extension.C_4294125634
+	partName = Part
+	persistentId = 606413181
+	pos = -0.61487025,7.25229549,-0.446232945
+	attPos = -0.000794457854,-0.0304160565,0.0758709088
+	attPos0 = -5.28523742E-07,0.278734386,-3.72526733E-06
+	rot = 1.79279596E-07,-0.706999362,0.707106888,0.0123406723
+	attRot = 0,0,0.999999881,0
+	attRot0 = 1.44354942E-07,-0.999961972,-1.19209247E-07,-0.00872660894
+	mir = 1,1,1
+	symMethod = Mirror
+	autostrutMode = Off
+	rigidAttachment = False
+	istg = -1
+	resPri = 0
+	dstg = 0
+	sidx = -1
+	sqor = -1
+	sepI = -1
+	attm = 0
+	modCost = -437.850006
+	modMass = -0.121624999
+	modSize = 0,0,0
+	attN = bottom,strutCube_4294125670_0|-0.5|0
+	EVENTS
+	{
+	}
+	ACTIONS
+	{
+	}
+	PARTDATA
+	{
+	}
+	MODULE
+	{
+		name = HitpointTracker
+		isEnabled = True
+		Hitpoints = 4000
+		Armor = 10
+		maxHitPoints = 0
+		ArmorThickness = 0
+		ArmorSet = True
+		ExplodeMode = Never
+		FireFX = True
+		FireFXLifeTimeInSeconds = 5
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+	MODULE
+	{
+		name = TweakScale
+		isEnabled = True
+		currentScale = 0.375
+		defaultScale = 1.25
+		defaultTransformScale = (1, 1, 1)
+		DryCost = 12.1500025
+		stagingEnabled = True
+		EVENTS
+		{
+		}
+		ACTIONS
+		{
+		}
+		UPGRADESAPPLIED
+		{
+		}
+	}
+}

@@ -400,7 +400,7 @@ public class RoboticLimbIK : RoboticLimb
     {
         //IKtargetTransform.localPosition, currentTarget.transform.position,
         // var dist = Vector3.Distance(currentTarget.transform.position, IKtargetTransform.transform.position);
-        Debug.Log("CHECK STRIDE PERCENT " + transform.parent.name);
+      //  Debug.Log("CHECK STRIDE PERCENT " + transform.parent.name);
         translateDistToTarget = Vector3.Distance(IKtargetTransform.position, currentTarget.transform.position);
 
         currentStrideLength = Vector3.Distance(pointFront.position, pointBack.position);//strideLength;
@@ -440,6 +440,7 @@ public class RoboticLimbIK : RoboticLimb
     {
 
         Vector3 targetOffset;
+       // Debug.Log(servo.name, servo.gameObject);
         targetOffset = servo.servoBase.InverseTransformPoint(target);
 
         var angle = Math.Atan2(targetOffset.z, targetOffset.y);

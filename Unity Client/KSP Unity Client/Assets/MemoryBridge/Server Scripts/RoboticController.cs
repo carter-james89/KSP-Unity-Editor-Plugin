@@ -97,6 +97,7 @@ public class RoboticController : MonoBehaviour
         }
     }
 
+    //protected void 
     public virtual void CustomAwake(MemoryBridge memoryBridge)
     {
         this.memoryBridge = memoryBridge;
@@ -226,6 +227,8 @@ public class RoboticController : MonoBehaviour
 
     protected float baseHeight;
 
+    public bool writeServoToBridge = true;
+
     float simTime = 0;
     bool activateIK = false;
     bool moveGait = false;
@@ -259,11 +262,6 @@ public class RoboticController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             ActivateIK();
-            //foreach (var item in limbs)
-            //{
-            //    item.limbIK.IKtargetTransform.position = item.limbMirror.limbEnd.position;
-            //}
-
         }
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
@@ -288,15 +286,6 @@ public class RoboticController : MonoBehaviour
 
         if (robotStatus != RobotStatus.Deactivated)
         {
-            //set robot walk height
-            //if (directionTarget.position != targetBaseHeight)
-            //{
-            //    directionTarget.position = Vector3.Lerp(directionTarget.position, targetBaseHeight, Time.deltaTime);
-            //    if (Vector3.Distance(directionTarget.position, targetBaseHeight) < .02f)
-            //    {
-            //        directionTarget.position = targetBaseHeight;
-            //    }
-            //}
             //set robot walk height
             if (targetBaseHeight != baseHeight)
             {

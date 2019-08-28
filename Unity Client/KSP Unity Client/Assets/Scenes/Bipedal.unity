@@ -590,6 +590,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   walkHeight: 1
   walkSpeed: 1
+  writeServoToBridge: 0
   autoStartUp: 0
   steeringError: 0
 --- !u!1 &491640104

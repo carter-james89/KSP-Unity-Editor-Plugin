@@ -164,6 +164,10 @@ public class LimbController : MonoBehaviour
         return false;
     }
 
+
+
+
+
     //Creates RoboticLimb components for the mirror and IK leg, adds them to limb base servo base, then aranges the hiarchy
     void CreateRoboticLegs(List<RoboticServoMirror> servosMirror)
     {

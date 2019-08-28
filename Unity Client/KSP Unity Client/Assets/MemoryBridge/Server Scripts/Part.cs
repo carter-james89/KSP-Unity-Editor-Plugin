@@ -72,7 +72,8 @@ public class Part : MonoBehaviour
             }
             lineRenderer = fakeJoint.GetComponent<LineRenderer>();
         }
-        if (kspPartName == "IR.Pivotron.RangeNinety" || kspPartName == "IR.Pivotron.Sixty.v3" || kspPartName == "IR.Pivotron.Hinge.Basic.v3" || kspPartName == "IR.Pivotron.Basic" || kspPartName == "IR.Pivotron.OneTwenty.v3" || kspPartName == "IR.Pivotron.Basic.v3")
+        if (kspPartName == "IR.Pivotron.RangeNinety" || kspPartName == "IR.Pivotron.Sixty.v3" || kspPartName == "IR.Pivotron.Hinge.Basic.v3" || kspPartName == "IR.Pivotron.Basic" || kspPartName == "IR.Pivotron.OneTwenty.v3" || kspPartName == "IR.Pivotron.Basic.v3"
+            || kspPartName == "IR.Pivotron.RangeNinety.v3")
         {
             fakeJoint = Instantiate(Resources.Load("Pivotron", typeof(GameObject))) as GameObject;
             fakeJoint.transform.SetParent(transform);

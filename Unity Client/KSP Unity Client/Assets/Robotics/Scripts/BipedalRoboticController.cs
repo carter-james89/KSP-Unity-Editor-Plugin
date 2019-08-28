@@ -23,13 +23,13 @@ public class BipedalRoboticController : RoboticController
             else
             {
                 newLimb = limbObj.AddComponent(typeof(LimbController)) as LimbController;
-               // neckArm = newLimb;
+                // neckArm = newLimb;
             }
             limbs.Add(newLimb);
             newLimb.CustomAwake(memoryBridge, vesselControl, this);
         }
 
-        if (legs.Count ==2)
+        if (legs.Count == 2)
         {
             //Debug.Log("robot is a bidepedal");
             //groupLeft = new HexapodLimbGroup();
@@ -46,7 +46,7 @@ public class BipedalRoboticController : RoboticController
             {
                 var offset = memoryBridge.vesselControl.vessel.transform.InverseTransformPoint(leg.transform.position);
                 Debug.Log(leg.name);
-            //    var group = groupRight;
+                //    var group = groupRight;
                 if (offset.x < 0)
                 {
                     Debug.Log("left leg found");
@@ -58,7 +58,7 @@ public class BipedalRoboticController : RoboticController
                     legRight = leg;
                 }
 
-               // group.limbs.Add(leg);
+                // group.limbs.Add(leg);
                 //if (leg.name.Contains("1"))
                 //{
                 //    Debug.Log("legs one found");
@@ -90,13 +90,33 @@ public class BipedalRoboticController : RoboticController
             //    Debug.Log(item.name);
             //}
 
-            group0.limbs.Add(groupLeft.limb0);
-            group0.limbs.Add(groupLeft.limb2);
-            group0.limbs.Add(groupRight.limb1);
+          //  group0.limbs.Add(groupLeft.limb0);
+          //  group0.limbs.Add(groupLeft.limb2);
+           // group0.limbs.Add(groupRight.limb1);
 
-            group1.limbs.Add(groupRight.limb0);
-            group1.limbs.Add(groupRight.limb2);
-            group1.limbs.Add(groupLeft.limb1);
+          //  group1.limbs.Add(groupRight.limb0);
+          //  group1.limbs.Add(groupRight.limb2);
+          //  group1.limbs.Add(groupLeft.limb1);
+        }
+    }
+
+    public override void CustomUpdate()
+    {
+        base.CustomUpdate();
+
+        if (robotStatus != RobotStatus.Deactivated)
+        {
+            //legs[0].limbIK.CalculateSingleServoIK(legs[0].limbIK.IKAxisX.servoGroup[2], legs[0].limbIK.IKtargetTransform.position);
+
+            //legs[0].limbIK.IKAxisX.servoGroup[1].SetServo(90);
+
+          //  legs[0].limbIK.CalculateSingleServoIK(legs[0].limbIK.IKAxisZ.servoGroup[2], legs[0].limbIK.IKtargetTransform.position);
+
+            // legs[0].limbIK.CalculateTwoServoIK(legs[0].limbIK.IKAxisX.servoGroup[1], legs[0].limbIK.IKAxisX.servoGroup[2], legs[0].limbIK.IKtargetTransform.position);
+
+          //  legs[0].limbIK.CalculateSingleServoIK(legs[0].limbIK.IKAxisZ.servoGroup[1], legs[0].limbIK.IKtargetTransform.position);
+
+           //   legs[0].limbIK.CalculateTwoServoIK(legs[0].limbIK.IKAxisZ.servoGroup[1], legs[0].limbIK.IKAxisZ.servoGroup[2], legs[0].limbIK.IKtargetTransform.position);
         }
     }
 }

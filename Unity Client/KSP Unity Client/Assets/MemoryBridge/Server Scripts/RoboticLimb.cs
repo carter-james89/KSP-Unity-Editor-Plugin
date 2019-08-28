@@ -39,7 +39,7 @@ public class RoboticLimb : MonoBehaviour
         }
     }
 
-    public void FindEndPoint(bool andWrite = true, string name = "mirror")
+    public virtual void FindEndPoint(bool andWrite = true, string name = "mirror")
     {
         trueLimbEnd = servoWrist.CalculateTarget(andWrite,name).transform;
         limbEnd = trueLimbEnd;

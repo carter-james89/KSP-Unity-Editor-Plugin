@@ -67,7 +67,7 @@ public class RoboticServoIK : RoboticServo
         this.limbController = mirrorServo.limbController;
         servoBase = transform.parent;
         memoryBridge = mirrorServo.memoryBridge;
-      //  this.groundPoint = mirrorServo.groundPoint;
+        //  this.groundPoint = mirrorServo.groundPoint;
         setAngle = 0;
 
         //if (limbControllerPart == RoboticLimb.LimbPart.Wrist)
@@ -95,10 +95,10 @@ public class RoboticServoIK : RoboticServo
             //targetOffset = 0;
         }
 
-        if (this == FindObjectOfType<HexapodRoboticController>().debugServo)
-        {
-            Debug.Log("pre new pos : " + newPos);
-        }
+        //if (this == FindObjectOfType<HexapodRoboticController>().debugServo)
+        //{
+        //    Debug.Log("pre new pos : " + newPos);
+        //}
         //limbLength = Vector3.Distance(transform.position, limbController.limbIK.limbEndPoint.position);
         //var limbOffset = transform.InverseTransformPoint(groundPoint.position);
         //targetOffset = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
@@ -124,10 +124,10 @@ public class RoboticServoIK : RoboticServo
             }
         }
 
-        if (this == FindObjectOfType<HexapodRoboticController>().debugServo)
-        {
-            Debug.Log("new pos : " + newPos + " Set Angle : " + setAngle);
-        }
+        //if (this == FindObjectOfType<HexapodRoboticController>().debugServo)
+        //{
+        //    Debug.Log("new pos : " + newPos + " Set Angle : " + setAngle);
+        //}
 
         if (invert)
         {
@@ -142,7 +142,7 @@ public class RoboticServoIK : RoboticServo
 
     public void LookAt(Transform target)
     {
-        
+
     }
     public void MatchTargetAngle(Transform target)
     {
@@ -157,7 +157,7 @@ public class RoboticServoIK : RoboticServo
         setAngle = rot;
         target.SetParent(prevParent);
         SetServo();
-       // transform.localRotation = Quaternion.Euler(target.eulerAngles.x, 0, 0);
+        // transform.localRotation = Quaternion.Euler(target.eulerAngles.x, 0, 0);
     }
 
     public bool counteractRot = false;
@@ -186,10 +186,10 @@ public class RoboticServoIK : RoboticServo
             // Debug.Log("set servo pos");
             RunServoPID();
 
-          
 
 
-            memoryBridge.SetFloat(servoName + "unityServoPos", setAngle + offset);
+            if (limb.limbController.roboticController.writeServoToBridge)
+                memoryBridge.SetFloat(servoName + "unityServoPos", setAngle + offset);
         }
     }
     public bool debugServoPID;
@@ -237,14 +237,14 @@ public class RoboticServoIK : RoboticServo
         //speedPID.ProcessVariable = velError;
         //var servoSpeed = speedPID.ControlVariable(deltaTime);
 
-    
+
 
         if (debugServoPID)
         {
             Debug.Log("Servo Pid");
             Debug.Log(speedPID.GainProportional);
             Debug.Log("Servo Error " + servoError);
-           // Debug.Log("Servo S[eed " + servoSpeed);
+            // Debug.Log("Servo S[eed " + servoSpeed);
 
         }
 
@@ -262,17 +262,17 @@ public class RoboticServoIK : RoboticServo
         // {
         //  memoryBridge.SetFloat(servoName + "unityServoAcceleration", limbController.servoAcceleration);
         memoryBridge.SetFloat(servoName + "unityServoSpeed", 9999);// (float)limbController.limbIK.servoSpeed);
-        //}
-        //else
-        //{
-        //    memoryBridge.SetFloat(servoName + "unityServoAcceleration", limbController.servoAcceleration);
-        //    memoryBridge.SetFloat(servoName + "unityServoSpeed", (float)0);
-        //}
+                                                                   //}
+                                                                   //else
+                                                                   //{
+                                                                   //    memoryBridge.SetFloat(servoName + "unityServoAcceleration", limbController.servoAcceleration);
+                                                                   //    memoryBridge.SetFloat(servoName + "unityServoSpeed", (float)0);
+                                                                   //}
 
-       
+
     }
 
-    
+
     public bool useServoSpeedPID;
     public override void CreateBaseAnchor()
     {
