@@ -45,12 +45,19 @@ public class MemoryBridge : MonoBehaviour
         vesselControl.ControlAwake(this);
         //  Debug.Log("Vessel Control Initialized");
 
-        roboticController = gameObject.GetComponent<RoboticController>();
-        if (roboticController)
-        {
-            roboticController.CustomAwake(this);
-            Debug.Log("Robotics Configured");
-        }
+        //roboticController = gameObject.GetComponent<RoboticController>();
+        //if (roboticController)
+        //{
+        //    roboticController.CustomAwake(this);
+        //    Debug.Log("Robotics Configured");
+        var roboticAssembler = GetComponent<RoboticAssembler>();
+        roboticAssembler.Assemble(this);
+        //}        //roboticController = gameObject.GetComponent<RoboticController>();
+        //if (roboticController)
+        //{
+        //    roboticController.CustomAwake(this);
+        //    Debug.Log("Robotics Configured");
+        //}
 
 
         // debugWriteToSelf = GetComponent<KSPMechs.MechManager>().debugWriteToSelf;
@@ -74,7 +81,7 @@ public class MemoryBridge : MonoBehaviour
         vesselControl.VesselUpdate();
 
         //  if (Input.GetKey(KeyCode.Keypad4))
-        roboticController.CustomUpdate();
+       // roboticController.CustomUpdate();
         SetFloat("ClientCameraFeedCount" + fileName, cameraFeeds.Count);
 
 
