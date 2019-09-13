@@ -19,6 +19,10 @@ public class ServoLimb : MonoBehaviour
         mirrorServos = BuildLimb(memoryBridge);
         ikServos = BuildLimb(memoryBridge);
 
+        transform.position = ikServos[0].transform.position;
+        transform.SetParent(ikServos[0].transform.parent);
+        ikServos[0].transform.SetParent(transform);
+
         foreach (var servo in ikServos)
         {
             servo.CalculateGroupAngle();
@@ -30,7 +34,7 @@ public class ServoLimb : MonoBehaviour
         var limbFile = MemoryMappedFile.Open(MapAccess.FileMapAllAccess, name);
         float byteCount;
         float servoCount;
-        var limbs = new List<Servo>();
+        var returnServos = new List<Servo>();
         using (Stream mapStream = limbFile.MapView(MapAccess.FileMapAllAccess, 0, 16))
         {
             var floatBuffer = new byte[4];
@@ -68,11 +72,12 @@ public class ServoLimb : MonoBehaviour
                         var newServo = part.gameObject.AddComponent<Servo>();
                         newServo.Initialize(servoName, this, (int)parentID, memoryBridge);
                         servos.Add(newServo);
+                        returnServos.Add(newServo);
                     }
                 }
             }
         }
-        foreach (var servo in limbs)
+        foreach (var servo in returnServos)
         {
             servo.CreateBaseAnchor();
         }
@@ -80,7 +85,7 @@ public class ServoLimb : MonoBehaviour
         limbFile.Dispose();
         limbFile.Close();
         
-        return limbs;
+        return returnServos;
     }
     // Start is called before the first frame update
     void Start()

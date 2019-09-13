@@ -50,7 +50,7 @@ public class RoboticAssembler : MonoBehaviour
 
                 var newLimbObject = new GameObject();
                 newLimbObject.name = limbName;
-                newLimbObject.transform.SetParent(memoryBridge.vesselControl.vessel.transform);
+               // newLimbObject.transform.SetParent(memoryBridge.vesselControl.m);
 
                var newLimb =  newLimbObject.AddComponent<ServoLimb>();
                 newLimb.Initialize(this, memoryBridge);
