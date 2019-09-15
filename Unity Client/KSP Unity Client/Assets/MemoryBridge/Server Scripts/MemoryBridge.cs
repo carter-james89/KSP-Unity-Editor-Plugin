@@ -43,6 +43,7 @@ public class MemoryBridge : MonoBehaviour
 
         vesselControl = gameObject.GetComponent<VesselControl>();
         vesselControl.ControlAwake(this);
+        vesselControl.VesselUpdate();
         //  Debug.Log("Vessel Control Initialized");
 
         //roboticController = gameObject.GetComponent<RoboticController>();
@@ -50,8 +51,15 @@ public class MemoryBridge : MonoBehaviour
         //{
         //    roboticController.CustomAwake(this);
         //    Debug.Log("Robotics Configured");
-        var roboticAssembler = GetComponent<RoboticAssembler>();
-        roboticAssembler.Assemble(this);
+
+
+
+      // var roboticAssembler = GetComponent<RoboticAssembler>();
+      // roboticAssembler.Assemble(this);
+
+
+
+
         //}        //roboticController = gameObject.GetComponent<RoboticController>();
         //if (roboticController)
         //{
@@ -72,14 +80,14 @@ public class MemoryBridge : MonoBehaviour
     }
 
 
-    void Update()
+    public void StartUpdate()
     {
         //Graphics.Draw
         floatFile.StartUpdate();
 
         SetClientValues();
 
-        vesselControl.VesselUpdate();
+       // vesselControl.VesselUpdate();
 
         //  if (Input.GetKey(KeyCode.Keypad4))
        // roboticController.CustomUpdate();

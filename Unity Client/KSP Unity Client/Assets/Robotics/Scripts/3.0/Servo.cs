@@ -6,13 +6,18 @@ public class Servo : MonoBehaviour
 {
     public string servoName;
 
+    public enum ServoType { Mirror, IK };
+    public ServoType servoType = ServoType.Mirror;
+
+    public Servo partnerServo;
+
     public ServoLimb.LimbAxis limbAxis;
 
     public Servo servoParentDirect, servoChildDirect;
 
     ServoLimb limb;
 
-    Transform servoBase;
+    public Transform servoBase;// { get; private set; }
 
     public float limitMin, limitMax;
 
@@ -22,11 +27,15 @@ public class Servo : MonoBehaviour
 
     LineRenderer lineRenderer;
 
+    bool invert = false;
+
     GameObject jointObject;
 
-    public bool disabled {get; private set;}= false;
+    public Color color { get; private set; }
 
-    public void Initialize(string servoName, ServoLimb limb, int parentID, MemoryBridge memoryBridge)
+    public bool disabled { get; private set; } = false;
+
+    public void Initialize(string servoName, ServoLimb limb, int parentID, Part hostPart, MemoryBridge memoryBridge)
     {
         this.servoName = servoName;
         gameObject.name = servoName;
@@ -36,21 +45,24 @@ public class Servo : MonoBehaviour
         limitMin = memoryBridge.GetFloat(servoName + "minPos");
         limitMax = memoryBridge.GetFloat(servoName + "maxPos");
 
-        hostPart = GetComponent<Part>();
+        //hostPart = GetComponent<Part>();
+        this.hostPart = hostPart;
+
 
         hostPart.ToggleRenderers(false);
 
-   
+
         BuildServoMesh();
 
-        foreach (var part in hostPart.vessel.parts)
-        {
-            if (part.ID == parentID)
-            {
-                servoParentDirect = part.GetComponent<Servo>();
-                servoParentDirect.SetServoChildDirect(this);
-            }
-        }
+        //   foreach (var part in hostPart.vessel.parts)
+        //  {
+        //   if (part.ID == parentID)
+        //   {
+        servoParentDirect = transform.parent.GetComponent<Servo>();
+        if (servoParentDirect)
+            servoParentDirect.SetServoChildDirect(this);
+        //  }
+        //  }
 
         if (hostPart.name.ToLower().Contains("skip"))
         {
@@ -80,6 +92,8 @@ public class Servo : MonoBehaviour
         //create anchor base
         servoBase = new GameObject().transform;
         servoBase.name = "Servo Base";
+     //   servoBase.transform.position = transform.position;
+
         servoBase.SetParent(transform);
         servoBase.localPosition = Vector3.zero;
         servoBase.localRotation = Quaternion.Inverse(memoryBridge.GetQuaternion(servoName + "servoLocalRot"));
@@ -87,7 +101,7 @@ public class Servo : MonoBehaviour
         transform.SetParent(servoBase);
         transform.localEulerAngles = Vector3.zero;
     }
-    public void CalculateGroupAngle()
+    public ServoLimb.LimbAxis CalculateGroupAngle()
     {
         var angleList = new List<float>();
         // if (servoName.Contains("Ro"))
@@ -119,7 +133,7 @@ public class Servo : MonoBehaviour
         else if (smallestAngle == rotDifZ || smallestAngle == negRotDifZ)
             limbAxis = ServoLimb.LimbAxis.Z;
 
-        var color = Color.blue;
+        color = Color.blue;
         switch (limbAxis)
         {
             case ServoLimb.LimbAxis.X:
@@ -140,7 +154,9 @@ public class Servo : MonoBehaviour
         }
         SetServoColor(color);
         //hostPart.SetJointColor(color);
-        //Draw line renderer     
+        //Draw line renderer    
+
+        return limbAxis;
     }
 
     public void SetServoColor(Color newColor)
@@ -160,9 +176,83 @@ public class Servo : MonoBehaviour
             }
         }
     }
-   
+
+    public void MirrorServoPos()
+    {
+       // currentServoPos = memoryBridge.GetFloat(servoName + "servoPos");
+       // kspAngle = memoryBridge.GetFloat(servoName + "servoPos");
+        // memoryBridge.SetFloat(servoName + "unityServoPos", servoAngleSet);
+       // kspLocalEuler = memoryBridge.GetVector3(servoName + "servoLocalEuler");
+        //  kspLocalRot = memoryBridge.GetQuaternion(servoName + "servoLocalRot");
+
+
+       // base.MirrorServoPos();
+        var kspLocalRot = memoryBridge.GetQuaternion(servoName + "servoLocalRot");
+        transform.localRotation = kspLocalRot;
+
+      //  localRot = transform.localRotation;
+    }
+
+    public float setAngle;
+    public void SetServoPos(float newPos)
+    {
+        if (!disabled)
+        {
+            if (hostPart.kspPartName == "IR.Pivotron.RangeNinety")
+            {
+                limitMax = 0;
+                limitMin = -90;
+            }
+
+            var tempPos = newPos;// -= targetOffset;
+
+            //  rawSetAngle = tempPos;
+           // setAngle = newPos;
+            
+            if (tempPos >= limitMin & tempPos <= limitMax)
+            {
+                setAngle = newPos;
+            }
+            else
+            {
+                if (newPos < limitMin)
+                {
+                    setAngle = limitMin;
+                }
+                else if (newPos > limitMax)
+                {
+                    setAngle = limitMax;
+                }
+            }
+
+            if (invert)
+            {
+                setAngle = -setAngle;
+            }
+
+            transform.localRotation = Quaternion.Euler(setAngle, 0, 0);// setAngle + offset, 0, 0);
+            //transform.localRotation = Quaternion.Euler(setAngle, 0, 0);
+
+            if (hostPart.kspPartName == "IR.Pivotron.RangeNinety")
+            {
+                if (setAngle < 0)
+                {
+                    setAngle = -setAngle;
+                }
+            }
+            // Debug.Log("set servo pos");
+            // RunServoPID();
+
+            memoryBridge.SetFloat(servoName + "unityServoSpeed", 9999);
+
+            // if (limb.limbController.roboticController.writeServoToBridge)
+            memoryBridge.SetFloat(servoName + "unityServoPos", setAngle);// + offset);
+        }
+    }
+
     void BuildServoMesh()
     {
+
         var kspPartName = hostPart.kspPartName;
         GameObject fakeJoint = null;
         if (kspPartName.Contains("Rotatron"))
@@ -201,12 +291,12 @@ public class Servo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

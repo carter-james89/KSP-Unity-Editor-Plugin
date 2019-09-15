@@ -11,12 +11,12 @@ public class RoboticAssembler : MonoBehaviour
 {
     public MemoryBridge memoryBridge { get; private set; }
     List<ServoLimb> limbs;
-   public void Assemble(MemoryBridge bridge)
+    public ServoLimb[] Assemble(MemoryBridge bridge)
     {
         memoryBridge = bridge;
-        ReadLimbsFromBridge();
+        return ReadLimbsFromBridge();
     }
-    void ReadLimbsFromBridge()
+    ServoLimb[] ReadLimbsFromBridge()
     {
         var IRFile = MemoryMappedFile.Open(MapAccess.FileMapAllAccess, "IRFile" + memoryBridge.fileName);
         limbs = new List<ServoLimb>();
@@ -48,19 +48,23 @@ public class RoboticAssembler : MonoBehaviour
                 mapStream.Read(stringBuffer, 0, stringBuffer.Length);
                 string limbName = ASCIIEncoding.ASCII.GetString(stringBuffer);
 
+                Debug.Log("Create limb : " + limbName);
                 var newLimbObject = new GameObject();
                 newLimbObject.name = limbName;
                // newLimbObject.transform.SetParent(memoryBridge.vesselControl.m);
 
                var newLimb =  newLimbObject.AddComponent<ServoLimb>();
-                newLimb.Initialize(this, memoryBridge);
+               // newLimb.Initialize(this, memoryBridge);
 
                 limbs.Add(newLimb);
             }
         }
 
 
+
         IRFile.Dispose();
         IRFile.Close();
+
+        return limbs.ToArray();
     }
 }
