@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HexapodManager : MonoBehaviour
+public class HexapodManager : RobotManager
 {
     MemoryBridge memoryBridge;
     ServoLimb[] limbs;
@@ -60,9 +60,11 @@ public class HexapodManager : MonoBehaviour
 
         }
 
+        CalculateTwoServoIK(limbs[1].zAxisServos[0], limbs[1].zAxisServos[1], limbs[1].gait.IKtargetTransform.position, limbs[1].limbEndPointIK.position);
+
         foreach (var limb in limbs)
         {
-            limb.ikServos[1].SetServoPos(50);
+          //  limb.ikServos[1].SetServoPos(50);
         }
     }
 }

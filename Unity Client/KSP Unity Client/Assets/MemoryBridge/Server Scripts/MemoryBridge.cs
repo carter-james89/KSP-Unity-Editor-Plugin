@@ -214,6 +214,10 @@ public class MemoryBridge : MonoBehaviour
     {
         if (!key.Contains(fileName))
             key = key + fileName;
+        else
+        {
+            Debug.Log(key + " not found");
+        }
         return floatFile.GetFloat(key);
     }
     public void SetFloat(string key, float value)

@@ -194,7 +194,7 @@ public class Servo : MonoBehaviour
     }
 
     public float setAngle;
-    public void SetServoPos(float newPos)
+    public void SetServo(float newPos)
     {
         if (!disabled)
         {

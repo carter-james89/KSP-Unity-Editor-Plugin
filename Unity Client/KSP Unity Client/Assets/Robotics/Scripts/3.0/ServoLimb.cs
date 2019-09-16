@@ -12,17 +12,16 @@ public class ServoLimb : MonoBehaviour
     private List<Servo> mirrorServos;
     public List<Servo> ikServos;
 
-
-    private List<Servo> xAxisServos, yAxisServos,zAxisServos;
+    public List<Servo> xAxisServos, yAxisServos,zAxisServos;
 
     public enum LimbAxis { X, Y, Z }
 
     MemoryBridge memoryBridge;
 
-    Gait gait;
+    public Gait gait;
 
     Transform limbEndPointMirror;
-    Transform limbEndPointIK;
+    public Transform limbEndPointIK;
 
     Transform groundPoint;
 
@@ -41,14 +40,6 @@ public class ServoLimb : MonoBehaviour
         {
             servo.CalculateGroupAngle();
         }
-
-        //duplicate the leg and get ik servos
-        //var ikArm = Instantiate(mirrorServos[0].servoBase);
-        // var ikArm = new GameObject();
-
-        // ikArm.transform.position = mirrorServos[0].servoBase.position;
-        //ikArm.transform.rotation = mirrorServos[0].servoBase.rotation;
-
 
         ikServos = BuildLimb(memoryBridge, LimbType.IK);
         ikServos[0].servoBase.transform.SetParent(transform);
@@ -80,13 +71,10 @@ public class ServoLimb : MonoBehaviour
         }
         
         foreach (var servo in servos)
-        {
-            
+        {            
             servo.MirrorServoPos();
         }
     }
-
-   
 
     void SetIKContactPoint(Vector3 localPos)
     {
@@ -112,6 +100,8 @@ public class ServoLimb : MonoBehaviour
 
         limbEndPointMirror = CreateLimbEndtObject(mirrorServos[mirrorServos.Count - 1], footOffset);
         limbEndPointIK = CreateLimbEndtObject(ikServos[mirrorServos.Count - 1], footOffset);
+
+        memoryBridge.SetVector3(mirrorServos[mirrorServos.Count - 1].gameObject.name + "contactPoint", footOffset);
     }
 
     public void FindContactMeshPoint(LimbAxis limAxis)
@@ -328,19 +318,18 @@ public class ServoLimb : MonoBehaviour
     public float rawClearance;
     public void SetGroundPos()
     {
-       // torque = memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "torque");
-       // velocity = torque.magnitude;
-       // explosionPotential = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "explosionPotential");
-       // gExplodeChance = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "gExplodeChance");
-      //  footActive = memoryBridge.GetBool(limbMirror.servoWrist.servoName + "active");
-      //  hasExploded = memoryBridge.GetBool(limbMirror.servoWrist.servoName + "exploded");
+        // torque = memoryBridge.GetVector3(limbMirror.servoWrist.servoName + "torque");
+        // velocity = torque.magnitude;
+        // explosionPotential = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "explosionPotential");
+        // gExplodeChance = memoryBridge.GetFloat(limbMirror.servoWrist.servoName + "gExplodeChance");
+        //  footActive = memoryBridge.GetBool(limbMirror.servoWrist.servoName + "active");
+        //  hasExploded = memoryBridge.GetBool(limbMirror.servoWrist.servoName + "exploded");
 
         //if (hasExploded)
         //{
         //    CamUI.SetCamText(name + " has exploded");
         //    Debug.LogError("Exploded Leg : " + name + " Velocity : " + velocity + " Mode : " + limbIK.gaitSequenceMode.ToString() + " Percent : " + CalculateStridePercent());
         //}
-
         rawClearance = memoryBridge.GetFloat(mirrorServos[mirrorServos.Count -1].gameObject.name + "KSPFootClearance");
         var groundContact = memoryBridge.GetBool(mirrorServos[mirrorServos.Count - 1].servoName + "GroundContact");
         var localPoint = limbEndPointMirror.localPosition - new Vector3(0, .4f, 0);
