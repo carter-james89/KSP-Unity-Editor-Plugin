@@ -87,7 +87,7 @@ public class MemoryBridge : MonoBehaviour
 
         SetClientValues();
 
-       // vesselControl.VesselUpdate();
+        vesselControl.VesselUpdate();
 
         //  if (Input.GetKey(KeyCode.Keypad4))
        // roboticController.CustomUpdate();
@@ -216,7 +216,7 @@ public class MemoryBridge : MonoBehaviour
             key = key + fileName;
         else
         {
-            Debug.Log(key + " not found");
+           // Debug.Log(key + " not found");
         }
         return floatFile.GetFloat(key);
     }

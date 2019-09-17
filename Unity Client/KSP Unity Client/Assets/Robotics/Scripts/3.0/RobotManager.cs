@@ -6,7 +6,8 @@ using UnityEngine;
 public class RobotManager : MonoBehaviour
 {
     public AnimationCurve gaitCurve = AnimationCurve.EaseInOut(-1, 0, 1, 0);
-
+    public enum RobotStatus { Deactivated, Idle, AdjustingGaitPosition, Walking }
+    public RobotStatus robotStatus = RobotStatus.Deactivated;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,22 +47,32 @@ public class RobotManager : MonoBehaviour
         //}
         if (!float.IsNaN(angle1))
         {
-            Debug.Log(servo0.groupOffsets[servo1.gameObject]);
+            //Debug.Log(servo0.groupOffsets[servo1.gameObject]);
             servo0.SetServo(angle1 - servo0.groupOffsets[servo1.gameObject]);
         }
 
         var footOffset = servo0.transform.InverseTransformPoint(endPoint.position);
-       // xOffset = footOffset.z;
-       // Vector3 targetOffset;
+        // xOffset = footOffset.z;
+        // Vector3 targetOffset;
 
-         targetOffset = servo1.servoBase.InverseTransformPoint(target);
+        //  targetOffset = servo1.servoBase.InverseTransformPoint(target);
 
+        // var angle = Math.Atan2(targetOffset.z, targetOffset.y);
+        // angle *= (180 / Math.PI);
+
+        CalculateSingleServoIK(servo1, target, endPoint);
+
+       //// Debug.Log(servo1.groupOffsets[endPoint.gameObject]);
+       // servo1.SetServo((float)angle - servo1.groupOffsets[endPoint.gameObject]);
+    }
+
+    public void CalculateSingleServoIK(Servo servo, Vector3 target, Transform endPoint)
+    {
+        var targetOffset = servo.servoBase.InverseTransformPoint(target);
         var angle = Math.Atan2(targetOffset.z, targetOffset.y);
         angle *= (180 / Math.PI);
-
-
-       // Debug.Log(servo1.groupOffsets[endPoint.gameObject]);
-        servo1.SetServo((float)angle - servo1.groupOffsets[endPoint.gameObject]);
+        // Debug.Log(servo1.groupOffsets[endPoint.gameObject]);
+        servo.SetServo((float)angle - servo.groupOffsets[endPoint.gameObject]);
     }
 
 

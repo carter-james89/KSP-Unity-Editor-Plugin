@@ -195,7 +195,7 @@ public class Servo : MonoBehaviour
       //  localRot = transform.localRotation;
     }
 
-    public float setAngle;
+    public float setAngle { get; private set; }
     public void SetServo(float newPos)
     {
         if (!disabled)

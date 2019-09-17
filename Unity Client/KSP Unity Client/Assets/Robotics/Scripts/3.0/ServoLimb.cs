@@ -20,7 +20,7 @@ public class ServoLimb : MonoBehaviour
 
     public Gait gait;
 
-    Transform limbEndPointMirror;
+    public Transform limbEndPointMirror;
     public Transform limbEndPointIK;
 
     Transform groundPoint;
@@ -43,8 +43,6 @@ public class ServoLimb : MonoBehaviour
 
         ikServos = BuildLimb(memoryBridge, LimbType.IK);
         ikServos[0].servoBase.transform.SetParent(transform);
-
-        
 
         xAxisServos = new List<Servo>();
         yAxisServos = new List<Servo>();
@@ -71,6 +69,35 @@ public class ServoLimb : MonoBehaviour
        
     }
 
+    public bool MirrorLimbAtTarget()
+    {
+        var mirrorAtTarget = false;
+        if (gait.currentTarget)
+        {
+            var groundClearance = groundPoint.InverseTransformPoint(limbEndPointMirror.position).normalized;
+            var limbError = Vector3.Distance(limbEndPointMirror.position, gait.currentTarget.position);
+
+            var yDif = limbEndPointMirror.position.y - groundPoint.position.y;
+
+            if (gait.movementMode == Gait.MovementType.Rotate)
+            {
+                if (yDif < .03f && limbError < .2f)// & groundContact)
+                {
+                    mirrorAtTarget = true;
+                }
+            }
+            else
+            {
+                if (limbError < .05f)
+                {
+                    mirrorAtTarget = true;
+                }
+            }
+
+        }
+        return mirrorAtTarget;
+    }
+
     void SetIKContactPoint(Vector3 localPos)
     {
 
@@ -83,13 +110,6 @@ public class ServoLimb : MonoBehaviour
 
         var footOffset = endServo.position;
         footOffset.y = memoryBridge.vesselControl.ground.position.y;
-
-        // var foot = Instantiate(Resources.Load("Foot", typeof(GameObject))) as GameObject;
-        //foot.name = "True End Point " + name;
-        // foot.transform.SetParent(endServo);
-        //  foot.GetComponent<MeshRenderer>().material.color = color;
-        // footOffset.y = -footOffset.y;
-        //  foot.transform.position = footOffset;
 
         footOffset = endServo.InverseTransformPoint(footOffset);
 
@@ -245,7 +265,7 @@ public class ServoLimb : MonoBehaviour
                             {
                                 if (servo.gameObject.name == servoName)
                                 {
-                                    Debug.Log("found servo");
+                                   // Debug.Log("found servo");
                                     servo.partnerServo = newServo;
                                     newServo.partnerServo = servo;
                                     newServoObject.transform.position = servo.transform.position;
@@ -296,7 +316,6 @@ public class ServoLimb : MonoBehaviour
     {
         for (int i = 0; i < ikServos.Count; i++)
         {
-
             ikServos[i].groupOffsets = new Dictionary<GameObject, float>();
 
             var limbOffset = ikServos[i].servoBase.InverseTransformPoint(limbEndPointIK.position);
@@ -351,13 +370,6 @@ public class ServoLimb : MonoBehaviour
     }
 
 
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void MirrorServos()
     {
         foreach (var servo in mirrorServos)
@@ -393,12 +405,9 @@ public class ServoLimb : MonoBehaviour
             groundPoint = Instantiate(GameObject.Find("Ground")).transform;
             groundPoint.position = limbEndPointMirror.position;
         }
-
-
-
         var newObject = Instantiate(Resources.Load("Gait", typeof(GameObject))) as GameObject;
         gait = newObject.AddComponent<Gait>();
-        gait.Initialize(gaitCurve);
+        gait.Initialize(this,gaitCurve);
 
         gait.transform.SetParent(transform);//limbController.roboticController.directionTarget);
 
