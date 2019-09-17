@@ -62,6 +62,15 @@ public class HexapodManager : RobotManager
 
         }
 
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            ikActive = true;
+            foreach (var limb in legs)
+            {
+                limb.ActivateIK();
+            }
+        }
+
         if (ikActive)
         {
             RunIK();

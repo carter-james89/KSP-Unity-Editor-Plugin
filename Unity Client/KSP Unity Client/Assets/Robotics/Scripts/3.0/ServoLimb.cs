@@ -292,7 +292,7 @@ public class ServoLimb : MonoBehaviour
     }
     #endregion
     // Start is called before the first frame update
-    void Start()
+    public void ActivateIK()
     {
         for (int i = 0; i < ikServos.Count; i++)
         {
@@ -349,6 +349,8 @@ public class ServoLimb : MonoBehaviour
             servo.MirrorServoPos();
         }
     }
+
+
 
     // Update is called once per frame
     void Update()
