@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BipedalManager : MonoBehaviour
+public class BipedalManager : RobotManager
 {
     MemoryBridge memoryBridge;
     ServoLimb[] limbs;
@@ -21,7 +21,7 @@ public class BipedalManager : MonoBehaviour
             limb.Initialize(memoryBridge);
             limb.FindContactGroundPoint();
 
-            limb.CreateGait(true);
+            limb.CreateGait(true,gaitCurve);
         }
     }
     // Start is called before the first frame update
@@ -44,6 +44,11 @@ public class BipedalManager : MonoBehaviour
         {
             limb.SetGroundPos();
 
+        }
+        foreach (var limb in limbs)
+        {
+            CalculateTwoServoIK(limb.xAxisServos[0], limb.xAxisServos[1], limb.gait.IKtargetTransform.position, limb.limbEndPointIK);
+            //  limb.ikServos[1].SetServoPos(50);
         }
     }
 }

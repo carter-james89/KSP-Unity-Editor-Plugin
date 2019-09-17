@@ -11,6 +11,8 @@ public class HexapodManager : RobotManager
 
     ServoLimb neck;
 
+    bool ikActive = false;
+
     private void Awake()
     {
         memoryBridge = FindObjectOfType<MemoryBridge>();
@@ -28,12 +30,12 @@ public class HexapodManager : RobotManager
             if (limb.name.Contains("leg"))
             {
                 legs.Add(limb);
-                limb.CreateGait(true);
+                limb.CreateGait(true,gaitCurve);
             }
             else
             {
                 neck = limb;
-                limb.CreateGait(false);
+                limb.CreateGait(false,gaitCurve);
             }
         }
     }
@@ -60,11 +62,17 @@ public class HexapodManager : RobotManager
 
         }
 
-        CalculateTwoServoIK(limbs[1].zAxisServos[0], limbs[1].zAxisServos[1], limbs[1].gait.IKtargetTransform.position, limbs[1].limbEndPointIK.position);
-
-        foreach (var limb in limbs)
+        if (ikActive)
         {
-          //  limb.ikServos[1].SetServoPos(50);
+            RunIK();
+        }     
+    }
+
+    void RunIK()
+    {
+        foreach (var limb in legs)
+        {
+            CalculateTwoServoIK(limb.zAxisServos[0], limb.zAxisServos[1], limb.gait.IKtargetTransform.position, limb.limbEndPointIK);
         }
     }
 }

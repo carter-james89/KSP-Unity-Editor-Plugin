@@ -27,6 +27,8 @@ public class Servo : MonoBehaviour
 
     LineRenderer lineRenderer;
 
+    public Dictionary<GameObject, float> groupOffsets;
+
     bool invert = false;
 
     GameObject jointObject;

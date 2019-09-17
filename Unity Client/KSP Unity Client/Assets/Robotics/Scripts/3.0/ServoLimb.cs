@@ -12,7 +12,7 @@ public class ServoLimb : MonoBehaviour
     private List<Servo> mirrorServos;
     public List<Servo> ikServos;
 
-    public List<Servo> xAxisServos, yAxisServos,zAxisServos;
+    public List<Servo> xAxisServos, yAxisServos, zAxisServos;
 
     public enum LimbAxis { X, Y, Z }
 
@@ -44,18 +44,16 @@ public class ServoLimb : MonoBehaviour
         ikServos = BuildLimb(memoryBridge, LimbType.IK);
         ikServos[0].servoBase.transform.SetParent(transform);
 
-        foreach (var servo in ikServos)
-        {
-            servo.CalculateGroupAngle();
-            servo.servoType = Servo.ServoType.IK;
-            // servos.Add(servo);
-        }
+        
 
         xAxisServos = new List<Servo>();
         yAxisServos = new List<Servo>();
         zAxisServos = new List<Servo>();
         foreach (var servo in ikServos)
         {
+            servo.CalculateGroupAngle();
+            servo.servoType = Servo.ServoType.IK;
+
             if (servo.limbAxis == LimbAxis.X)
             {
                 xAxisServos.Add(servo);
@@ -69,11 +67,8 @@ public class ServoLimb : MonoBehaviour
                 zAxisServos.Add(servo);
             }
         }
-        
-        foreach (var servo in servos)
-        {            
-            servo.MirrorServoPos();
-        }
+
+       
     }
 
     void SetIKContactPoint(Vector3 localPos)
@@ -260,7 +255,7 @@ public class ServoLimb : MonoBehaviour
 
                             //  newServoObject.transform.position = part.transform.position;
                             //  newServoObject.transform.rotation = part.transform.rotation;
-                            
+
                             newServo.Initialize(servoName, this, (int)parentID, part, memoryBridge);
 
 
@@ -275,7 +270,7 @@ public class ServoLimb : MonoBehaviour
                             newServo.transform.SetParent(newServo.servoBase);
                             newServo.transform.localEulerAngles = Vector3.zero;
 
-                           
+
                             servos.Add(newServo);
                             returnServos.Add(newServo);
                         }
@@ -285,10 +280,10 @@ public class ServoLimb : MonoBehaviour
             }
         }
         //if (limbType == LimbType.Mirror)
-            foreach (var servo in returnServos)
-            {
-               // servo.CreateBaseAnchor();
-            }
+        foreach (var servo in returnServos)
+        {
+            // servo.CreateBaseAnchor();
+        }
 
         limbFile.Dispose();
         limbFile.Close();
@@ -299,7 +294,60 @@ public class ServoLimb : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < ikServos.Count; i++)
+        {
 
+            ikServos[i].groupOffsets = new Dictionary<GameObject, float>();
+
+            var limbOffset = ikServos[i].servoBase.InverseTransformPoint(limbEndPointIK.position);
+            var tempAngle = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
+            tempAngle = (float)(tempAngle * 180 / Math.PI);
+            // ikServos[v].targetOffset = tempAngle;
+            ikServos[i].groupOffsets.Add(limbEndPointIK.gameObject, tempAngle);
+
+            // servos.Add(servo);
+            for (int v = 0; v < ikServos.Count; v++)
+            {
+                if (ikServos[i] != ikServos[v])
+                {
+                    limbOffset = ikServos[i].servoBase.InverseTransformPoint(ikServos[v].transform.position);
+                    tempAngle = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
+                    tempAngle = (float)(tempAngle * 180 / Math.PI);
+                    // ikServos[v].targetOffset = tempAngle;
+                    ikServos[i].groupOffsets.Add(ikServos[v].gameObject, tempAngle);
+                }
+                ////set the wrist dist
+                //if (i == 0)
+                //{
+                //    if (servoGroup[i].limbAxis == LimbController.LimbAxis.Z)
+                //    {
+                //        servoGroup[i].targetOffset = 0;
+                //    }
+                //    else
+                //    {
+                //        servoGroup[i].limbLength = Vector3.Distance(servoGroup[i].transform.position, limbController.contactPointOffset);
+
+                //        var limbOffset = servoGroup[i].servoBase.InverseTransformPoint(limbEnd.position);
+                //        var tempAngle = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
+                //        tempAngle = (float)(tempAngle * 180 / Math.PI);
+                //        servoGroup[i].targetOffset = tempAngle;
+                //    }
+                //}
+                //else
+                //{
+                //servoGroup[i].limbLength = Vector3.Distance(servoGroup[i].transform.position, servoGroup[i - 1].transform.position);
+                //var limbOffset = servoGroup[i].servoBase.InverseTransformPoint(servoGroup[i - 1].transform.position);
+                //var tempAngle = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
+                //tempAngle = (float)(tempAngle * 180 / Math.PI);
+                //servoGroup[i].targetOffset = tempAngle;
+                //  }
+            }
+        }
+
+        foreach (var servo in servos)
+        {
+            servo.MirrorServoPos();
+        }
     }
 
     // Update is called once per frame
@@ -330,25 +378,26 @@ public class ServoLimb : MonoBehaviour
         //    CamUI.SetCamText(name + " has exploded");
         //    Debug.LogError("Exploded Leg : " + name + " Velocity : " + velocity + " Mode : " + limbIK.gaitSequenceMode.ToString() + " Percent : " + CalculateStridePercent());
         //}
-        rawClearance = memoryBridge.GetFloat(mirrorServos[mirrorServos.Count -1].gameObject.name + "KSPFootClearance");
+        rawClearance = memoryBridge.GetFloat(mirrorServos[mirrorServos.Count - 1].gameObject.name + "KSPFootClearance");
         var groundContact = memoryBridge.GetBool(mirrorServos[mirrorServos.Count - 1].servoName + "GroundContact");
         var localPoint = limbEndPointMirror.localPosition - new Vector3(0, .4f, 0);
         groundPoint.position = mirrorServos[mirrorServos.Count - 1].transform.TransformPoint(localPoint) - new Vector3(0, rawClearance, 0);
     }
 
-    public void CreateGait(bool createGround)
+    public void CreateGait(bool createGround, AnimationCurve gaitCurve)
     {
         if (createGround)
         {
             groundPoint = Instantiate(GameObject.Find("Ground")).transform;
             groundPoint.position = limbEndPointMirror.position;
         }
-       
+
 
 
         var newObject = Instantiate(Resources.Load("Gait", typeof(GameObject))) as GameObject;
         gait = newObject.AddComponent<Gait>();
-       
+        gait.Initialize(gaitCurve);
+
         gait.transform.SetParent(transform);//limbController.roboticController.directionTarget);
 
         gait.transform.position = limbEndPointIK.position; //transform.position + transform.up * limbController.roboticController.gaitDistance;

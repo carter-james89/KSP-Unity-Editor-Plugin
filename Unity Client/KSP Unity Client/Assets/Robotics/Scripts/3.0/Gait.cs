@@ -11,6 +11,11 @@ public class Gait : MonoBehaviour
     public Transform pointBack { get; private set; }
     public Transform IKtargetTransform, rotAxis;
 
+    public enum GaitMode { Arc, Curve }
+    public GaitMode gaitMode = GaitMode.Arc;
+
+    public AnimationCurve gaitCurve;
+
     private void Awake()
     {
         var obj = Instantiate(Resources.Load("Limb Target", typeof(GameObject))) as GameObject;
@@ -23,15 +28,29 @@ public class Gait : MonoBehaviour
         pointBack = transform.Find("Point Back");
         //gait.position = limbController.limbMirror.limbEnd.position;
     }
-    // Start is called before the first frame update
-    void Start()
+    public void Initialize(AnimationCurve gaitCurve)
     {
-        
+        this.gaitCurve = gaitCurve;
+        DefaultStrideLength();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DefaultStrideLength()
     {
-        
+        // pointFront.localPosition = new Vector3(0, 0, strideLength / 2);
+
+        if (gaitMode == GaitMode.Arc)
+        {
+           // pointFront.localPosition = new Vector3(0, 0, strideLength / 2);
+           // pointBack.localPosition = new Vector3(0, 0, (strideLength / -2));
+        }
+        else
+        {
+
+            pointBack.localPosition = new Vector3(0, 0, -gaitCurve.keys[gaitCurve.keys.Length - 1].time);// gaitCurve.keys[0].time);
+            pointFront.localPosition = new Vector3(0, 0, gaitCurve.keys[gaitCurve.keys.Length - 1].time);
+        }
+
+        // pointBack.localPosition = new Vector3(0, 0, -strideLength / 2);
+        // adjustedStride = false;
     }
 }

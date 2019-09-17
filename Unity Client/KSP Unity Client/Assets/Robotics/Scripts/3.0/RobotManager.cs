@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class RobotManager : MonoBehaviour
 {
+    public AnimationCurve gaitCurve = AnimationCurve.EaseInOut(-1, 0, 1, 0);
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +19,7 @@ public class RobotManager : MonoBehaviour
 
     }
 
-    public void CalculateTwoServoIK(Servo servo0, Servo servo1, Vector3 target, Vector3 endPoint)
+    public void CalculateTwoServoIK(Servo servo0, Servo servo1, Vector3 target, Transform endPoint)
     {
         var targetOffset = servo0.servoBase.InverseTransformPoint(target);
         var angle0 = Math.Atan2(targetOffset.z, targetOffset.y);
@@ -25,14 +27,14 @@ public class RobotManager : MonoBehaviour
 
         var servo1_0Dist = Vector3.Distance(servo1.transform.position, servo0.transform.position);
 
-        var localPos = servo1.transform.InverseTransformPoint(endPoint);
-        localPos.x = 0;
-        var globalPos = servo1.transform.TransformPoint(localPos);
-        var servo0_GroundPointDist = Vector3.Distance(servo1.transform.position, globalPos);
+       // var localPos = servo1.transform.InverseTransformPoint(endPoint.position);
+       // localPos.x = 0;
+       // var globalPos = servo1.transform.TransformPoint(localPos);
+        var servo0_GroundPointDist = Vector3.Distance(servo0.transform.position, target);// endPoint.position);
 
-        var servo1_GroundPointDist = Vector3.Distance(servo0.transform.position, target);
+        var servo1_GroundPointDist = Vector3.Distance(servo1.transform.position, endPoint.position);// target);
 
-        float angle1 = LawOfCosines(servo1_0Dist, servo0_GroundPointDist, servo1_GroundPointDist);
+        float angle1 = LawOfCosines(servo1_0Dist, servo1_GroundPointDist, servo0_GroundPointDist);
 
         //if (servo1.invert)
         //{
@@ -40,23 +42,26 @@ public class RobotManager : MonoBehaviour
         //}
         //else
         //{
-        //    angle1 += (float)angle0;
+            angle1 += (float)angle0;
         //}
         if (!float.IsNaN(angle1))
         {
-            servo0.SetServo(angle1);
+            Debug.Log(servo0.groupOffsets[servo1.gameObject]);
+            servo0.SetServo(angle1 - servo0.groupOffsets[servo1.gameObject]);
         }
 
-        var footOffset = servo0.transform.InverseTransformPoint(endPoint);
+        var footOffset = servo0.transform.InverseTransformPoint(endPoint.position);
        // xOffset = footOffset.z;
        // Vector3 targetOffset;
 
-        targetOffset = servo1.servoBase.InverseTransformPoint(target);
+         targetOffset = servo1.servoBase.InverseTransformPoint(target);
 
         var angle = Math.Atan2(targetOffset.z, targetOffset.y);
         angle *= (180 / Math.PI);
 
-        servo1.SetServo((float)angle);
+
+       // Debug.Log(servo1.groupOffsets[endPoint.gameObject]);
+        servo1.SetServo((float)angle - servo1.groupOffsets[endPoint.gameObject]);
     }
 
 
