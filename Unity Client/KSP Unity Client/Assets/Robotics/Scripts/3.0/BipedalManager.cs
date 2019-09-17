@@ -18,7 +18,7 @@ public class BipedalManager : RobotManager
 
         foreach (var limb in limbs)
         {
-            limb.Initialize(memoryBridge);
+            limb.Initialize(this,memoryBridge);
             limb.FindContactGroundPoint();
 
             limb.CreateGait(true,gaitCurve);

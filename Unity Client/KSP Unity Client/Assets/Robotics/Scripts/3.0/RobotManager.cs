@@ -8,6 +8,10 @@ public class RobotManager : MonoBehaviour
     public AnimationCurve gaitCurve = AnimationCurve.EaseInOut(-1, 0, 1, 0);
     public enum RobotStatus { Deactivated, Idle, AdjustingGaitPosition, Walking }
     public RobotStatus robotStatus = RobotStatus.Deactivated;
+
+    public Transform baseTargets { get; protected set; }
+
+    public VesselControl vessel { get; protected set; }
     // Start is called before the first frame update
     void Start()
     {

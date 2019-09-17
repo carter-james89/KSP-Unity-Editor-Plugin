@@ -20,13 +20,17 @@ public class ServoLimb : MonoBehaviour
 
     public Gait gait;
 
+    public bool mirrorAtTarget;
+
     public Transform limbEndPointMirror;
     public Transform limbEndPointIK;
 
     Transform groundPoint;
+    public RobotManager robotManager { get; private set; }
 
-    public void Initialize(MemoryBridge memoryBridge)
+    public void Initialize(RobotManager robotManager, MemoryBridge memoryBridge)
     {
+        this.robotManager = robotManager;
         this.memoryBridge = memoryBridge;
         servos = new List<Servo>();
         //add mirror servo to leg that has already been created
@@ -71,7 +75,7 @@ public class ServoLimb : MonoBehaviour
 
     public bool MirrorLimbAtTarget()
     {
-        var mirrorAtTarget = false;
+         mirrorAtTarget = false;
         if (gait.currentTarget)
         {
             var groundClearance = groundPoint.InverseTransformPoint(limbEndPointMirror.position).normalized;
@@ -95,6 +99,7 @@ public class ServoLimb : MonoBehaviour
             }
 
         }
+        
         return mirrorAtTarget;
     }
 
@@ -312,6 +317,7 @@ public class ServoLimb : MonoBehaviour
     }
     #endregion
     // Start is called before the first frame update
+    public Transform baseTarget;
     public void ActivateIK()
     {
         for (int i = 0; i < ikServos.Count; i++)
@@ -367,6 +373,18 @@ public class ServoLimb : MonoBehaviour
         {
             servo.MirrorServoPos();
         }
+
+       
+    }
+    public void CreateBaseTarget()
+    {
+        //Create base target for base height
+        baseTarget = Instantiate(GameObject.Find("Base Target")).transform;
+        baseTarget.SetParent(robotManager.baseTargets);
+        baseTarget.position = servos[0].transform.position;//limbMirror.servoBase.transform.position;
+        var tempPos = baseTarget.localPosition;
+        tempPos.y = 0;
+        baseTarget.localPosition = tempPos;
     }
 
 

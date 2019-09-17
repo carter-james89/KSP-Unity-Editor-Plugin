@@ -26,13 +26,14 @@ public class HexapodManager : RobotManager
         memoryBridge = FindObjectOfType<MemoryBridge>();
         memoryBridge.StartClient("Test");
         Debug.Log("Memory Bridge Opened");
+        vessel = memoryBridge.vesselControl;
 
         limbs = FindObjectOfType<RoboticAssembler>().Assemble(memoryBridge);
 
         legs = new List<ServoLimb>();
         foreach (var limb in limbs)
         {
-            limb.Initialize(memoryBridge);
+            limb.Initialize(this,memoryBridge);
             limb.FindContactMeshPoint(ServoLimb.LimbAxis.Y);
 
             if (limb.name.Contains("leg"))
@@ -107,17 +108,35 @@ public class HexapodManager : RobotManager
         }
     }
 
+   
     void ActivateIK()
     {
         robotStatus = RobotStatus.Idle;
+        //create base target parent for all limb base targets
+        baseTargets = new GameObject("Base Targets").transform;
+        baseTargets.SetParent(GameObject.Find("Vessel Offset").transform);
+        baseTargets.localEulerAngles = Vector3.zero;
+        //set the base height to the average height of all limb bases
+        Vector3 baseOffset = Vector3.zero;
+        foreach (var leg in legs)
+        {
+            baseOffset += memoryBridge.vesselControl.adjustedGimbal.InverseTransformPoint(leg.servos[0].transform.position);
+        }
+        baseOffset /= legs.Count;
+        baseTargets.transform.position = baseOffset;
+       // SetBaseHeights(baseTargets.position.y - vesselControl.ground.position.y, false);
+
+        //activate Ik and create leg base targets
         foreach (var limb in legs)
         {
             limb.ActivateIK();
+            limb.CreateBaseTarget();
             limb.CreateGait(true, gaitCurve);
         }
         neck.ActivateIK();
         neck.CreateGait(false, gaitCurve);
         neck.gait.IKtargetTransform.position = neckGaitStartPos;
+        
     }
     void MoveGaitToStartPosition()
     {

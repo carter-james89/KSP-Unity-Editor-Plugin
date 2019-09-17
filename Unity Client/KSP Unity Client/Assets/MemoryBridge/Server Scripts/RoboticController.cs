@@ -25,6 +25,8 @@ public class RoboticController : MonoBehaviour
     // public List<LimbController> limbs0, limbs1;
     public Transform baseTargets, directionTarget;
 
+    public VesselControl vessel { get; private set; }
+
     MemoryBridge memoryBridge;
     PidController steeringPID;
 
