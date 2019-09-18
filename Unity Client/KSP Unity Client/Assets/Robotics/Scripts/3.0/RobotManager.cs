@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class RobotManager : MonoBehaviour
 {
+    protected List<ServoLimb> legs = new List<ServoLimb>();
+    protected List<ServoLimb> arms = new List<ServoLimb>();
+
+    protected MemoryBridge memoryBridge;
+    protected ServoLimb[] limbs;
+
     public AnimationCurve gaitCurve = AnimationCurve.EaseInOut(-1, 0, 1, 0);
     public enum RobotStatus { Deactivated, Idle, AdjustingGaitPosition, Walking }
     public RobotStatus robotStatus = RobotStatus.Deactivated;
@@ -19,9 +25,61 @@ public class RobotManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+   protected virtual void Update()
     {
+        memoryBridge.StartUpdate();
 
+        foreach (var limb in limbs)
+        {
+            limb.MirrorServos();
+        }
+
+        if (Time.frameCount > 20 && robotStatus == RobotStatus.Deactivated)
+        {
+            ActivateIK();
+        }
+    }
+
+    protected virtual void ActivateIK()
+    {
+        if(legs.Count > 0)
+        {
+            robotStatus = RobotStatus.Idle;
+            //create base target parent for all limb base targets
+            baseTargets = new GameObject("Base Targets").transform;
+            baseTargets.SetParent(GameObject.Find("Vessel Offset").transform);
+            baseTargets.localEulerAngles = Vector3.zero;
+            //set the base height to the average height of all limb bases
+            Vector3 baseOffset = Vector3.zero;
+            foreach (var leg in legs)
+            {
+                baseOffset += memoryBridge.vesselControl.adjustedGimbal.InverseTransformPoint(leg.servos[0].transform.position);
+            }
+            baseOffset /= legs.Count;
+            baseTargets.transform.position = baseOffset;
+            SetBaseHeights(baseTargets.position.y - vessel.ground.position.y, false);
+            baseTargets.SetParent(null);
+
+            //activate Ik and create leg base targets
+            foreach (var limb in legs)
+            {
+                limb.ActivateIK();
+                limb.CreateBaseTarget();
+                limb.CreateGait(true, gaitCurve);
+            }
+        }
+    }
+
+    protected float targetBaseHeight;
+    protected float baseHeight;
+    public void SetBaseHeights(float newHeight, bool lerp = true)
+    {
+        Debug.Log("______________Adjust base height");
+        targetBaseHeight = newHeight;
+        if (!lerp)
+        {
+            baseHeight = newHeight;
+        }
     }
 
     public void CalculateTwoServoIK(Servo servo0, Servo servo1, Vector3 target, Transform endPoint)
@@ -54,7 +112,10 @@ public class RobotManager : MonoBehaviour
             //Debug.Log(servo0.groupOffsets[servo1.gameObject]);
             servo0.SetServo(angle1 - servo0.groupOffsets[servo1.gameObject]);
         }
-
+        else
+        {
+            CalculateSingleServoIK(servo0, target, endPoint);
+        }
         var footOffset = servo0.transform.InverseTransformPoint(endPoint.position);
         // xOffset = footOffset.z;
         // Vector3 targetOffset;

@@ -25,7 +25,7 @@ public class ServoLimb : MonoBehaviour
     public Transform limbEndPointMirror;
     public Transform limbEndPointIK;
 
-    Transform groundPoint;
+    public Transform groundPoint { get; private set; }
     public RobotManager robotManager { get; private set; }
 
     public void Initialize(RobotManager robotManager, MemoryBridge memoryBridge)
@@ -122,6 +122,17 @@ public class ServoLimb : MonoBehaviour
         limbEndPointIK = CreateLimbEndtObject(ikServos[mirrorServos.Count - 1], footOffset);
 
         memoryBridge.SetVector3(mirrorServos[mirrorServos.Count - 1].gameObject.name + "contactPoint", footOffset);
+    }
+
+    public void CreateLimbEndPoint(Vector3 position)
+    {
+        var endServo = mirrorServos[mirrorServos.Count - 1].transform;
+        var color = mirrorServos[mirrorServos.Count - 1].color;
+
+        limbEndPointMirror = CreateLimbEndtObject(mirrorServos[mirrorServos.Count - 1], position);
+        limbEndPointIK = CreateLimbEndtObject(ikServos[mirrorServos.Count - 1], position);
+
+        memoryBridge.SetVector3(mirrorServos[mirrorServos.Count - 1].gameObject.name + "contactPoint", position);
     }
 
     public void FindContactMeshPoint(LimbAxis limAxis)
@@ -318,6 +329,7 @@ public class ServoLimb : MonoBehaviour
     #endregion
     // Start is called before the first frame update
     public Transform baseTarget;
+    public  Vector3 defaultGaitLocalPos { get; private set; }
     public void ActivateIK()
     {
         for (int i = 0; i < ikServos.Count; i++)
@@ -341,31 +353,6 @@ public class ServoLimb : MonoBehaviour
                     // ikServos[v].targetOffset = tempAngle;
                     ikServos[i].groupOffsets.Add(ikServos[v].gameObject, tempAngle);
                 }
-                ////set the wrist dist
-                //if (i == 0)
-                //{
-                //    if (servoGroup[i].limbAxis == LimbController.LimbAxis.Z)
-                //    {
-                //        servoGroup[i].targetOffset = 0;
-                //    }
-                //    else
-                //    {
-                //        servoGroup[i].limbLength = Vector3.Distance(servoGroup[i].transform.position, limbController.contactPointOffset);
-
-                //        var limbOffset = servoGroup[i].servoBase.InverseTransformPoint(limbEnd.position);
-                //        var tempAngle = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
-                //        tempAngle = (float)(tempAngle * 180 / Math.PI);
-                //        servoGroup[i].targetOffset = tempAngle;
-                //    }
-                //}
-                //else
-                //{
-                //servoGroup[i].limbLength = Vector3.Distance(servoGroup[i].transform.position, servoGroup[i - 1].transform.position);
-                //var limbOffset = servoGroup[i].servoBase.InverseTransformPoint(servoGroup[i - 1].transform.position);
-                //var tempAngle = (float)(Math.Atan2(limbOffset.z, limbOffset.y));
-                //tempAngle = (float)(tempAngle * 180 / Math.PI);
-                //servoGroup[i].targetOffset = tempAngle;
-                //  }
             }
         }
 
@@ -425,10 +412,12 @@ public class ServoLimb : MonoBehaviour
         }
         var newObject = Instantiate(Resources.Load("Gait", typeof(GameObject))) as GameObject;
         gait = newObject.AddComponent<Gait>();
-        gait.Initialize(this,gaitCurve);
+     
 
         gait.transform.SetParent(transform);//limbController.roboticController.directionTarget);
 
-        gait.transform.position = limbEndPointIK.position; //transform.position + transform.up * limbController.roboticController.gaitDistance;
+        gait.transform.position = limbEndPointIK.position - new Vector3(0,.2f,0); //transform.position + transform.up * limbController.roboticController.gaitDistance;
+        defaultGaitLocalPos = gait.transform.localPosition;
+        gait.Initialize(this, gaitCurve);
     }
 }

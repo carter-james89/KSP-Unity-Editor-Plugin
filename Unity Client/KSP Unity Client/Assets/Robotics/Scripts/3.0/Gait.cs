@@ -177,21 +177,21 @@ public class Gait : MonoBehaviour
 
         var baseOffset = limb.baseTarget.InverseTransformPoint(limb.servos[0].transform.position);
 
-        //var globalPoint = limbIK.transform.TransformPoint(limbIK.gaitStartPos);
-        //globalPoint.y = ground.position.y;
-        //var hipHeightError = baseOffset.y;
+        var globalPoint = limb.transform.TransformPoint(limb.defaultGaitLocalPos);
+        globalPoint.y = limb.groundPoint.position.y;
+       // var hipHeightError = baseOffset.y;
 
-        //if (movementMode == MovementType.Translate || limb.mirrorAtTarget)
-        //{
-        //    globalPoint.y += baseOffset.y;
-        //    limbIK.gait.position = globalPoint;
-        //    gaitBelowGround = ground.InverseTransformPoint(limbIK.gait.transform.position).y;
-        //}
-        //else
-        //{
-        //    limbIK.gait.position = globalPoint;
-        //}
-        //targetEndPointError = Vector3.Distance(limbMirror.limbEnd.transform.position, limbIK.IKtargetTransform.position);
+        if (movementMode == MovementType.Translate || limb.mirrorAtTarget)
+        {
+           globalPoint.y += baseOffset.y;
+            transform.position = globalPoint;
+           // gaitBelowGround = ground.InverseTransformPoint(limbIK.gait.transform.position).y;
+        }
+        else
+        {
+            transform.position = globalPoint;
+        }
+       // targetEndPointError = Vector3.Distance(limbMirror.limbEnd.transform.position, limbIK.IKtargetTransform.position);
     }
 
     public void DefaultStrideLength()

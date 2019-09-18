@@ -1,13 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HexapodManager : RobotManager
 {
-    MemoryBridge memoryBridge;
-    ServoLimb[] limbs;
+   
 
-    List<ServoLimb> legs;
+    
 
     ServoLimb neck;
 
@@ -59,21 +59,12 @@ public class HexapodManager : RobotManager
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        memoryBridge.StartUpdate();
+        base.Update();
+       
 
-        foreach (var limb in limbs)
-        {
-            limb.MirrorServos();
-
-        }
-
-        if(Time.frameCount > 20 && robotStatus == RobotStatus.Deactivated)
-        {
-            ActivateIK();
-        }
-
+        
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             MoveGaitToStartPosition();
@@ -81,9 +72,30 @@ public class HexapodManager : RobotManager
 
         if (robotStatus != RobotStatus.Deactivated)
         {
+            foreach (var limb in legs)
+            {
+                limb.SetGroundPos();
+            }
+
+            //set robot walk height
+            if (targetBaseHeight != baseHeight)
+            {
+                baseHeight = Mathf.Lerp(baseHeight, targetBaseHeight, Time.deltaTime);
+                if (Math.Abs(targetBaseHeight - baseHeight) < .02f)
+                {
+                    baseHeight = targetBaseHeight;
+                }
+            }
+            baseTargets.transform.position = vessel.ground.position + new Vector3(0, baseHeight, 0);
+            //set gait height ot match height
+            foreach (var leg in legs)
+            {
+                leg.gait.SetGaitHeight();
+            }
+
             RunIK();
 
-            if(robotStatus == RobotStatus.AdjustingGaitPosition)
+            if (robotStatus == RobotStatus.AdjustingGaitPosition)
             {
                 bool group0AtTarget = true;
                 if (movingGroup0)
@@ -108,31 +120,11 @@ public class HexapodManager : RobotManager
         }
     }
 
-   
-    void ActivateIK()
-    {
-        robotStatus = RobotStatus.Idle;
-        //create base target parent for all limb base targets
-        baseTargets = new GameObject("Base Targets").transform;
-        baseTargets.SetParent(GameObject.Find("Vessel Offset").transform);
-        baseTargets.localEulerAngles = Vector3.zero;
-        //set the base height to the average height of all limb bases
-        Vector3 baseOffset = Vector3.zero;
-        foreach (var leg in legs)
-        {
-            baseOffset += memoryBridge.vesselControl.adjustedGimbal.InverseTransformPoint(leg.servos[0].transform.position);
-        }
-        baseOffset /= legs.Count;
-        baseTargets.transform.position = baseOffset;
-       // SetBaseHeights(baseTargets.position.y - vesselControl.ground.position.y, false);
 
-        //activate Ik and create leg base targets
-        foreach (var limb in legs)
-        {
-            limb.ActivateIK();
-            limb.CreateBaseTarget();
-            limb.CreateGait(true, gaitCurve);
-        }
+    protected override void ActivateIK()
+    {
+        base.ActivateIK();
+    
         neck.ActivateIK();
         neck.CreateGait(false, gaitCurve);
         neck.gait.IKtargetTransform.position = neckGaitStartPos;
@@ -161,11 +153,7 @@ public class HexapodManager : RobotManager
 
     void RunIK()
     {
-        foreach (var limb in legs)
-        {
-            limb.SetGroundPos();
-
-        }
+       
         foreach (var limb in legs)
         {
             CalculateTwoServoIK(limb.zAxisServos[0], limb.zAxisServos[1], limb.gait.IKtargetTransform.position, limb.limbEndPointIK);

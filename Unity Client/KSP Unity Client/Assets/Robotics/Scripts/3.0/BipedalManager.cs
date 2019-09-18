@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class BipedalManager : RobotManager
 {
-    MemoryBridge memoryBridge;
-    ServoLimb[] limbs;
+    ServoLimb spine;
 
 
-    private void Awake()
+    protected void Awake()
     {
         memoryBridge = FindObjectOfType<MemoryBridge>();
         memoryBridge.StartClient("Test");
+        vessel = memoryBridge.vesselControl;
         Debug.Log("Memory Bridge Opened");
 
         limbs = FindObjectOfType<RoboticAssembler>().Assemble(memoryBridge);
@@ -19,10 +19,33 @@ public class BipedalManager : RobotManager
         foreach (var limb in limbs)
         {
             limb.Initialize(this,memoryBridge);
-            limb.FindContactGroundPoint();
+           
 
-            limb.CreateGait(true,gaitCurve);
+            if (limb.name.ToLower().Contains("leg"))
+            {
+                legs.Add(limb);
+            }
+            else if (limb.name.ToLower().Contains("arm"))
+            {
+                arms.Add(limb);
+            }
+            else if (limb.name.ToLower().Contains("spine"))
+            {
+                spine = limb;
+            }
+            //limb.CreateGait(true,gaitCurve);
         }
+
+        foreach (var limb in legs)
+        {
+            //limb.FindContactGroundPoint();
+            limb.CreateLimbEndPoint(new Vector3(0, .22f, 0));
+        }
+        foreach (var limb in arms)
+        {
+            limb.FindContactMeshPoint(ServoLimb.LimbAxis.Y);
+        }
+        spine.CreateLimbEndPoint(new Vector3(0, .1f, 0));
     }
     // Start is called before the first frame update
     void Start()
@@ -31,24 +54,44 @@ public class BipedalManager : RobotManager
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        memoryBridge.StartUpdate();
-
-        foreach (var limb in limbs)
+        base.Update();
+  
+        if(robotStatus != RobotStatus.Deactivated)
         {
-            limb.MirrorServos();
+            foreach (var limb in legs)
+            {
+                limb.SetGroundPos();
 
-        }
-        foreach (var limb in limbs)
-        {
-            limb.SetGroundPos();
+            }
 
+            foreach (var limb in legs)
+            {
+                CalculateTwoServoIK(limb.xAxisServos[0], limb.xAxisServos[1], limb.gait.IKtargetTransform.position, limb.limbEndPointIK);
+                //  limb.ikServos[1].SetServoPos(50);
+               
+            }
+            foreach (var limb in arms)
+            {
+             //   CalculateSingleServoIK(limb.yAxisServos[0], limb.gait.IKtargetTransform.position, limb.limbEndPointIK);
+                CalculateTwoServoIK(limb.xAxisServos[0], limb.zAxisServos[0], limb.gait.IKtargetTransform.position, limb.limbEndPointIK);
+            }
         }
-        foreach (var limb in limbs)
+      
+     
+    }
+
+
+    protected override void ActivateIK()
+    {
+        base.ActivateIK();
+     
+        foreach (var limb in arms)
         {
-            CalculateTwoServoIK(limb.xAxisServos[0], limb.xAxisServos[1], limb.gait.IKtargetTransform.position, limb.limbEndPointIK);
-            //  limb.ikServos[1].SetServoPos(50);
+            limb.ActivateIK();
+            limb.CreateGait(false, gaitCurve);
         }
+
     }
 }
